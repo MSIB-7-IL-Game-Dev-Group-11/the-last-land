@@ -9,6 +9,7 @@ namespace TheLastLand._Project.Scripts.Input
     public class InputReader : ScriptableObject, IPlayerActions
     {
         public event UnityAction<Vector2> Move = delegate { };
+        public event UnityAction<bool> Jump = delegate { };
 
         private PlayerInputActions _playerInputActions;
 
@@ -50,7 +51,16 @@ namespace TheLastLand._Project.Scripts.Input
 
         public void OnJump(InputAction.CallbackContext context)
         {
-            //
+            switch (context.phase)
+            {
+                case InputActionPhase.Started:
+                    Jump.Invoke(true);
+                    break;
+
+                case InputActionPhase.Canceled:
+                    Jump.Invoke(false);
+                    break;
+            }
         }
 
         public void OnDash(InputAction.CallbackContext context)
