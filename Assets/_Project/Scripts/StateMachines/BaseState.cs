@@ -8,10 +8,8 @@ namespace TheLastLand._Project.Scripts.StateMachines
         protected readonly PlayerController PlayerController;
         protected readonly Animator Animator;
         
-        protected static readonly int WalkHash = Animator.StringToHash("Walk");
-        protected static readonly int JumpHash = Animator.StringToHash("Jump");
-        protected static readonly int XvelocityHash = Animator.StringToHash("HorizontalVelocity");
-        protected static readonly int YvelocityHash = Animator.StringToHash("HorizontalVelocity");
+        protected static readonly int MovementHash = Animator.StringToHash("Movement");
+        protected static readonly int JumpingHash = Animator.StringToHash("Jumping");
         
         protected const float CROSS_FADE_DURATION = 0.1f;
 

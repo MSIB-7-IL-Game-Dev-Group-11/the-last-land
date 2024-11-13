@@ -5,6 +5,9 @@ namespace TheLastLand._Project.Scripts.StateMachines.Player
 {
     public class PlayerJumpState : BaseState
     {
+        private static readonly int YvelocityHash = Animator.StringToHash("HorizontalVelocity");
+        
+
         public PlayerJumpState(
             PlayerController playerController,
             Animator animator
@@ -12,8 +15,15 @@ namespace TheLastLand._Project.Scripts.StateMachines.Player
         {
         }
 
+        public override void OnEnter()
+        {
+            base.OnEnter();
+            Animator.CrossFade(JumpingHash, CROSS_FADE_DURATION);
+        }
+
         public override void FixedUpdate()
         {
+            base.FixedUpdate();
             PlayerController.HandleJump();
             PlayerController.HandleMovement();
         }

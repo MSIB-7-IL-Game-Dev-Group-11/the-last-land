@@ -51,48 +51,17 @@ namespace TheLastLand._Project.Scripts.PlayerSystem
         private CountdownTimer _jumpCooldownTimer;
 
         private Vector2 _movement;
-        public float velocity;
-        public float jumpVelocity;
+        public float Velocity { get; private set; }
+        public float JumpVelocity { get; private set; }
 
         private bool IsDirecting { get; set; }
 
         private void Awake()
         {
-            virtualCamera.Follow = transform;
-            virtualCamera.LookAt = transform;
-
-            _rigidbody = GetComponent<Rigidbody2D>();
-            _animator = GetComponent<Animator>();
-            _characterSprite = GetComponent<SpriteRenderer>();
-
-            _groundCheck = GetComponent<GroundCheck>();
-            _wallCheck = GetComponent<WallCheck>();
-
-            // setup timer
-            _jumpTimer = new CountdownTimer(jumpDuration);
-            _jumpCooldownTimer = new CountdownTimer(jumpCooldown);
-            _timers = new List<Timer>(2) { _jumpTimer, _jumpCooldownTimer };
-
-            _jumpTimer.OnStart += () => jumpVelocity = jumpForce;
-            _jumpTimer.OnStop += () => _jumpCooldownTimer.Start();
-
-            // State Machine
-            _stateMachine = new StateMachine();
-
-            // Declare States
-            var walkState = new PlayerWalkState(this, _animator);
-            var jumpState = new PlayerJumpState(this, _animator);
-
-            // Define Transitions
-            At(walkState, jumpState, new FuncPredicate(
-                () => _jumpTimer.IsRunning
-            ));
-            At(jumpState, walkState, new FuncPredicate(
-                () => _groundCheck.IsTouching && !_jumpTimer.IsRunning
-            ));
-
-            // Set initial state
-            _stateMachine.SetState(walkState);
+            SetupCamera();
+            InitializeComponents();
+            SetupTimers();
+            SetupStateMachine();
         }
 
         private void At(IState from, IState to, IPredicate condition) =>
@@ -119,7 +88,7 @@ namespace TheLastLand._Project.Scripts.PlayerSystem
                                !_jumpTimer.IsRunning &&
                                !_jumpCooldownTimer.IsRunning:
                 {
-                    jumpVelocity = Mathf.Sqrt(2 * jumpHeight * Mathf.Abs(Physics2D.gravity.y));
+                    JumpVelocity = Mathf.Sqrt(2 * jumpHeight * Mathf.Abs(Physics2D.gravity.y));
                     _jumpTimer.Start();
                     break;
                 }
@@ -144,6 +113,45 @@ namespace TheLastLand._Project.Scripts.PlayerSystem
             _stateMachine.FixedUpdate();
         }
 
+        private void SetupCamera()
+        {
+            virtualCamera.Follow = transform;
+            virtualCamera.LookAt = transform;
+        }
+
+        private void InitializeComponents()
+        {
+            _rigidbody = GetComponent<Rigidbody2D>();
+            _animator = GetComponent<Animator>();
+            _characterSprite = GetComponent<SpriteRenderer>();
+            _groundCheck = GetComponent<GroundCheck>();
+            _wallCheck = GetComponent<WallCheck>();
+        }
+
+        private void SetupTimers()
+        {
+            _jumpTimer = new CountdownTimer(jumpDuration);
+            _jumpCooldownTimer = new CountdownTimer(jumpCooldown);
+            _timers = new List<Timer>(2) { _jumpTimer, _jumpCooldownTimer };
+
+            _jumpTimer.OnStart += () => JumpVelocity = jumpForce;
+            _jumpTimer.OnStop += () => _jumpCooldownTimer.Start();
+        }
+
+        private void SetupStateMachine()
+        {
+            _stateMachine = new StateMachine();
+
+            var walkState = new PlayerWalkState(this, _animator);
+            var jumpState = new PlayerJumpState(this, _animator);
+
+            At(walkState, jumpState, new FuncPredicate(() => _jumpTimer.IsRunning));
+            At(jumpState, walkState,
+                new FuncPredicate(() => _groundCheck.IsTouching && !_jumpTimer.IsRunning));
+
+            _stateMachine.SetState(walkState);
+        }
+
         private void HandleTimers()
         {
             foreach (var timer in _timers)
@@ -157,14 +165,14 @@ namespace TheLastLand._Project.Scripts.PlayerSystem
             switch (_jumpTimer.IsRunning)
             {
                 case false when _groundCheck.IsTouching:
-                    jumpVelocity = ZeroF;
+                    JumpVelocity = ZeroF;
                     return;
                 case false:
-                    jumpVelocity += Physics2D.gravity.y * gravityMultiplier * Time.fixedDeltaTime;
+                    JumpVelocity += Physics2D.gravity.y * gravityMultiplier * Time.fixedDeltaTime;
                     break;
             }
 
-            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, jumpVelocity);
+            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, JumpVelocity);
         }
 
         public void HandleMovement()
@@ -193,13 +201,13 @@ namespace TheLastLand._Project.Scripts.PlayerSystem
 
         private void MoveHorizontal(float target, float acceleration)
         {
-            velocity = Mathf.MoveTowards(
-                velocity,
+            Velocity = Mathf.MoveTowards(
+                Velocity,
                 target * _movement.x,
                 acceleration * Time.fixedDeltaTime
             );
 
-            _rigidbody.velocity = new Vector2(velocity, _rigidbody.velocity.y);
+            _rigidbody.velocity = new Vector2(Velocity, _rigidbody.velocity.y);
         }
 
         private void FlipCharacterSprite()

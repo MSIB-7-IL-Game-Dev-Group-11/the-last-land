@@ -12,11 +12,8 @@ namespace TheLastLand._Project.Scripts.Input
         public event UnityAction<bool> Jump = delegate { };
 
         private PlayerInputActions _playerInputActions;
-
+        
         public Vector2 Direction => _playerInputActions.Player.Move.ReadValue<Vector2>();
-        public bool IsJumpPressed => _playerInputActions.Player.Jump.triggered;
-        public bool IsRunPressed => _playerInputActions.Player.Run.triggered;
-        public bool IsDashPressed => _playerInputActions.Player.Dash.triggered;
 
         private void OnEnable()
         {
