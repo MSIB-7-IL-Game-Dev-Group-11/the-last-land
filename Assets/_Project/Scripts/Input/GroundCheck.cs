@@ -21,15 +21,12 @@ namespace TheLastLand._Project.Scripts.Input
 
         private void FixedUpdate()
         {
-            var distance = _boxCollider.bounds.extents.y + groundCheckRadius;
-            var size = new Vector2(_boxCollider.size.x, groundCheckRadius);
-            
             IsTouching = Physics2D.BoxCast(
-                transform.position,
-                size,
+                _boxCollider.bounds.center,
+                _boxCollider.bounds.size,
                 ZeroF,
                 Vector2.down,
-                distance,
+                groundCheckRadius,
                 groundLayer
             );
         }

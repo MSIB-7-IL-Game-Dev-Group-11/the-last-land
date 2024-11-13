@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace TheLastLand._Project.Scripts.Input
 {
@@ -11,11 +10,11 @@ namespace TheLastLand._Project.Scripts.Input
         [SerializeField] private InputReader inputReader;
 
         private BoxCollider2D _boxCollider;
-        
+
         private const float ZeroF = 0f;
-        
+
         private float _direction;
-        
+
         public bool IsTouching { get; private set; }
 
         private void Awake()
@@ -30,16 +29,12 @@ namespace TheLastLand._Project.Scripts.Input
 
         public void FixedUpdate()
         {
-            var direction = new Vector2(_direction, 0);
-            var distance = _boxCollider.bounds.extents.x + wallCheckRadius;
-            var size = new Vector2(wallCheckRadius, _boxCollider.size.y);
-        
             IsTouching = Physics2D.BoxCast(
-                transform.position,
-                size,
+                _boxCollider.bounds.center,
+                _boxCollider.bounds.size,
                 ZeroF,
-                direction,
-                distance,
+                Vector2.right * _direction,
+                wallCheckRadius,
                 wallLayer
             );
         }
