@@ -15,9 +15,10 @@ GameObject:
   - component: {fileID: 8121399544067316239}
   - component: {fileID: 6609324465585457840}
   - component: {fileID: 2041549604169902423}
+  - component: {fileID: 3525677184320166851}
   m_Layer: 6
   m_Name: Indra
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -199,11 +200,15 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   virtualCamera: {fileID: 0}
+  maxSpeed: 10
   walkAcceleration: 75
   airAcceleration: 30
   groundDeceleration: 70
   jumpHeight: 4
-  maxSpeed: 10
+  jumpForce: 10
+  jumpCooldown: 0.5
+  jumpDuration: 0.5
+  gravityMultiplier: 3
 --- !u!114 &2041549604169902423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -220,3 +225,20 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
+--- !u!114 &3525677184320166851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2213355649506306879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba9bfb0f20ae4f8cad29cdd79505c7a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wallCheckRadius: 0.2
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  inputReader: {fileID: 0}
