@@ -1,7 +1,7 @@
 ﻿using TheLastLand._Project.Scripts.PlayerSystem;
 using UnityEngine;
 
-namespace TheLastLand._Project.Scripts.StateMachines
+namespace TheLastLand._Project.Scripts.StateMachines.Player
 {
     public abstract class BaseState : IState
     {

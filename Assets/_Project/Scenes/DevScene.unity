@@ -2108,53 +2108,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Indra
       objectReference: {fileID: 0}
-    - target: {fileID: 3525677184320166851, guid: 859d0ef3bbe0f8b40ad127d378555e7f, type: 3}
-      propertyPath: inputReader
-      value: 
-      objectReference: {fileID: 11400000, guid: 21ecfd959e7258b42934bf1c386662e1, type: 2}
-    - target: {fileID: 3525677184320166851, guid: 859d0ef3bbe0f8b40ad127d378555e7f, type: 3}
-      propertyPath: wallLayer.m_Bits
-      value: 256
-      objectReference: {fileID: 0}
-    - target: {fileID: 6609324465585457840, guid: 859d0ef3bbe0f8b40ad127d378555e7f, type: 3}
-      propertyPath: maxSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6609324465585457840, guid: 859d0ef3bbe0f8b40ad127d378555e7f, type: 3}
-      propertyPath: jumpForce
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 6609324465585457840, guid: 859d0ef3bbe0f8b40ad127d378555e7f, type: 3}
-      propertyPath: jumpHeight
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6609324465585457840, guid: 859d0ef3bbe0f8b40ad127d378555e7f, type: 3}
-      propertyPath: jumpDuration
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6609324465585457840, guid: 859d0ef3bbe0f8b40ad127d378555e7f, type: 3}
-      propertyPath: virtualCamera
+    - target: {fileID: 5727944075004199503, guid: 859d0ef3bbe0f8b40ad127d378555e7f, type: 3}
+      propertyPath: <VirtualCamera>k__BackingField
       value: 
       objectReference: {fileID: 1665264745}
-    - target: {fileID: 6609324465585457840, guid: 859d0ef3bbe0f8b40ad127d378555e7f, type: 3}
-      propertyPath: walkAcceleration
-      value: 75
-      objectReference: {fileID: 0}
-    - target: {fileID: 6609324465585457840, guid: 859d0ef3bbe0f8b40ad127d378555e7f, type: 3}
-      propertyPath: gravityMultiplier
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8421509383322331623, guid: 859d0ef3bbe0f8b40ad127d378555e7f, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8421509383322331623, guid: 859d0ef3bbe0f8b40ad127d378555e7f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -12.19
       objectReference: {fileID: 0}
     - target: {fileID: 8421509383322331623, guid: 859d0ef3bbe0f8b40ad127d378555e7f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.47
+      value: -0.53
       objectReference: {fileID: 0}
     - target: {fileID: 8421509383322331623, guid: 859d0ef3bbe0f8b40ad127d378555e7f, type: 3}
       propertyPath: m_LocalPosition.z

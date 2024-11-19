@@ -8,12 +8,13 @@ namespace TheLastLand._Project.Scripts.Input
     [CreateAssetMenu(fileName = "InputReader", menuName = "TheLastLand/InputReader")]
     public class InputReader : ScriptableObject, IPlayerActions
     {
-        public event UnityAction<Vector2> Move = delegate { };
-        public event UnityAction<bool> Jump = delegate { };
+        public event UnityAction<InputAction.CallbackContext> Move = delegate { };
+        public event UnityAction<InputAction.CallbackContext> Jump = delegate { };
+        public event UnityAction<InputAction.CallbackContext> Run = delegate { };
 
         private PlayerInputActions _playerInputActions;
-        
-        public Vector2 Direction => _playerInputActions.Player.Move.ReadValue<Vector2>();
+        private Vector2 _moveInput;
+        private bool _isRunning;
 
         private void OnEnable()
         {
@@ -33,7 +34,7 @@ namespace TheLastLand._Project.Scripts.Input
 
         public void OnMove(InputAction.CallbackContext context)
         {
-            Move.Invoke(context.ReadValue<Vector2>());
+            Move?.Invoke(context);
         }
 
         public void OnFire(InputAction.CallbackContext context)
@@ -43,21 +44,34 @@ namespace TheLastLand._Project.Scripts.Input
 
         public void OnRun(InputAction.CallbackContext context)
         {
-            //
+            // switch (context.phase)
+            // {
+            //     case InputActionPhase.Performed:
+            //         _isRunning = true;
+            //         break;
+            //     
+            //     case InputActionPhase.Canceled:
+            //         _isRunning = false;
+            //         break;
+            // }
+            
+            Run?.Invoke(context);
         }
 
         public void OnJump(InputAction.CallbackContext context)
         {
-            switch (context.phase)
-            {
-                case InputActionPhase.Started:
-                    Jump.Invoke(true);
-                    break;
-
-                case InputActionPhase.Canceled:
-                    Jump.Invoke(false);
-                    break;
-            }
+            // switch (context.phase)
+            // {
+            //     case InputActionPhase.Started:
+            //         Jump?.Invoke(true);
+            //         break;
+            //
+            //     case InputActionPhase.Canceled:
+            //         Jump?.Invoke(false);
+            //         break;
+            // }
+            
+            Jump?.Invoke(context);
         }
 
         public void OnDash(InputAction.CallbackContext context)

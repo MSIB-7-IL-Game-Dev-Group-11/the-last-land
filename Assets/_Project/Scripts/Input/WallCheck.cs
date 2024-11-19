@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace TheLastLand._Project.Scripts.Input
 {
@@ -22,9 +23,19 @@ namespace TheLastLand._Project.Scripts.Input
             _boxCollider = GetComponent<BoxCollider2D>();
         }
 
-        private void Update()
+        private void OnEnable()
         {
-            _direction = inputReader.Direction.x;
+            inputReader.Move += OnMove;
+        }
+
+        private void OnDisable()
+        {
+            inputReader.Move -= OnMove;
+        }
+
+        private void OnMove(InputAction.CallbackContext context)
+        {
+            _direction = context.ReadValue<Vector2>().x;
         }
 
         public void FixedUpdate()
