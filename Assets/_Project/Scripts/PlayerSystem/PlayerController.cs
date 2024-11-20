@@ -15,28 +15,26 @@ namespace TheLastLand._Project.Scripts.PlayerSystem
     [RequireComponent(typeof(GroundCheck), typeof(WallCheck))]
     public class PlayerController : MonoBehaviour
     {
-        [Header("References")]
-        [SerializeField] private InputReader inputReader;
+        [Header("References"), SerializeField] private InputReader inputReader;
 
         [SerializeField] private LayerMask wallLayer;
         [SerializeField] private CinemachineVirtualCamera virtualCamera;
 
-        [Header("Movement Settings")]
-        [SerializeField, Min(0)] private float maxSpeed = 10f;
+        [Header("Movement Settings"), SerializeField, Min(0)]
+        private float maxSpeed = 10f;
 
         [SerializeField] private float walkAcceleration = 75f;
         [SerializeField] private float airAcceleration = 30f;
         [SerializeField] private float groundDeceleration = 70f;
 
-        [Header("Jumpp Settings")]
-        [SerializeField] private float jumpHeight = 4f;
+        [Header("Jumpp Settings"), SerializeField]
+        private float jumpForce = 10f;
 
-        [SerializeField] private float jumpForce = 10f;
         [SerializeField] private float jumpCooldown = 0.5f;
         [SerializeField] private float jumpDuration = 0.5f;
         [SerializeField] private float gravityMultiplier = 3f;
 
-        private const float ZeroF = 0f;
+        public const float ZeroF = 0f;
 
         private Animator _animator;
         private SpriteRenderer _characterSprite;
@@ -54,7 +52,9 @@ namespace TheLastLand._Project.Scripts.PlayerSystem
         public float Velocity { get; private set; }
         public float JumpVelocity { get; private set; }
 
-        private bool IsDirecting { get; set; }
+        public bool IsPlayerJumping => _jumpTimer.IsRunning;
+        public bool IsPlayerRunning { get; private set; }
+        private bool IsPlayerDirecting { get; set; }
 
         private void Awake()
         {
@@ -72,12 +72,14 @@ namespace TheLastLand._Project.Scripts.PlayerSystem
 
         private void OnEnable()
         {
-            inputReader.Jump += OnJump;
+            // inputReader.Jump += OnJump;
+            // inputReader.Move += OnMove;
         }
 
         private void OnDisable()
         {
-            inputReader.Jump -= OnJump;
+            // inputReader.Jump -= OnJump;
+            // inputReader.Move -= OnMove;
         }
 
         private void OnJump(bool pressed)
@@ -88,7 +90,6 @@ namespace TheLastLand._Project.Scripts.PlayerSystem
                                !_jumpTimer.IsRunning &&
                                !_jumpCooldownTimer.IsRunning:
                 {
-                    JumpVelocity = Mathf.Sqrt(2 * jumpHeight * Mathf.Abs(Physics2D.gravity.y));
                     _jumpTimer.Start();
                     break;
                 }
@@ -100,11 +101,16 @@ namespace TheLastLand._Project.Scripts.PlayerSystem
             }
         }
 
+        private void OnMove(Vector2 direction, bool isRunning)
+        {
+            _movement = direction;
+            IsPlayerRunning = isRunning;
+        }
+
         private void Update()
         {
             _stateMachine.Update();
-            _movement = inputReader.Direction;
-            IsDirecting = !Mathf.Approximately(_movement.x, ZeroF);
+            IsPlayerDirecting = !Mathf.Approximately(_movement.x, ZeroF);
             HandleTimers();
         }
 
@@ -144,10 +150,11 @@ namespace TheLastLand._Project.Scripts.PlayerSystem
 
             var walkState = new PlayerWalkState(this, _animator);
             var jumpState = new PlayerJumpState(this, _animator);
+            var runState = new PlayerRunState(this, _animator);
 
-            At(walkState, jumpState, new FuncPredicate(() => _jumpTimer.IsRunning));
-            At(jumpState, walkState,
-                new FuncPredicate(() => _groundCheck.IsTouching && !_jumpTimer.IsRunning));
+            At(walkState, jumpState,
+                new FuncPredicate(() => _jumpTimer.IsRunning || !_groundCheck.IsTouching));
+            Any(walkState, new FuncPredicate(() => _groundCheck.IsTouching && !_jumpTimer.IsRunning));
 
             _stateMachine.SetState(walkState);
         }
@@ -180,14 +187,14 @@ namespace TheLastLand._Project.Scripts.PlayerSystem
             if (_wallCheck.IsTouching)
             {
                 MoveHorizontal(ZeroF, groundDeceleration);
-                IsDirecting = !IsDirecting;
+                IsPlayerDirecting = false;
             }
 
             if (_jumpTimer.IsRunning)
             {
                 MoveHorizontal(maxSpeed, airAcceleration);
             }
-            else if (IsDirecting)
+            else if (IsPlayerDirecting)
             {
                 MoveHorizontal(maxSpeed, walkAcceleration);
             }
