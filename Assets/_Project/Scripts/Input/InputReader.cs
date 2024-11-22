@@ -10,7 +10,7 @@ namespace TheLastLand._Project.Scripts.Input
     {
         public event UnityAction<InputAction.CallbackContext> Move = delegate { };
         public event UnityAction<InputAction.CallbackContext> Jump = delegate { };
-        public event UnityAction<InputAction.CallbackContext> Run = delegate { };
+        public event UnityAction<InputAction.CallbackContext> Dash = delegate { };
 
         private PlayerInputActions _playerInputActions;
         private Vector2 _moveInput;
@@ -42,41 +42,14 @@ namespace TheLastLand._Project.Scripts.Input
             //
         }
 
-        public void OnRun(InputAction.CallbackContext context)
-        {
-            // switch (context.phase)
-            // {
-            //     case InputActionPhase.Performed:
-            //         _isRunning = true;
-            //         break;
-            //     
-            //     case InputActionPhase.Canceled:
-            //         _isRunning = false;
-            //         break;
-            // }
-            
-            Run?.Invoke(context);
-        }
-
         public void OnJump(InputAction.CallbackContext context)
         {
-            // switch (context.phase)
-            // {
-            //     case InputActionPhase.Started:
-            //         Jump?.Invoke(true);
-            //         break;
-            //
-            //     case InputActionPhase.Canceled:
-            //         Jump?.Invoke(false);
-            //         break;
-            // }
-            
             Jump?.Invoke(context);
         }
 
         public void OnDash(InputAction.CallbackContext context)
         {
-            //
+            Dash?.Invoke(context);
         }
     }
 }
