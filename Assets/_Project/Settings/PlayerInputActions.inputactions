@@ -24,7 +24,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Run",
+                    "name": "Dash",
                     "type": "Button",
                     "id": "33d00ec1-bad8-4d9b-87b7-83e652d0dd44",
                     "expectedControlType": "Button",
@@ -36,15 +36,6 @@
                     "name": "Jump",
                     "type": "Button",
                     "id": "7e516df6-12e2-4872-8c35-f1b522cb7631",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Dash",
-                    "type": "Button",
-                    "id": "c625817e-55e9-4c70-8dac-b380b26cc207",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -125,7 +116,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardOrGamepad;Keyboard&Mouse",
-                    "action": "Run",
+                    "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -135,43 +126,10 @@
                     "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
-                    "groups": "KeyboardOrGamepad",
+                    "groups": "KeyboardOrGamepad;Keyboard&Mouse",
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "AD",
-                    "id": "7877044f-9465-4294-b983-777bf870d812",
-                    "path": "1DAxis",
-                    "interactions": "MultiTap",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Dash",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "negative",
-                    "id": "51b0cd90-cebb-4c98-af51-a23a7601a4f7",
-                    "path": "<Keyboard>/#(A)",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Dash",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "positive",
-                    "id": "d277f33f-01d3-4ac0-b84f-04a04f59cb7e",
-                    "path": "<Keyboard>/#(D)",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Dash",
-                    "isComposite": false,
-                    "isPartOfComposite": true
                 }
             ]
         },

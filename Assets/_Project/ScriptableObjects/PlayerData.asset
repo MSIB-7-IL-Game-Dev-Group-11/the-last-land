@@ -12,10 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f34b6d6ec95419a996bd461803e61e7, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
-  maxSpeed: 350
-  acceleration: 5.8
-  velocityPower: 0
-  jumpForce: 25
-  jumpCooldown: 0.5
-  jumpDuration: 0.2
-  gravityMultiplier: 10
+  <BaseSpeed>k__BackingField: 200
+  <Acceleration>k__BackingField: 7
+  <Deceleration>k__BackingField: 7
+  <Stamina>k__BackingField: 100
+  <Walk>k__BackingField:
+    <Modifier>k__BackingField: 0.9
+  <Jump>k__BackingField:
+    <Force>k__BackingField: 30
+    <Cooldown>k__BackingField: 0.5
+    <Duration>k__BackingField: 0.2
+    <GravityMultiplier>k__BackingField: 1
+    <CoyoteTime>k__BackingField: 0.1
+    <Modifier>k__BackingField: 1
+  <Dash>k__BackingField:
+    <Force>k__BackingField: 5
+    <Cooldown>k__BackingField: 0.5
+    <Duration>k__BackingField: 0.2
+    <Modifier>k__BackingField: 1
