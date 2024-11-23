@@ -13,11 +13,9 @@ namespace TheLastLand._Project.Scripts.Characters.Player.StateMachines
         public override void OnEnter()
         {
             base.OnEnter();
+            Player.UseStamina(Player.Data.Jump.StaminaCost);
             Animator.SetFloat(XvelocityHash, ZeroF);
-            Animator.CrossFade(
-                Player.StateData.IsJumping ? JumpingHash : MovementHash,
-                CROSS_FADE_DURATION
-            );
+            Animator.CrossFade(JumpingHash, CROSS_FADE_DURATION);
         }
 
         public override void FixedUpdate()

@@ -25,5 +25,8 @@ namespace TheLastLand._Project.Scripts.Characters.Player.Datas
         
         [field: SerializeField, Range(0.0f, 10.0f)]
         public float Modifier { get; private set; } = 1.0f;
+        
+        [field: SerializeField]
+        public float StaminaCost { get; private set; } = 15f;
     }
 }

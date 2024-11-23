@@ -2825,18 +2825,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1091342777444256241, guid: 859d0ef3bbe0f8b40ad127d378555e7f, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 6200000, guid: 0a94ad1c50c5acc499b76f536148c2b5, type: 2}
-    - target: {fileID: 1091342777444256241, guid: 859d0ef3bbe0f8b40ad127d378555e7f, type: 3}
-      propertyPath: m_LinearDrag
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1091342777444256241, guid: 859d0ef3bbe0f8b40ad127d378555e7f, type: 3}
-      propertyPath: m_GravityScale
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 2213355649506306879, guid: 859d0ef3bbe0f8b40ad127d378555e7f, type: 3}
       propertyPath: m_Name
       value: Indra
@@ -2845,10 +2833,6 @@ PrefabInstance:
       propertyPath: <VirtualCamera>k__BackingField
       value: 
       objectReference: {fileID: 1665264745}
-    - target: {fileID: 8121399544067316239, guid: 859d0ef3bbe0f8b40ad127d378555e7f, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 8421509383322331623, guid: 859d0ef3bbe0f8b40ad127d378555e7f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -10.27

@@ -15,7 +15,6 @@ MonoBehaviour:
   <BaseSpeed>k__BackingField: 200
   <Acceleration>k__BackingField: 7
   <Deceleration>k__BackingField: 7
-  <Stamina>k__BackingField: 100
   <Walk>k__BackingField:
     <Modifier>k__BackingField: 0.9
   <Jump>k__BackingField:
@@ -25,8 +24,15 @@ MonoBehaviour:
     <GravityMultiplier>k__BackingField: 1
     <CoyoteTime>k__BackingField: 0.1
     <Modifier>k__BackingField: 1
+    <StaminaCost>k__BackingField: 15
   <Dash>k__BackingField:
     <Force>k__BackingField: 5
     <Cooldown>k__BackingField: 0.5
     <Duration>k__BackingField: 0.2
     <Modifier>k__BackingField: 1
+    <StaminaCost>k__BackingField: 30
+  <Stamina>k__BackingField:
+    <Max>k__BackingField: 10
+    <Min>k__BackingField: 0
+    <RegenerationRate>k__BackingField: 0
+    <RegenerationTime>k__BackingField: 0

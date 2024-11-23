@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TheLastLand._Project.Scripts.Stamina;
+using UnityEngine;
 
 namespace TheLastLand._Project.Scripts.Characters.Player.Datas
 {
@@ -11,20 +12,21 @@ namespace TheLastLand._Project.Scripts.Characters.Player.Datas
 
         [field: SerializeField, Range(0f, 10.0f)]
         public float Acceleration { get; private set; } = 5.6f;
-        
+
         [field: SerializeField, Range(0f, 10.0f)]
         public float Deceleration { get; private set; } = 5.6f;
-        
-        [field: SerializeField, Range(0.0f, 200.0f)]
-        public float Stamina { get; private set; }
 
         [field: SerializeField]
         public PlayerWalkData Walk { get; private set; }
 
         [field: SerializeField]
         public PlayerJumpData Jump { get; private set; }
-        
+
         [field: SerializeField]
         public PlayerDashData Dash { get; private set; }
+
+        [field: Header("Attribute Settings")]
+        [field: SerializeField]
+        public StaminaData Stamina { get; private set; }
     }
 }

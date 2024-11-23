@@ -7,7 +7,13 @@ namespace TheLastLand._Project.Scripts.Characters.Player.StateMachines
         public PlayerDashState(Scripts.Player player, Animator animator) : base(player, animator)
         {
         }
-        
+
+        public override void OnEnter()
+        {
+            base.OnEnter();
+            Player.UseStamina(Player.Data.Dash.StaminaCost);
+        }
+
         public override void FixedUpdate()
         {
             base.FixedUpdate();
