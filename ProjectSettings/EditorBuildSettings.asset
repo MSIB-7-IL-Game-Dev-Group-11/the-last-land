@@ -9,6 +9,15 @@ EditorBuildSettings:
     path: Assets/_Project/Scenes/MainMenu.unity
     guid: fdb859fbbaafef8428d9773c1805288b
   - enabled: 1
+    path: Assets/_Project/Scenes/Desa_A.unity
+    guid: cbc09039ca30a964f844626b13eb725c
+  - enabled: 1
+    path: Assets/_Project/Scenes/Desa_B.unity
+    guid: 78e599762a93af54e83f95cab325d091
+  - enabled: 1
+    path: Assets/_Project/Scenes/Desa_C.unity
+    guid: b18c527edf6462f4cb58ef15ea81a11e
+  - enabled: 0
     path: Assets/_Project/Scenes/DevScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   m_configObjects: {}

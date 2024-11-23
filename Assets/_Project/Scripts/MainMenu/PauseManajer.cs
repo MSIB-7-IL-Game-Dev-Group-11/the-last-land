@@ -10,12 +10,22 @@ namespace TheLastLand
         [SerializeField] private GameObject pauseMenuUI;
         [SerializeField] private GameObject player;
 
+        // Tambahkan variabel untuk menyimpan referensi ke helpText
+        [SerializeField] private GameObject helpText;
+
         public void PauseGame()
         {
             if (!isPaused)
             {
                 Time.timeScale = 0f;
                 isPaused = true;
+
+                // Nonaktifkan helpText jika aktif
+                if (helpText != null && helpText.activeSelf)
+                {
+                    helpText.SetActive(false);
+                }
+
                 pauseMenuUI?.SetActive(true);
             }
         }
