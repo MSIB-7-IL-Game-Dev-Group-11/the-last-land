@@ -59,6 +59,9 @@ TagManager:
   - name: Bg Layer 5
     uniqueID: 338188963
     locked: 0
+  - name: Props3
+    uniqueID: 3285393319
+    locked: 0
   - name: Props2
     uniqueID: 2896856753
     locked: 0
