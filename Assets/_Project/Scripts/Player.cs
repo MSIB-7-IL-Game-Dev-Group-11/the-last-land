@@ -1,74 +1,112 @@
-﻿using Cinemachine;
+﻿using System;
+using System.Collections.Generic;
+using TheLastLand._Project.Scripts.Characters.Common;
 using TheLastLand._Project.Scripts.Characters.Player;
-using TheLastLand._Project.Scripts.Characters.Player.Data;
-using TheLastLand._Project.Scripts.Characters.Player.StateMachines.Movement;
-using TheLastLand._Project.Scripts.Input;
+using TheLastLand._Project.Scripts.Characters.Player.Datas;
+using TheLastLand._Project.Scripts.Health;
+using TheLastLand._Project.Scripts.Stamina;
+using TheLastLand._Project.Scripts.Utils;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace TheLastLand._Project.Scripts
 {
-    [RequireComponent(typeof(Rigidbody2D))]
-    [RequireComponent(typeof(Animator))]
-    [RequireComponent(typeof(SpriteRenderer))]
-    [RequireComponent(typeof(BoxCollider2D))]
-    [RequireComponent(typeof(GroundCheck), typeof(WallCheck))]
-    public class Player : MonoBehaviour
+    [RequireComponent(typeof(PlayerController))]
+    [RequireComponent(typeof(StaminaController))]
+    [RequireComponent(typeof(HealthController))]
+    public class Player : MonoBehaviour, IStamina, IDamageable
     {
         [field: Header("References"), SerializeField]
-        public InputReader PlayerInput { get; private set; }
-
-        [field: SerializeField]
-        public LayerMask WallLayer { get; private set; }
-
-        [field: SerializeField]
-        public CinemachineVirtualCamera VirtualCamera { get; private set; }
-
-        [field: Header("Player Data"), SerializeField]
         public PlayerData Data { get; private set; }
 
-        public Animator Animator { get; private set; }
-        public SpriteRenderer CharacterSprite { get; private set; }
-        public Rigidbody2D Rigidbody { get; private set; }
-        public GroundCheck GroundCheck { get; private set; }
-        public WallCheck WallCheck { get; private set; }
+        public event UnityAction<float> OnStaminaUsed = delegate { };
+        public event UnityAction<float> OnPlayerDamaged = delegate { };
 
-        private PlayerMovementStateMachine _playerMovement;
+        // Controller
+        private PlayerController _playerController;
+        private StaminaController _staminaController;
+        private HealthController _healthController;
+
+        // Timer
+        private List<Timer> _timers;
+        private CountdownTimer _staminaRegenTimer;
 
         private void Awake()
         {
-            InitializeComponents();
-            SetupCamera();
-            InitializeStateMachine();
+            _playerController = GetComponent<PlayerController>();
+            _staminaController = GetComponent<StaminaController>();
+            _healthController = GetComponent<HealthController>();
+
+            _playerController.Initialize(Data);
+            _staminaController.Initialize(Data.Stamina);
+            _healthController.Initialize(Data.Health);
+        }
+
+        private void Start()
+        {
+            SetupTimers();
         }
 
         private void Update()
         {
-            _playerMovement.StateMachine.Update();
+            HandleTimer();
+
+            if (!_staminaRegenTimer.IsRunning)
+            {
+                _staminaRegenTimer.Start();
+            }
         }
 
-        private void FixedUpdate()
+        private void SetupTimers()
         {
-            _playerMovement.StateMachine.FixedUpdate();
+            _staminaRegenTimer = new CountdownTimer(Data.Stamina.RegenerationTime);
+            _staminaRegenTimer.OnStart += () => { _staminaController.RegenerateStamina(); };
+
+            _timers = new List<Timer>(1) { _staminaRegenTimer };
         }
 
-        private void InitializeComponents()
+        private void HandleTimer()
         {
-            Rigidbody = GetComponent<Rigidbody2D>();
-            Animator = GetComponent<Animator>();
-            CharacterSprite = GetComponent<SpriteRenderer>();
-            GroundCheck = GetComponent<GroundCheck>();
-            WallCheck = GetComponent<WallCheck>();
+            foreach (var timer in _timers)
+            {
+                timer.Tick(Time.deltaTime);
+            }
         }
 
-        private void SetupCamera()
+        #region Movement
+
+        public void Move(float speedModifier) => _playerController.Move(speedModifier);
+        public void Jump() => _playerController.Jump();
+        public void FlipCharacterSprite() => _playerController.FlipCharacterSprite();
+
+        #endregion
+
+        #region Checker
+
+        public void IsStaminaBelowThreshold(float threshold, Action onTrue, Action onFalse)
         {
-            VirtualCamera.Follow = transform;
-            VirtualCamera.LookAt = transform;
+            if (_staminaController.Stamina < threshold)
+            {
+                onTrue.Invoke();
+            }
+            else
+            {
+                onFalse.Invoke();
+            }
         }
 
-        private void InitializeStateMachine()
+        #endregion
+
+        public void UseStamina(float value)
         {
-            _playerMovement = new PlayerMovementStateMachine(this);
+            _staminaController.UseStamina(value);
+            OnStaminaUsed.Invoke(_staminaController.Stamina);
+        }
+
+        public void TakeDamage(float value)
+        {
+            _healthController.TakeDamage(value);
+            OnPlayerDamaged.Invoke(_healthController.Health);
         }
     }
 }
