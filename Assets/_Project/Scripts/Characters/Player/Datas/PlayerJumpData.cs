@@ -1,6 +1,5 @@
 ﻿using System;
-using TheLastLand._Project.Scripts.Utils;
-using Unity.Collections;
+using Cainos.LucidEditor;
 using UnityEngine;
 
 namespace TheLastLand._Project.Scripts.Characters.Player.Datas
@@ -11,16 +10,16 @@ namespace TheLastLand._Project.Scripts.Characters.Player.Datas
         [field: SerializeField]
         public float Force { get; private set; } = 10f;
 
-        [field: SerializeField, ReadOnlyInPlayMode]
+        [field: SerializeField, DisableInPlayMode]
         public float Cooldown { get; private set; } = 0.5f;
 
-        [field: SerializeField, ReadOnlyInPlayMode]
+        [field: SerializeField, DisableInPlayMode]
         public float Duration { get; private set; } = 0.5f;
 
         [field: SerializeField, Range(0.0f, 10.0f)]
         public float GravityMultiplier { get; private set; } = 3f;
 
-        [field: SerializeField, ReadOnlyInPlayMode]
+        [field: SerializeField, DisableInPlayMode]
         public float CoyoteTime { get; private set; } = 0.2f;
         
         [field: SerializeField, Range(0.0f, 10.0f)]

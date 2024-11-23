@@ -13,7 +13,6 @@ namespace TheLastLand._Project.Scripts.Characters.Player.StateMachines
         public override void OnEnter()
         {
             base.OnEnter();
-            Player.UseStamina(Player.Data.Jump.StaminaCost);
             Animator.SetFloat(XvelocityHash, ZeroF);
             Animator.CrossFade(JumpingHash, CROSS_FADE_DURATION);
         }

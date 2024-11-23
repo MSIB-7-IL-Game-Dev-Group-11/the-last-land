@@ -1,4 +1,5 @@
-﻿using TheLastLand._Project.Scripts.Stamina;
+﻿using TheLastLand._Project.Scripts.Health;
+using TheLastLand._Project.Scripts.Stamina;
 using UnityEngine;
 
 namespace TheLastLand._Project.Scripts.Characters.Player.Datas
@@ -28,5 +29,8 @@ namespace TheLastLand._Project.Scripts.Characters.Player.Datas
         [field: Header("Attribute Settings")]
         [field: SerializeField]
         public StaminaData Stamina { get; private set; }
+        
+        [field: SerializeField]
+        public HealthData Health { get; private set; }
     }
 }

@@ -8,12 +8,6 @@ namespace TheLastLand._Project.Scripts.Characters.Player.StateMachines
         {
         }
 
-        public override void OnEnter()
-        {
-            base.OnEnter();
-            Player.UseStamina(Player.Data.Dash.StaminaCost);
-        }
-
         public override void FixedUpdate()
         {
             base.FixedUpdate();

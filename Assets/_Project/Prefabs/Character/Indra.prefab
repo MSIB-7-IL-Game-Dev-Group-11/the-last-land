@@ -14,9 +14,11 @@ GameObject:
   - component: {fileID: 1091342777444256241}
   - component: {fileID: 8121399544067316239}
   - component: {fileID: 7836508540620798593}
-  - component: {fileID: 5727944075004199503}
   - component: {fileID: 2041549604169902423}
   - component: {fileID: 3525677184320166851}
+  - component: {fileID: 8925280192779394490}
+  - component: {fileID: 630168266432404361}
+  - component: {fileID: 1079081365118278624}
   m_Layer: 6
   m_Name: Indra
   m_TagString: Player
@@ -197,21 +199,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Data>k__BackingField: {fileID: 11400000, guid: 300f474ed3b8a58408da3c5b91c09be7, type: 2}
---- !u!114 &5727944075004199503
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2213355649506306879}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce77fc5395bd4970977348def0bce67e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <PlayerInput>k__BackingField: {fileID: 11400000, guid: 21ecfd959e7258b42934bf1c386662e1, type: 2}
-  <VirtualCamera>k__BackingField: {fileID: 0}
-  data: {fileID: 11400000, guid: 300f474ed3b8a58408da3c5b91c09be7, type: 2}
 --- !u!114 &2041549604169902423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -245,3 +232,42 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   inputReader: {fileID: 11400000, guid: 21ecfd959e7258b42934bf1c386662e1, type: 2}
+--- !u!114 &8925280192779394490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2213355649506306879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9353711b33e44dbb84c76983b5cfa0f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isRegenerating: 1
+--- !u!114 &630168266432404361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2213355649506306879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c2e9493adb64ddabee708857abae778, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1079081365118278624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2213355649506306879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce77fc5395bd4970977348def0bce67e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <PlayerInput>k__BackingField: {fileID: 11400000, guid: 21ecfd959e7258b42934bf1c386662e1, type: 2}
+  <VirtualCamera>k__BackingField: {fileID: 0}

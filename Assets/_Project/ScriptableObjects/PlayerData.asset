@@ -32,7 +32,12 @@ MonoBehaviour:
     <Modifier>k__BackingField: 1
     <StaminaCost>k__BackingField: 30
   <Stamina>k__BackingField:
-    <Max>k__BackingField: 10
+    <Max>k__BackingField: 100
+    <Min>k__BackingField: 0
+    <RegenerationRate>k__BackingField: 1
+    <RegenerationTime>k__BackingField: 3
+  <Health>k__BackingField:
+    <Max>k__BackingField: 200
     <Min>k__BackingField: 0
     <RegenerationRate>k__BackingField: 0
     <RegenerationTime>k__BackingField: 0
