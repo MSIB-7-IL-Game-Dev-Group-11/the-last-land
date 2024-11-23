@@ -41,17 +41,35 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Env
+    uniqueID: 1096071677
+    locked: 0
   - name: Background
     uniqueID: 3840677195
     locked: 0
-  - name: Ground
-    uniqueID: 1522390341
+  - name: BG Layer 2
+    uniqueID: 4245197481
+    locked: 0
+  - name: BG Layer 3
+    uniqueID: 4086572697
+    locked: 0
+  - name: BG Layer 4
+    uniqueID: 1799758171
+    locked: 0
+  - name: Bg Layer 5
+    uniqueID: 338188963
+    locked: 0
+  - name: Props2
+    uniqueID: 2896856753
     locked: 0
   - name: Props
     uniqueID: 2933285697
     locked: 0
   - name: Entity
     uniqueID: 4037279271
+    locked: 0
+  - name: Ground
+    uniqueID: 1522390341
     locked: 0
   - name: UI
     uniqueID: 2468073887
