@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TheLastLand._Project.Scripts.Utils;
+using UnityEngine;
 
 namespace TheLastLand._Project.Scripts.Health
 {
@@ -14,7 +15,7 @@ namespace TheLastLand._Project.Scripts.Health
         [field: SerializeField]
         public float RegenerationRate { get; private set; }
         
-        [field: SerializeField]
+        [field: SerializeField, ReadOnlyInPlayMode]
         public float RegenerationTime { get; private set; }
     }
 }
