@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace TheLastLand
+namespace TheLastLand._Project.Scripts.MainMenu
 {
     public class SampleMainMenu : MonoBehaviour
     {

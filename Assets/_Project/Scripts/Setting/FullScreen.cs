@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace TheLastLand
+namespace TheLastLand._Project.Scripts.Setting
 {
     public class FullScreen : MonoBehaviour
     {

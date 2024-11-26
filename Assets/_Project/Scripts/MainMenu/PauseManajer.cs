@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace TheLastLand
+namespace TheLastLand._Project.Scripts.MainMenu
 {
     public class PauseManager : MonoBehaviour
     {
-        private bool isPaused = false;
+        private bool _isPaused;
 
         [SerializeField] private GameObject pauseMenuUI;
         [SerializeField] private GameObject player;
@@ -15,10 +15,10 @@ namespace TheLastLand
 
         public void PauseGame()
         {
-            if (!isPaused)
+            if (!_isPaused)
             {
                 Time.timeScale = 0f;
-                isPaused = true;
+                _isPaused = true;
 
                 // Nonaktifkan helpText jika aktif
                 if (helpText != null && helpText.activeSelf)
@@ -33,7 +33,7 @@ namespace TheLastLand
         public void ResumeGame()
         {
             Time.timeScale = 1f;
-            isPaused = false;
+            _isPaused = false;
             pauseMenuUI?.SetActive(false);
         }
 
@@ -57,7 +57,7 @@ namespace TheLastLand
 
         public void TogglePause()
         {
-            if (isPaused)
+            if (_isPaused)
             {
                 ResumeGame();
             }
@@ -69,7 +69,7 @@ namespace TheLastLand
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
             {
                 TogglePause();
             }

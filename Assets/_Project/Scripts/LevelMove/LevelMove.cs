@@ -1,19 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace TheLastLand
+namespace TheLastLand._Project.Scripts.LevelMove
 {
     public class LevelMove : MonoBehaviour
     {
         public string targetScene = "Desa_B"; // Nama scene tujuan
-        private bool isPlayerInRange = false; // Cek apakah player dalam jangkauan
+        private bool _isPlayerInRange; // Cek apakah player dalam jangkauan
 
         void Update()
         {
             // Jika player berada dalam jangkauan dan menekan tombol 'M'
-            if (isPlayerInRange && Input.GetKeyDown(KeyCode.M))
+            if (_isPlayerInRange && UnityEngine.Input.GetKeyDown(KeyCode.M))
             {
                 // Pindah ke scene tujuan
                 SceneManager.LoadScene(targetScene);
@@ -25,7 +23,7 @@ namespace TheLastLand
         {
             if (collision.CompareTag("Player"))
             {
-                isPlayerInRange = true;
+                _isPlayerInRange = true;
             }
         }
 
@@ -34,7 +32,7 @@ namespace TheLastLand
         {
             if (collision.CompareTag("Player"))
             {
-                isPlayerInRange = false;
+                _isPlayerInRange = false;
             }
         }
     }

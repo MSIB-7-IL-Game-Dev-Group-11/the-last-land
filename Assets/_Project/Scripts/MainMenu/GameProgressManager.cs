@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TheLastLand
+namespace TheLastLand._Project.Scripts.MainMenu
 {
     public static class GameProgressManager
     {
@@ -38,10 +38,8 @@ namespace TheLastLand
                     Debug.Log($"DEBUG: Loaded Position: {playerPosition}, Loaded Level: {currentLevel}");
                     return (playerPosition, currentLevel);
                 }
-                else
-                {
-                    Debug.LogError("Failed to parse PlayerPositionKey data.");
-                }
+
+                Debug.LogError("Failed to parse PlayerPositionKey data.");
             }
 
             Debug.LogWarning("No progress found in PlayerPrefs.");
