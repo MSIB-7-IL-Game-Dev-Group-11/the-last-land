@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace TheLastLand._Project.Scripts.Health
+namespace TheLastLand._Project.Scripts.GameSystems.Health
 {
-    public class HealthController : MonoBehaviour
+    public class HealthController
     {
         private HealthData _data;
         private float _health;
@@ -12,7 +12,7 @@ namespace TheLastLand._Project.Scripts.Health
             _data = data;
             _health = _data.Max;
         }
-        
+
         public float Health
         {
             get => _health;
@@ -23,14 +23,12 @@ namespace TheLastLand._Project.Scripts.Health
         {
             Health -= value;
         }
-        
+
         public void RegenerateHealth(float value)
         {
-            if (Health < _data.Max)
-            {
-                Health += _data.RegenerationRate;
-                Health = Mathf.Clamp(Health, _data.Min, _data.Max);
-            }
+            if (!(Health < _data.Max)) return;
+            Health += _data.RegenerationRate;
+            Health = Mathf.Clamp(Health, _data.Min, _data.Max);
         }
     }
 }

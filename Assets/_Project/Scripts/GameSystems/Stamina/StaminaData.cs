@@ -1,7 +1,7 @@
 ﻿using TheLastLand._Project.Scripts.Utils;
 using UnityEngine;
 
-namespace TheLastLand._Project.Scripts.Stamina
+namespace TheLastLand._Project.Scripts.GameSystems.Stamina
 {
     [System.Serializable]
     public class StaminaData

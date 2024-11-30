@@ -1,15 +1,12 @@
-﻿using Cainos.LucidEditor;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace TheLastLand._Project.Scripts.Stamina
+namespace TheLastLand._Project.Scripts.GameSystems.Stamina
 {
-    public class StaminaController : MonoBehaviour
+    [System.Serializable]
+    public class StaminaController
     {
         private StaminaData _staminaData;
         private float _stamina;
-
-        [SerializeField, DisableInPlayMode]
-        private bool isRegenerating = true;
 
         public void Initialize(StaminaData staminaData)
         {
@@ -30,7 +27,7 @@ namespace TheLastLand._Project.Scripts.Stamina
 
         public void RegenerateStamina()
         {
-            if (!(Stamina < _staminaData.Max) || !isRegenerating) return;
+            if (!(Stamina < _staminaData.Max)) return;
 
             Stamina += _staminaData.RegenerationRate;
             Stamina = Mathf.Clamp(Stamina, _staminaData.Min, _staminaData.Max);
@@ -44,16 +41,6 @@ namespace TheLastLand._Project.Scripts.Stamina
         public void SetStamina(float value)
         {
             Stamina = value;
-        }
-
-        public void EnableRegeneration()
-        {
-            isRegenerating = true;
-        }
-
-        public void DisableRegeneration()
-        {
-            isRegenerating = false;
         }
     }
 }
