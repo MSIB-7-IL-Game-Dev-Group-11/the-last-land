@@ -7,7 +7,6 @@ using TheLastLand._Project.Scripts.GameSystems.Inventory.Common;
 using TheLastLand._Project.Scripts.GameSystems.Item;
 using TheLastLand._Project.Scripts.GameSystems.Stamina;
 using TheLastLand._Project.Scripts.GameSystems.Stamina.Common;
-using TheLastLand._Project.Scripts.SeviceLocator;
 using UnityEngine.Events;
 
 namespace TheLastLand._Project.Scripts.Characters.Player
