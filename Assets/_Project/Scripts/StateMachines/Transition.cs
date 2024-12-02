@@ -1,4 +1,6 @@
-﻿namespace TheLastLand._Project.Scripts.StateMachines
+﻿using TheLastLand._Project.Scripts.StateMachines.Common;
+
+namespace TheLastLand._Project.Scripts.StateMachines
 {
     public class Transition : ITransition
     {
