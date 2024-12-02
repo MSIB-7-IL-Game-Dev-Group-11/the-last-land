@@ -5,12 +5,10 @@ using TheLastLand._Project.Scripts.Characters.Player.StateMachines;
 using TheLastLand._Project.Scripts.Input;
 using TheLastLand._Project.Scripts.SeviceLocator;
 using TheLastLand._Project.Scripts.StateMachines;
+using TheLastLand._Project.Scripts.StateMachines.Common;
 using TheLastLand._Project.Scripts.Utils;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using IState = TheLastLand._Project.Scripts.StateMachines.IState;
-using StateMachine = TheLastLand._Project.Scripts.StateMachines.StateMachine;
-using Timer = TheLastLand._Project.Scripts.Utils.Timer;
 
 namespace TheLastLand._Project.Scripts.Characters.Player
 {
