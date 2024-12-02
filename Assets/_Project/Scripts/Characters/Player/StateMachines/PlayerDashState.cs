@@ -4,15 +4,18 @@ namespace TheLastLand._Project.Scripts.Characters.Player.StateMachines
 {
     public class PlayerDashState : BaseState
     {
-        public PlayerDashState(Scripts.Player player, Animator animator) : base(player, animator)
+        public PlayerDashState(PlayerController playerController, Animator animator) : base(
+            playerController,
+            animator
+        )
         {
         }
 
         public override void FixedUpdate()
         {
             base.FixedUpdate();
-            Player.Move(Player.Data.Dash.Modifier);
-            Player.FlipCharacterSprite();
+            PlayerController.Move(PlayerData.Dash.Modifier);
+            PlayerController.FlipCharacterSprite();
         }
     }
 }

@@ -1,13 +1,14 @@
-﻿using UnityEngine;
+﻿using TheLastLand._Project.Scripts.GameSystems.Health.Common;
+using UnityEngine;
 
 namespace TheLastLand._Project.Scripts.GameSystems.Health
 {
-    public class HealthController
+    public class HealthController : IHealthController
     {
-        private HealthData _data;
+        private readonly HealthData _data;
         private float _health;
 
-        public void Initialize(HealthData data)
+        public HealthController(HealthData data)
         {
             _data = data;
             _health = _data.Max;

@@ -1,31 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using TheLastLand._Project.Scripts.Characters.Common;
 using TheLastLand._Project.Scripts.Characters.Player;
 using TheLastLand._Project.Scripts.Characters.Player.Datas;
-using TheLastLand._Project.Scripts.Health;
-using TheLastLand._Project.Scripts.Stamina;
+using TheLastLand._Project.Scripts.GameSystems.Item.Common;
+using TheLastLand._Project.Scripts.SeviceLocator;
 using TheLastLand._Project.Scripts.Utils;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace TheLastLand._Project.Scripts
 {
-    [RequireComponent(typeof(PlayerController))]
-    [RequireComponent(typeof(StaminaController))]
-    [RequireComponent(typeof(HealthController))]
-    public class Player : MonoBehaviour, IStamina, IDamageable
+    public class Player : MonoBehaviour
     {
         [field: Header("References"), SerializeField]
-        public PlayerData Data { get; private set; }
+        private PlayerData data;
 
-        public event UnityAction<float> OnStaminaUsed = delegate { };
-        public event UnityAction<float> OnPlayerDamaged = delegate { };
+        [SerializeField]
+        private bool staminaRegeneration = true;
 
-        // Controller
-        private PlayerController _playerController;
-        private StaminaController _staminaController;
-        private HealthController _healthController;
+        private PlayerMediator _playerMediator;
 
         // Timer
         private List<Timer> _timers;
@@ -33,13 +25,8 @@ namespace TheLastLand._Project.Scripts
 
         private void Awake()
         {
-            _playerController = GetComponent<PlayerController>();
-            _staminaController = GetComponent<StaminaController>();
-            _healthController = GetComponent<HealthController>();
-
-            _playerController.Initialize(Data);
-            _staminaController.Initialize(Data.Stamina);
-            _healthController.Initialize(Data.Health);
+            ServiceLocator.ForSceneOf(this).Register(data)
+                .Register(_playerMediator = new PlayerMediator(data));
         }
 
         private void Start()
@@ -51,16 +38,31 @@ namespace TheLastLand._Project.Scripts
         {
             HandleTimer();
 
-            if (!_staminaRegenTimer.IsRunning)
+            if (!_staminaRegenTimer.IsRunning && staminaRegeneration)
             {
                 _staminaRegenTimer.Start();
             }
         }
 
+        private void OnEnable()
+        {
+            Item.OnCollected += _playerMediator.InventoryAdd;
+        }
+
+        private void OnDisable()
+        {
+            Item.OnCollected -= _playerMediator.InventoryAdd;
+        }
+
+        private void OnCollisionEnter2D(Collision2D other)
+        {
+            other.gameObject.GetComponent<ICollectible>()?.Collect();
+        }
+
         private void SetupTimers()
         {
-            _staminaRegenTimer = new CountdownTimer(Data.Stamina.RegenerationTime);
-            _staminaRegenTimer.OnStart += () => { _staminaController.RegenerateStamina(); };
+            _staminaRegenTimer = new CountdownTimer(data.Stamina.RegenerationTime);
+            _staminaRegenTimer.OnStart += () => { _playerMediator.RegenerateStamina(); };
 
             _timers = new List<Timer>(1) { _staminaRegenTimer };
         }
@@ -71,42 +73,6 @@ namespace TheLastLand._Project.Scripts
             {
                 timer.Tick(Time.deltaTime);
             }
-        }
-
-        #region Movement
-
-        public void Move(float speedModifier) => _playerController.Move(speedModifier);
-        public void Jump() => _playerController.Jump();
-        public void FlipCharacterSprite() => _playerController.FlipCharacterSprite();
-
-        #endregion
-
-        #region Checker
-
-        public void IsStaminaBelowThreshold(float threshold, Action onTrue, Action onFalse)
-        {
-            if (_staminaController.Stamina < threshold)
-            {
-                onTrue.Invoke();
-            }
-            else
-            {
-                onFalse.Invoke();
-            }
-        }
-
-        #endregion
-
-        public void UseStamina(float value)
-        {
-            _staminaController.UseStamina(value);
-            OnStaminaUsed.Invoke(_staminaController.Stamina);
-        }
-
-        public void TakeDamage(float value)
-        {
-            _healthController.TakeDamage(value);
-            OnPlayerDamaged.Invoke(_healthController.Health);
         }
     }
 }

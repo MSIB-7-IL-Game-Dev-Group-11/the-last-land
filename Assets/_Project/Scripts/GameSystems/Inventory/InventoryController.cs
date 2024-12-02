@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using TheLastLand._Project.Scripts.GameSystems.Inventory.Common;
 using TheLastLand._Project.Scripts.GameSystems.Item;
+using UnityEngine;
 
 namespace TheLastLand._Project.Scripts.GameSystems.Inventory
 {
@@ -14,13 +15,15 @@ namespace TheLastLand._Project.Scripts.GameSystems.Inventory
             if (InventoryItems.TryGetValue(itemData, out var item))
             {
                 item.AddToStack();
+                Debug.Log($"{item.ItemData.DisplayName}. Total stack is now {item.StackSize}.");
                 return;
             }
-            
+
             var newItem = new InventoryItem(itemData);
-            
+
             Inventory.Add(newItem);
             InventoryItems.Add(itemData, newItem);
+            Debug.Log($"{itemData.DisplayName} for the first time.");
         }
 
         public void Remove(ItemData itemData)

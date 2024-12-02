@@ -6,7 +6,10 @@ namespace TheLastLand._Project.Scripts.Characters.Player.StateMachines
     {
         private static readonly int XvelocityHash = Animator.StringToHash("HorizontalVelocity");
 
-        public PlayerJumpState(Scripts.Player player, Animator animator) : base(player, animator)
+        public PlayerJumpState(PlayerController playerController, Animator animator) : base(
+            playerController,
+            animator
+        )
         {
         }
 
@@ -20,9 +23,9 @@ namespace TheLastLand._Project.Scripts.Characters.Player.StateMachines
         public override void FixedUpdate()
         {
             base.FixedUpdate();
-            Player.Jump();
-            Player.Move(Player.Data.Walk.Modifier);
-            Player.FlipCharacterSprite();
+            PlayerController.Jump();
+            PlayerController.Move(PlayerData.Walk.Modifier);
+            PlayerController.FlipCharacterSprite();
         }
     }
 }

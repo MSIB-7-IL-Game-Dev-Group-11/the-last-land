@@ -2901,6 +2901,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1079081365118278624, guid: 859d0ef3bbe0f8b40ad127d378555e7f, type: 3}
+      propertyPath: data
+      value: 
+      objectReference: {fileID: 11400000, guid: 300f474ed3b8a58408da3c5b91c09be7, type: 2}
+    - target: {fileID: 1079081365118278624, guid: 859d0ef3bbe0f8b40ad127d378555e7f, type: 3}
       propertyPath: <VirtualCamera>k__BackingField
       value: 
       objectReference: {fileID: 1665264745}
@@ -3015,6 +3019,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseMenuUI: {fileID: 870970754}
   player: {fileID: 1418979432}
+  helpText: {fileID: 0}
 --- !u!4 &492316298
 Transform:
   m_ObjectHideFlags: 0
@@ -4283,7 +4288,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1522390341
-  m_SortingLayer: 2
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}

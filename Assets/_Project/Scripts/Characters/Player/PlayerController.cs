@@ -3,6 +3,7 @@ using Cinemachine;
 using TheLastLand._Project.Scripts.Characters.Player.Datas;
 using TheLastLand._Project.Scripts.Characters.Player.StateMachines;
 using TheLastLand._Project.Scripts.Input;
+using TheLastLand._Project.Scripts.SeviceLocator;
 using TheLastLand._Project.Scripts.StateMachines;
 using TheLastLand._Project.Scripts.Utils;
 using UnityEngine;
@@ -28,7 +29,8 @@ namespace TheLastLand._Project.Scripts.Characters.Player
         [field: SerializeField]
         public CinemachineVirtualCamera VirtualCamera { get; private set; }
 
-        private PlayerData _data;
+        public PlayerData data;
+        private PlayerMediator _playerMediator;
         private PlayerStateData StateData { get; set; }
 
         // Components
@@ -36,7 +38,6 @@ namespace TheLastLand._Project.Scripts.Characters.Player
         private SpriteRenderer _characterSprite;
         private Rigidbody2D _rigidbody;
         private GroundCheck _groundCheck;
-        private Scripts.Player _player;
 
         // State Machine
         private StateMachine _stateMachine;
@@ -53,12 +54,13 @@ namespace TheLastLand._Project.Scripts.Characters.Player
         {
             InitializeComponents();
             InitializeCamera();
-            InitializeStateMachine();
         }
 
         private void Start()
         {
             SetupTimers();
+            SetupServices();
+            SetupStateMachine();
         }
 
         private void OnEnable()
@@ -73,11 +75,6 @@ namespace TheLastLand._Project.Scripts.Characters.Player
             PlayerInput.Jump -= OnJump;
             PlayerInput.Move -= OnMove;
             PlayerInput.Dash -= OnDash;
-        }
-
-        public void Initialize(PlayerData data)
-        {
-            _data = data;
         }
 
         #region Input Handler
@@ -97,16 +94,12 @@ namespace TheLastLand._Project.Scripts.Characters.Player
                                                    && !_jumpCooldownTimer.IsRunning
                                                    || _jumpCoyoteTimer.IsRunning:
                 {
-                    _player.IsStaminaBelowThreshold(
-                        _data.Jump.StaminaCost,
-                        () => { },
-                        () =>
-                        {
-                            _player.UseStamina(_data.Jump.StaminaCost);
-                            _jumpCoyoteTimer.Stop();
-                            _jumpTimer.Start();
-                        }
-                    );
+                    if (!_playerMediator.HasSufficientStamina(data.Jump.StaminaCost)) return;
+
+                    _playerMediator.UseStamina(data.Jump.StaminaCost);
+                    _jumpCoyoteTimer.Stop();
+                    _jumpTimer.Start();
+
                     break;
                 }
                 case InputActionPhase.Canceled when _jumpTimer.IsRunning:
@@ -119,18 +112,11 @@ namespace TheLastLand._Project.Scripts.Characters.Player
 
         private void OnDash(InputAction.CallbackContext context)
         {
-            if (context.started && !_dashTimer.IsRunning && !_dashCooldownTimer.IsRunning)
-            {
-                _player.IsStaminaBelowThreshold(
-                    _data.Dash.StaminaCost,
-                    () => { },
-                    () =>
-                    {
-                        _player.UseStamina(_data.Dash.StaminaCost);
-                        _dashTimer.Start();
-                    }
-                );
-            }
+            if (!context.started || _dashTimer.IsRunning || _dashCooldownTimer.IsRunning) return;
+            if (!_playerMediator.HasSufficientStamina(data.Dash.StaminaCost)) return;
+
+            _playerMediator.UseStamina(data.Dash.StaminaCost);
+            _dashTimer.Start();
         }
 
         #endregion
@@ -160,7 +146,9 @@ namespace TheLastLand._Project.Scripts.Characters.Player
             _animator = GetComponent<Animator>();
             _characterSprite = GetComponent<SpriteRenderer>();
             _groundCheck = GetComponent<GroundCheck>();
-            _player = GetComponent<Scripts.Player>();
+            
+            _stateMachine = new StateMachine();
+            StateData = new PlayerStateData();
         }
 
         private void InitializeCamera()
@@ -169,15 +157,12 @@ namespace TheLastLand._Project.Scripts.Characters.Player
             VirtualCamera.LookAt = transform;
         }
 
-        private void InitializeStateMachine()
+        private void SetupStateMachine()
         {
-            _stateMachine = new StateMachine();
-            StateData = new PlayerStateData();
-
-            var walkState = new PlayerWalkState(_player, _animator);
-            var jumpState = new PlayerJumpState(_player, _animator);
-            var idleState = new PlayerIdleState(_player, _animator);
-            var dashState = new PlayerDashState(_player, _animator);
+            var walkState = new PlayerWalkState(this, _animator);
+            var jumpState = new PlayerJumpState(this, _animator);
+            var idleState = new PlayerIdleState(this, _animator);
+            var dashState = new PlayerDashState(this, _animator);
 
             Any(
                 jumpState,
@@ -217,23 +202,29 @@ namespace TheLastLand._Project.Scripts.Characters.Player
             _stateMachine.SetState(idleState);
         }
 
+        private void SetupServices()
+        {
+            ServiceLocator.ForSceneOf(this).Get(out _playerMediator);
+            ServiceLocator.ForSceneOf(this).Get(out data);
+        }
+
         #region Timer
 
         private void SetupTimers()
         {
             #region Jump Timer
 
-            _jumpTimer = new CountdownTimer(_data.Jump.Duration);
-            _jumpCoyoteTimer = new CountdownTimer(_data.Jump.CoyoteTime);
-            _jumpCooldownTimer = new CountdownTimer(_data.Jump.Cooldown);
+            _jumpTimer = new CountdownTimer(data.Jump.Duration);
+            _jumpCoyoteTimer = new CountdownTimer(data.Jump.CoyoteTime);
+            _jumpCooldownTimer = new CountdownTimer(data.Jump.Cooldown);
 
             _jumpTimer.OnStart += () =>
             {
                 StateData.IsJumping = true;
-                var forceDifference = _data.Jump.Force - _rigidbody.velocity.y;
+                var forceDifference = data.Jump.Force - _rigidbody.velocity.y;
                 StateData.CurrentJumpVelocity = Mathf.Pow(
-                                                    Mathf.Abs(forceDifference) * _data.Acceleration,
-                                                    _data.Jump.Modifier
+                                                    Mathf.Abs(forceDifference) * data.Acceleration,
+                                                    data.Jump.Modifier
                                                 )
                                                 * Mathf.Sign(forceDifference);
             };
@@ -248,17 +239,17 @@ namespace TheLastLand._Project.Scripts.Characters.Player
 
             #region Dash Timer
 
-            _dashTimer = new CountdownTimer(_data.Dash.Duration);
-            _dashCooldownTimer = new CountdownTimer(_data.Dash.Cooldown);
+            _dashTimer = new CountdownTimer(data.Dash.Duration);
+            _dashCooldownTimer = new CountdownTimer(data.Dash.Cooldown);
 
             _dashTimer.OnStart += () =>
             {
                 StateData.IsDashing = true;
-                var targetSpeed = StateData.MovementDirection.x * _data.Dash.Force;
+                var targetSpeed = StateData.MovementDirection.x * data.Dash.Force;
                 var forceDifference = targetSpeed - _rigidbody.velocity.x;
                 StateData.CurrentMoveVelocity = Mathf.Pow(
-                                                    Mathf.Abs(forceDifference) * _data.Acceleration,
-                                                    _data.Dash.Modifier
+                                                    Mathf.Abs(forceDifference) * data.Acceleration,
+                                                    data.Dash.Modifier
                                                 )
                                                 * Mathf.Sign(forceDifference);
             };
@@ -314,13 +305,13 @@ namespace TheLastLand._Project.Scripts.Characters.Player
         public void Move(float speedModifier)
         {
             var targetSpeed = StateData.MovementDirection.x
-                              * (_dashTimer.IsRunning ? _data.Dash.Force : _data.BaseSpeed);
+                              * (_dashTimer.IsRunning ? data.Dash.Force : data.BaseSpeed);
 
             var speedDifference = targetSpeed - _rigidbody.velocity.x;
 
             var accelerationRate = Mathf.Abs(targetSpeed) > 0.01f
-                ? _data.Acceleration
-                : _data.Deceleration;
+                ? data.Acceleration
+                : data.Deceleration;
 
             var mode = _dashTimer.IsRunning ? ForceMode2D.Impulse : ForceMode2D.Force;
 

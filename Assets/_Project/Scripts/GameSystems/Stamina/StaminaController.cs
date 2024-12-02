@@ -1,14 +1,15 @@
-﻿using UnityEngine;
+﻿using TheLastLand._Project.Scripts.GameSystems.Stamina.Common;
+using UnityEngine;
 
 namespace TheLastLand._Project.Scripts.GameSystems.Stamina
 {
     [System.Serializable]
-    public class StaminaController
+    public class StaminaController : IStaminaController
     {
         private StaminaData _staminaData;
         private float _stamina;
 
-        public void Initialize(StaminaData staminaData)
+        public StaminaController(StaminaData staminaData)
         {
             _staminaData = staminaData;
             _stamina = _staminaData.Max;

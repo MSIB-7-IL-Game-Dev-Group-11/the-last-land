@@ -1,5 +1,5 @@
-﻿using TheLastLand._Project.Scripts.Health;
-using TheLastLand._Project.Scripts.Stamina;
+﻿using TheLastLand._Project.Scripts.GameSystems.Health;
+using TheLastLand._Project.Scripts.GameSystems.Stamina;
 using UnityEngine;
 
 namespace TheLastLand._Project.Scripts.Characters.Player.Datas

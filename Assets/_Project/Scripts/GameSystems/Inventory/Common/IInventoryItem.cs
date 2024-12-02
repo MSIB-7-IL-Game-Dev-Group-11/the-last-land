@@ -1,9 +1,10 @@
-﻿namespace TheLastLand._Project.Scripts.GameSystems.Inventory.Common
+﻿using TheLastLand._Project.Scripts.GameSystems.Item;
+using TheLastLand._Project.Scripts.GameSystems.Item.Common;
+
+namespace TheLastLand._Project.Scripts.GameSystems.Inventory.Common
 {
-    public interface IInventoryItem
+    public interface IInventoryItem : IStackable
     {
-        int StackSize { get; }
-        void AddToStack();
-        void RemoveFromStack();
+        ItemData ItemData { get; }
     }
 }

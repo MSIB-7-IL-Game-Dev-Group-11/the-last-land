@@ -10,5 +10,8 @@ namespace TheLastLand._Project.Scripts.GameSystems.Item
         
         [field: SerializeField]
         public Sprite Icon { get; private set; }
+
+        [field: SerializeField]
+        public int StackSize { get; set; } = 1;
     }
 }
