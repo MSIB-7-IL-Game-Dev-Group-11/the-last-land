@@ -1,7 +1,7 @@
 using UnityEngine;
 
 // from https://youtu.be/AoRBZh6HvIk?si=MuGyEkDGKNrEZuWy
-namespace TheLastLand._Project.Scripts.Background
+namespace TheLastLand._Project.Scripts.GameSystems.Background
 {
     public class ParallaxEffect : MonoBehaviour
     {

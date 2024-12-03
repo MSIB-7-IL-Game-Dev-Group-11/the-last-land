@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace TheLastLand
+namespace TheLastLand._Project.Scripts.GameSystems
 {
     public class HelpText : MonoBehaviour
     {
