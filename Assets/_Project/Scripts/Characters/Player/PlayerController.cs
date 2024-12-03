@@ -2,6 +2,7 @@
 using Cinemachine;
 using TheLastLand._Project.Scripts.Characters.Player.Datas;
 using TheLastLand._Project.Scripts.Characters.Player.StateMachines;
+using TheLastLand._Project.Scripts.GameSystems.Interactor.Common;
 using TheLastLand._Project.Scripts.Input;
 using TheLastLand._Project.Scripts.SeviceLocator;
 using TheLastLand._Project.Scripts.StateMachines;
@@ -30,6 +31,7 @@ namespace TheLastLand._Project.Scripts.Characters.Player
         public PlayerData data;
         private PlayerMediator _playerMediator;
         private PlayerStateData StateData { get; set; }
+        private IInteractable _interactable;
 
         // Components
         private Animator _animator;
@@ -66,6 +68,7 @@ namespace TheLastLand._Project.Scripts.Characters.Player
             PlayerInput.Jump += OnJump;
             PlayerInput.Move += OnMove;
             PlayerInput.Dash += OnDash;
+            PlayerInput.Interact += OnInteract;
         }
 
         private void OnDisable()
@@ -73,9 +76,20 @@ namespace TheLastLand._Project.Scripts.Characters.Player
             PlayerInput.Jump -= OnJump;
             PlayerInput.Move -= OnMove;
             PlayerInput.Dash -= OnDash;
+            PlayerInput.Interact -= OnInteract;
         }
 
         #region Input Handler
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            HandleInteraction(other, true);
+        }
+
+        private void OnTriggerExit2D(Collider2D other)
+        {
+            HandleInteraction(other, false);
+        }
 
         private void OnMove(InputAction.CallbackContext context)
         {
@@ -119,6 +133,12 @@ namespace TheLastLand._Project.Scripts.Characters.Player
 
             _dashTimer.Reset(data.Dash.Duration);
             _dashTimer.Start();
+        }
+
+        private void OnInteract(InputAction.CallbackContext context)
+        {
+            if (!context.started || _interactable == null) return;
+            _interactable.Interact();
         }
 
         #endregion
@@ -341,5 +361,16 @@ namespace TheLastLand._Project.Scripts.Characters.Player
         }
 
         #endregion
+
+        private void HandleInteraction(Collider2D other, bool isEntering)
+        {
+            if (!isEntering)
+            {
+                _interactable = null;
+                return;
+            }
+
+            _interactable = other.GetComponent<IInteractable>();
+        }
     }
 }
