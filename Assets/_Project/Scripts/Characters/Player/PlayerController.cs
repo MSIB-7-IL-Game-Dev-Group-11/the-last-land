@@ -96,6 +96,8 @@ namespace TheLastLand._Project.Scripts.Characters.Player
 
                     _playerMediator.UseStamina(data.Jump.StaminaCost);
                     _jumpCoyoteTimer.Stop();
+
+                    _jumpTimer.Reset(data.Jump.Duration);
                     _jumpTimer.Start();
 
                     break;
@@ -114,6 +116,8 @@ namespace TheLastLand._Project.Scripts.Characters.Player
             if (!_playerMediator.HasSufficientStamina(data.Dash.StaminaCost)) return;
 
             _playerMediator.UseStamina(data.Dash.StaminaCost);
+
+            _dashTimer.Reset(data.Dash.Duration);
             _dashTimer.Start();
         }
 
@@ -144,7 +148,7 @@ namespace TheLastLand._Project.Scripts.Characters.Player
             _animator = GetComponent<Animator>();
             _characterSprite = GetComponent<SpriteRenderer>();
             _groundCheck = GetComponent<GroundCheck>();
-            
+
             _stateMachine = new StateMachine();
             StateData = new PlayerStateData();
         }
@@ -230,6 +234,7 @@ namespace TheLastLand._Project.Scripts.Characters.Player
             _jumpTimer.OnStop += () =>
             {
                 StateData.IsJumping = false;
+                _jumpCooldownTimer.Reset(data.Jump.Cooldown);
                 _jumpCooldownTimer.Start();
             };
 
@@ -256,6 +261,8 @@ namespace TheLastLand._Project.Scripts.Characters.Player
             {
                 StateData.IsDashing = false;
                 _rigidbody.velocity = new Vector2(ZeroF, _rigidbody.velocity.y);
+
+                _dashCooldownTimer.Reset(data.Dash.Cooldown);
                 _dashCooldownTimer.Start();
             };
 
@@ -283,6 +290,7 @@ namespace TheLastLand._Project.Scripts.Characters.Player
                 && !_jumpTimer.IsRunning
                 && !_jumpCooldownTimer.IsRunning)
             {
+                _jumpCoyoteTimer.Reset(data.Jump.CoyoteTime);
                 _jumpCoyoteTimer.Start();
             }
 

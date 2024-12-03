@@ -36,11 +36,6 @@ namespace TheLastLand._Project.Scripts
         private void Update()
         {
             HandleTimer();
-
-            if (!_staminaRegenTimer.IsRunning && staminaRegeneration)
-            {
-                _staminaRegenTimer.Start();
-            }
         }
 
         private void OnEnable()
@@ -71,6 +66,12 @@ namespace TheLastLand._Project.Scripts
             foreach (var timer in _timers)
             {
                 timer.Tick(Time.deltaTime);
+            }
+            
+            if (!_staminaRegenTimer.IsRunning && staminaRegeneration)
+            {
+                _staminaRegenTimer.Reset(data.Stamina.RegenerationTime);
+                _staminaRegenTimer.Start();
             }
         }
     }
