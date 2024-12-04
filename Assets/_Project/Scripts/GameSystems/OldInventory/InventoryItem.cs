@@ -1,7 +1,7 @@
-﻿using TheLastLand._Project.Scripts.GameSystems.Inventory.Common;
-using TheLastLand._Project.Scripts.GameSystems.Item;
+﻿using TheLastLand._Project.Scripts.GameSystems.Item;
+using TheLastLand._Project.Scripts.GameSystems.OldInventory.Common;
 
-namespace TheLastLand._Project.Scripts.GameSystems.Inventory
+namespace TheLastLand._Project.Scripts.GameSystems.OldInventory
 {
     [System.Serializable]
     public class InventoryItem : IInventoryItem

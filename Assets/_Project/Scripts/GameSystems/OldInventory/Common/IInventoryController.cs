@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using TheLastLand._Project.Scripts.GameSystems.Item;
 
-namespace TheLastLand._Project.Scripts.GameSystems.Inventory.Common
+namespace TheLastLand._Project.Scripts.GameSystems.OldInventory.Common
 {
     public interface IInventoryController
     {

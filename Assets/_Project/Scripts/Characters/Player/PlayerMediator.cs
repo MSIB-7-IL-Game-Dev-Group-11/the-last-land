@@ -2,9 +2,6 @@
 using TheLastLand._Project.Scripts.Characters.Player.Datas;
 using TheLastLand._Project.Scripts.GameSystems.Health;
 using TheLastLand._Project.Scripts.GameSystems.Health.Common;
-using TheLastLand._Project.Scripts.GameSystems.Inventory;
-using TheLastLand._Project.Scripts.GameSystems.Inventory.Common;
-using TheLastLand._Project.Scripts.GameSystems.Item;
 using TheLastLand._Project.Scripts.GameSystems.Stamina;
 using TheLastLand._Project.Scripts.GameSystems.Stamina.Common;
 using UnityEngine;
@@ -16,7 +13,6 @@ namespace TheLastLand._Project.Scripts.Characters.Player
     {
         private IStaminaController _staminaController;
         private IHealthController _healthController;
-        private IInventoryController _inventoryController;
 
         public event UnityAction<float> OnStaminaUsed = delegate { };
         public event UnityAction<float> OnPlayerDamaged = delegate { };
@@ -26,7 +22,6 @@ namespace TheLastLand._Project.Scripts.Characters.Player
         {
             _staminaController = new StaminaController(data.Stamina);
             _healthController = new HealthController(data.Health);
-            _inventoryController = new InventoryController();
         }
 
         public bool HasSufficientStamina(float staminaThreshold) =>
@@ -49,8 +44,5 @@ namespace TheLastLand._Project.Scripts.Characters.Player
             _staminaController.RegenerateStamina();
             OnPlayerRegenerated?.Invoke();
         }
-
-        public void InventoryAdd(ItemData itemData) => _inventoryController.Add(itemData);
-        public void InventoryRemove(ItemData itemData) => _inventoryController.Remove(itemData);
     }
 }
