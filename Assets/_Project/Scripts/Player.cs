@@ -24,8 +24,10 @@ namespace TheLastLand._Project.Scripts
 
         private void Awake()
         {
+            _playerMediator = ScriptableObject.CreateInstance<PlayerMediator>();
+            _playerMediator.Initialize(data);
             ServiceLocator.ForSceneOf(this).Register(data)
-                .Register(_playerMediator = new PlayerMediator(data));
+                .Register(_playerMediator);
         }
 
         private void Start()

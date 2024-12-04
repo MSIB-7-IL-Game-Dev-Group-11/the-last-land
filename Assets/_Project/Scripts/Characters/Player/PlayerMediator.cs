@@ -7,21 +7,22 @@ using TheLastLand._Project.Scripts.GameSystems.Inventory.Common;
 using TheLastLand._Project.Scripts.GameSystems.Item;
 using TheLastLand._Project.Scripts.GameSystems.Stamina;
 using TheLastLand._Project.Scripts.GameSystems.Stamina.Common;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace TheLastLand._Project.Scripts.Characters.Player
 {
-    public class PlayerMediator : IDamageable, IStamina
+    public class PlayerMediator : ScriptableObject, IDamageable, IStamina
     {
-        private readonly IStaminaController _staminaController;
-        private readonly IHealthController _healthController;
-        private readonly IInventoryController _inventoryController;
+        private IStaminaController _staminaController;
+        private IHealthController _healthController;
+        private IInventoryController _inventoryController;
 
         public event UnityAction<float> OnStaminaUsed = delegate { };
         public event UnityAction<float> OnPlayerDamaged = delegate { };
         public event UnityAction OnPlayerRegenerated = delegate { };
 
-        public PlayerMediator(PlayerData data)
+        public void Initialize(PlayerData data)
         {
             _staminaController = new StaminaController(data.Stamina);
             _healthController = new HealthController(data.Health);
