@@ -1,9 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TheLastLand.Inventory.UI
+namespace TheLastLand._Project.Scripts.GameSystems.Inventory.UI
 {
     public class UIInventoryPage : MonoBehaviour
     {
@@ -19,18 +18,12 @@ namespace TheLastLand.Inventory.UI
         [SerializeField]
         private MouseFollower mouseFollower;
 
-        private List<UIInventoryItem> listOfUIItems = new List<UIInventoryItem>();
-
-        private int currentlyDraggedItemIndex = -1;
-
-        public event Action<int> OnDescriptionRequested,
-                OnItemActionRequested,
-                OnStartDragging;
-
-        public event Action<int, int> OnSwapItems;
-
         [SerializeField]
         private ItemActionPanels actionPanel;
+
+        private readonly List<UIInventoryItem> _listOfUIItems = new();
+
+        private int _currentlyDraggedItemIndex = -1;
 
         private void Awake()
         {
@@ -39,14 +32,17 @@ namespace TheLastLand.Inventory.UI
             itemDescription.ResetDescription();
         }
 
+        public event Action<int> OnDescriptionRequested, OnItemActionRequested, OnStartDragging;
+
+        public event Action<int, int> OnSwapItems;
+
         public void InitializeInventoryUI(int inventorySize)
         {
-            for (int i = 0; i < inventorySize; i++)
+            for (var i = 0; i < inventorySize; i++)
             {
-                UIInventoryItem uiItem =
-                    Instantiate(itemPrefab, Vector3.zero, Quaternion.identity);
+                var uiItem = Instantiate(itemPrefab, Vector3.zero, Quaternion.identity);
                 uiItem.transform.SetParent(contentPanel);
-                listOfUIItems.Add(uiItem);
+                _listOfUIItems.Add(uiItem);
                 uiItem.OnItemClicked += HandleItemSelection;
                 uiItem.OnItemBeginDrag += HandleBeginDrag;
                 uiItem.OnItemDroppedOn += HandleSwap;
@@ -57,35 +53,31 @@ namespace TheLastLand.Inventory.UI
 
         internal void ResetAllItems()
         {
-            foreach (var item in listOfUIItems)
+            foreach (var item in _listOfUIItems)
             {
                 item.ResetData();
                 item.Deselect();
             }
         }
 
-        internal void UpdateDescription(int itemIndex, Sprite itemImage, string name, string description)
+        internal void UpdateDescription(int itemIndex, Sprite itemImage, string itemName,
+            string description)
         {
-            itemDescription.SetDescription(itemImage, name, description);
+            itemDescription.SetDescription(itemImage, itemName, description);
             DeselectAllItems();
-            listOfUIItems[itemIndex].Select();
+            _listOfUIItems[itemIndex].Select();
         }
 
         public void UpdateData(int itemIndex, Sprite itemImage, int itemQuantity)
         {
-            if (listOfUIItems.Count > itemIndex)
-            {
-                listOfUIItems[itemIndex].SetData(itemImage, itemQuantity);
-            }
+            if (_listOfUIItems.Count > itemIndex)
+                _listOfUIItems[itemIndex].SetData(itemImage, itemQuantity);
         }
 
         private void HandleShowItemActions(UIInventoryItem inventoryItemUI)
         {
-            int index = listOfUIItems.IndexOf(inventoryItemUI);
-            if (index == -1)
-            {
-                return;
-            }
+            var index = _listOfUIItems.IndexOf(inventoryItemUI);
+            if (index == -1) return;
             OnItemActionRequested?.Invoke(index);
         }
 
@@ -96,27 +88,24 @@ namespace TheLastLand.Inventory.UI
 
         private void HandleSwap(UIInventoryItem inventoryItemUI)
         {
-            int index = listOfUIItems.IndexOf(inventoryItemUI);
-            if (index == -1)
-            {
-                return;
-            }
-            OnSwapItems?.Invoke(currentlyDraggedItemIndex, index);
+            var index = _listOfUIItems.IndexOf(inventoryItemUI);
+            if (index == -1) return;
+            OnSwapItems?.Invoke(_currentlyDraggedItemIndex, index);
             HandleItemSelection(inventoryItemUI);
         }
 
         private void ResetDraggedItem()
         {
             mouseFollower.Toggle(false);
-            currentlyDraggedItemIndex = -1;
+            _currentlyDraggedItemIndex = -1;
         }
 
         private void HandleBeginDrag(UIInventoryItem inventoryItemUI)
         {
-            int index = listOfUIItems.IndexOf(inventoryItemUI);
+            var index = _listOfUIItems.IndexOf(inventoryItemUI);
             if (index == -1)
                 return;
-            currentlyDraggedItemIndex = index;
+            _currentlyDraggedItemIndex = index;
             HandleItemSelection(inventoryItemUI);
             OnStartDragging?.Invoke(index);
         }
@@ -129,7 +118,7 @@ namespace TheLastLand.Inventory.UI
 
         private void HandleItemSelection(UIInventoryItem inventoryItemUI)
         {
-            int index = listOfUIItems.IndexOf(inventoryItemUI);
+            var index = _listOfUIItems.IndexOf(inventoryItemUI);
             if (index == -1)
                 return;
             OnDescriptionRequested?.Invoke(index);
@@ -155,15 +144,12 @@ namespace TheLastLand.Inventory.UI
         public void ShowItemAction(int itemIndex)
         {
             actionPanel.Toggle(true);
-            actionPanel.transform.position = listOfUIItems[itemIndex].transform.position;
+            actionPanel.transform.position = _listOfUIItems[itemIndex].transform.position;
         }
 
         private void DeselectAllItems()
         {
-            foreach (UIInventoryItem item in listOfUIItems)
-            {
-                item.Deselect();
-            }
+            foreach (var item in _listOfUIItems) item.Deselect();
             actionPanel.Toggle(false);
         }
 

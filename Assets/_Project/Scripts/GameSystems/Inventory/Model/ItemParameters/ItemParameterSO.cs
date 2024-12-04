@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace TheLastLand
+namespace TheLastLand._Project.Scripts.GameSystems.Inventory.Model.ItemParameters
 {
     [CreateAssetMenu]
-    public class ItemParameterSO : ScriptableObject
+    public class ItemParameterSo : ScriptableObject
     {
         [field: SerializeField]
         public string ParameterName { get; private set; }

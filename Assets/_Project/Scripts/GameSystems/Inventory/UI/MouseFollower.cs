@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace TheLastLand.Inventory.UI
+namespace TheLastLand._Project.Scripts.GameSystems.Inventory.UI
 {
     public class MouseFollower : MonoBehaviour
     {
@@ -18,21 +16,20 @@ namespace TheLastLand.Inventory.UI
             item = GetComponentInChildren<UIInventoryItem>();
         }
 
+        private void Update()
+        {
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                (RectTransform)canvas.transform,
+                UnityEngine.Input.mousePosition,
+                canvas.worldCamera,
+                out var position
+            );
+            transform.position = canvas.transform.TransformPoint(position);
+        }
+
         public void SetData(Sprite sprite, int quantity)
         {
             item.SetData(sprite, quantity);
-        }
-
-        void Update()
-        {
-            Vector2 position;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                (RectTransform)canvas.transform,
-                Input.mousePosition,
-                canvas.worldCamera,
-                out position
-            );
-            transform.position = canvas.transform.TransformPoint(position);
         }
 
         public void Toggle(bool val)

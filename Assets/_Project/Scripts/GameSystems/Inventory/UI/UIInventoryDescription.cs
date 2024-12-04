@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace TheLastLand.Inventory.UI
+namespace TheLastLand._Project.Scripts.GameSystems.Inventory.UI
 {
     public class UIInventoryDescription : MonoBehaviour
     {

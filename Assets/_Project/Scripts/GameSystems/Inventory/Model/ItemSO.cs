@@ -1,16 +1,12 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TheLastLand.Inventory.Model
+namespace TheLastLand._Project.Scripts.GameSystems.Inventory.Model
 {
-    public abstract class ItemSO : ScriptableObject
+    public abstract class ItemSo : ScriptableObject
     {
         [field: SerializeField]
         public bool IsStackable { get; set; }
-
-        public int ID => GetInstanceID();
 
         [field: SerializeField]
         public int MaxStackSize { get; set; } = 1;
@@ -28,17 +24,6 @@ namespace TheLastLand.Inventory.Model
         [field: SerializeField]
         public List<ItemParameter> DefaultParametersList { get; set; }
 
-    }
-
-    [Serializable]
-    public struct ItemParameter : IEquatable<ItemParameter>
-    {
-        public ItemParameterSO itemParameter;
-        public float value;
-
-        public bool Equals(ItemParameter other)
-        {
-            return other.itemParameter == itemParameter;
-        }
+        public int ID => GetInstanceID();
     }
 }

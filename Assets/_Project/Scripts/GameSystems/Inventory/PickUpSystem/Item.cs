@@ -1,14 +1,13 @@
-using TheLastLand.Inventory.Model;
 using System.Collections;
-using System.Collections.Generic;
+using TheLastLand._Project.Scripts.GameSystems.Inventory.Model;
 using UnityEngine;
 
-namespace TheLastLand
+namespace TheLastLand._Project.Scripts.GameSystems.Inventory.PickUpSystem
 {
     public class Item : MonoBehaviour
     {
         [field: SerializeField]
-        public ItemSO InventoryItem { get; private set; }
+        public ItemSo InventoryItem { get; private set; }
 
         [field: SerializeField]
         public int Quantity { get; set; } = 1;
@@ -33,16 +32,16 @@ namespace TheLastLand
         private IEnumerator AnimateItemPickup()
         {
             audioSource.Play();
-            Vector3 startScale = transform.localScale;
-            Vector3 endScale = Vector3.zero;
+            var startScale = transform.localScale;
+            var endScale = Vector3.zero;
             float currentTime = 0;
             while (currentTime < duration)
             {
                 currentTime += Time.deltaTime;
-                transform.localScale =
-                    Vector3.Lerp(startScale, endScale, currentTime / duration);
+                transform.localScale = Vector3.Lerp(startScale, endScale, currentTime / duration);
                 yield return null;
             }
+
             Destroy(gameObject);
         }
     }
