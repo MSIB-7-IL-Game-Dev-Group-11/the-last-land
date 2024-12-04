@@ -20,6 +20,6 @@ namespace TheLastLand._Project.Scripts.Characters.Player.Datas
         public bool IsDashing;
         
         public bool WasGrounded;
-        public bool IsStaminaBelowMinimum;
+        public bool IsRegenerationEnabled;
     }
 }

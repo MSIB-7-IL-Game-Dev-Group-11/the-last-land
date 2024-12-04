@@ -21,7 +21,7 @@ namespace TheLastLand._Project.Scripts.Characters.Player.StateMachines
         {
             PlayerController = playerController;
             Animator = animator;
-            PlayerData = PlayerController.data;
+            PlayerData = PlayerController.Data;
         }
 
         public virtual void OnEnter()
