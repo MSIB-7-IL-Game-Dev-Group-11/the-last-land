@@ -11,6 +11,7 @@ namespace TheLastLand._Project.Scripts.Input
         public event UnityAction<InputAction.CallbackContext> Move = delegate { };
         public event UnityAction<InputAction.CallbackContext> Jump = delegate { };
         public event UnityAction<InputAction.CallbackContext> Dash = delegate { };
+        public event UnityAction<InputAction.CallbackContext> Interact = delegate { };
 
         private PlayerInputActions _playerInputActions;
         private Vector2 _moveInput;
@@ -45,6 +46,11 @@ namespace TheLastLand._Project.Scripts.Input
         public void OnJump(InputAction.CallbackContext context)
         {
             Jump?.Invoke(context);
+        }
+
+        public void OnInteract(InputAction.CallbackContext context)
+        {
+            Interact?.Invoke(context);
         }
 
         public void OnDash(InputAction.CallbackContext context)

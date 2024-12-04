@@ -1,4 +1,4 @@
-﻿namespace TheLastLand._Project.Scripts.StateMachines
+﻿namespace TheLastLand._Project.Scripts.StateMachines.Common
 {
     public interface ITransition
     {

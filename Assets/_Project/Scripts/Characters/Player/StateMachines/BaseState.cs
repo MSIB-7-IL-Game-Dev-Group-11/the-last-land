@@ -1,6 +1,5 @@
 ﻿using TheLastLand._Project.Scripts.Characters.Player.Datas;
-using TheLastLand._Project.Scripts.SeviceLocator;
-using TheLastLand._Project.Scripts.StateMachines;
+using TheLastLand._Project.Scripts.StateMachines.Common;
 using UnityEngine;
 
 namespace TheLastLand._Project.Scripts.Characters.Player.StateMachines

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TheLastLand._Project.Scripts.Characters.Player;
 using TheLastLand._Project.Scripts.Characters.Player.Datas;
 using TheLastLand._Project.Scripts.GameSystems.Item.Common;
@@ -37,11 +36,6 @@ namespace TheLastLand._Project.Scripts
         private void Update()
         {
             HandleTimer();
-
-            if (!_staminaRegenTimer.IsRunning && staminaRegeneration)
-            {
-                _staminaRegenTimer.Start();
-            }
         }
 
         private void OnEnable()
@@ -72,6 +66,12 @@ namespace TheLastLand._Project.Scripts
             foreach (var timer in _timers)
             {
                 timer.Tick(Time.deltaTime);
+            }
+            
+            if (!_staminaRegenTimer.IsRunning && staminaRegeneration)
+            {
+                _staminaRegenTimer.Reset(data.Stamina.RegenerationTime);
+                _staminaRegenTimer.Start();
             }
         }
     }
