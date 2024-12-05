@@ -96,11 +96,13 @@ namespace TheLastLand._Project.Scripts
 
         private void OnEnable()
         {
+            Item.OnCollected += _playerMediator.InventoryAdd;
             _playerController.RegisterEvents();
         }
 
         private void OnDisable()
         {
+            Item.OnCollected -= _playerMediator.InventoryAdd;
             _playerController.DeregisterEvents();
         }
 
