@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using TheLastLand._Project.Scripts.Characters.Common;
+using TheLastLand._Project.Scripts.Characters.Player.Common;
 using TheLastLand._Project.Scripts.Characters.Player.Datas;
 using TheLastLand._Project.Scripts.Utils;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace TheLastLand._Project.Scripts.Characters.Player
         private readonly PlayerStateData _stateData;
         private readonly PlayerComponent _components;
         private readonly PlayerData _data;
-        private readonly PlayerMediator _playerMediator;
+        private readonly IPlayerStamina _playerStamina;
 
         public CountdownTimer JumpTimer { get; }
         public CountdownTimer JumpCooldownTimer { get; }
@@ -23,9 +24,9 @@ namespace TheLastLand._Project.Scripts.Characters.Player
         private List<Timer> Timers { get; }
 
         public PlayerTimerConfigurator(PlayerStateData stateData, PlayerComponent components,
-            PlayerData data, PlayerMediator playerMediator)
+            PlayerData data, IPlayerStamina playerStamina)
         {
-            _playerMediator = playerMediator;
+            _playerStamina = playerStamina;
             _stateData = stateData;
             _components = components;
             _data = data;
@@ -105,7 +106,7 @@ namespace TheLastLand._Project.Scripts.Characters.Player
                 DashCooldownTimer.Start();
             };
 
-            StaminaRegenTimer.OnStart += () => { _playerMediator.RegenerateStamina(); };
+            StaminaRegenTimer.OnStart += () => { _playerStamina.RegenerateStamina(); };
         }
 
         private void CoyoteJumpChecking()
