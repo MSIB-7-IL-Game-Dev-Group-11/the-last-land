@@ -1,14 +1,13 @@
-﻿using TheLastLand._Project.Scripts.GameSystems.Item;
-using TheLastLand._Project.Scripts.GameSystems.OldInventory.Common;
+﻿using TheLastLand._Project.Scripts.GameSystems.Backpack.Common;
+using TheLastLand._Project.Scripts.GameSystems.Item;
 
-namespace TheLastLand._Project.Scripts.GameSystems.OldInventory
+namespace TheLastLand._Project.Scripts.GameSystems.Backpack
 {
-    [System.Serializable]
-    public class InventoryItem : IInventoryItem
+    public class BackpackItem : IBackpackItem
     {
         public ItemData ItemData { get; private set; }
 
-        public InventoryItem(ItemData itemData)
+        public BackpackItem(ItemData itemData)
         {
             ItemData = itemData;
             AddToStack();

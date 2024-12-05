@@ -1,9 +1,9 @@
 ﻿using TheLastLand._Project.Scripts.GameSystems.Item;
 using TheLastLand._Project.Scripts.GameSystems.Item.Common;
 
-namespace TheLastLand._Project.Scripts.GameSystems.OldInventory.Common
+namespace TheLastLand._Project.Scripts.GameSystems.Backpack.Common
 {
-    public interface IInventoryItem : IStackable
+    public interface IBackpackItem : IStackable
     {
         ItemData ItemData { get; }
     }
