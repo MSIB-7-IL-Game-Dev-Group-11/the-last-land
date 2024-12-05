@@ -21,6 +21,11 @@ namespace TheLastLand._Project.Scripts
 
         private void OnCollisionEnter2D(Collision2D other)
         {
+            HandleItemStacking(other);
+        }
+
+        private void HandleItemStacking(Collision2D other)
+        {
             if (_collisionHandled) return;
             var otherItem = other.gameObject.GetComponent<Item>();
 
