@@ -5,6 +5,7 @@ using TheLastLand._Project.Scripts.Input;
 using TheLastLand._Project.Scripts.SeviceLocator;
 using Cinemachine;
 using TheLastLand._Project.Scripts.Characters.Common;
+using TheLastLand._Project.Scripts.Extensions;
 using TheLastLand._Project.Scripts.StateMachines;
 using UnityEngine;
 
@@ -14,15 +15,12 @@ namespace TheLastLand._Project.Scripts
     {
         private const float ZeroF = 0f;
 
-        [field: Header("References"), SerializeField]
-        private PlayerData data;
-
         [SerializeField] private InputReader playerInput;
         [SerializeField] private CinemachineVirtualCamera virtualCamera;
 
         private PlayerComponent _playerComponent;
         private PlayerStateData _stateData;
-
+        private PlayerData _data;
         private PlayerMediator _playerMediator;
         private PlayerController _playerController;
         private StateMachine _stateMachine;
@@ -35,9 +33,8 @@ namespace TheLastLand._Project.Scripts
 
         private void Awake()
         {
-            _playerMediator = ScriptableObject.CreateInstance<PlayerMediator>();
-            _playerMediator.Initialize(data);
-            ServiceLocator.ForSceneOf(this).Register(data).Register(_playerMediator);
+            _playerMediator.Initialize(_data);
+            ServiceLocator.ForSceneOf(this).Register(_data).Register(_playerMediator);
 
             var animator = GetComponent<Animator>();
             var characterSprite = GetComponent<SpriteRenderer>();
@@ -59,12 +56,12 @@ namespace TheLastLand._Project.Scripts
             _timerConfigurator = new PlayerTimerConfigurator(
                 _stateData,
                 _playerComponent,
-                data,
+                _data,
                 _playerMediator
             );
 
             _playerController = new PlayerController(
-                data,
+                _data,
                 _playerMediator,
                 _playerComponent,
                 _stateData,
@@ -119,6 +116,19 @@ namespace TheLastLand._Project.Scripts
         private void OnTriggerExit2D(Collider2D other)
         {
             _playerController.HandleInteraction(other, false);
+        }
+
+        private void OnValidate()
+        {
+            _playerMediator = this.LoadAssetIfNull(
+                _playerMediator,
+                "Assets/_Project/ScriptableObjects/PlayerMediator.asset"
+            );
+            
+            _data = this.LoadAssetIfNull(
+                _data,
+                "Assets/_Project/ScriptableObjects/PlayerData.asset"
+            );
         }
     }
 }
