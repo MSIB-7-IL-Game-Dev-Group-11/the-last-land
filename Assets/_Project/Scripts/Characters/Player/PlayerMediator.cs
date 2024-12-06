@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using TheLastLand._Project.Scripts.Characters.Player.Common;
+﻿using TheLastLand._Project.Scripts.Characters.Player.Common;
 using TheLastLand._Project.Scripts.Characters.Player.Datas;
 using TheLastLand._Project.Scripts.GameSystems.Backpack;
 using TheLastLand._Project.Scripts.GameSystems.Backpack.Common;
@@ -35,19 +34,31 @@ namespace TheLastLand._Project.Scripts.Characters.Player
 
         #region IPlayerStamina
 
+        public float Stamina => _staminaController.Stamina;
+
         public bool HasSufficientStamina(float staminaThreshold) =>
-            _staminaController.Stamina >= staminaThreshold;
+            Stamina >= staminaThreshold;
 
         public void UseStamina(float value)
         {
             _staminaController.UseStamina(value);
-            OnStaminaUsed?.Invoke(_staminaController.Stamina);
+            OnStaminaUsed?.Invoke(Stamina);
         }
 
         public void RegenerateStamina()
         {
             _staminaController.RegenerateStamina();
             OnPlayerRegenerated?.Invoke();
+        }
+
+        public void AddStamina(float value)
+        {
+            _staminaController.AddStamina(value);
+        }
+
+        public void SetStamina(float value)
+        {
+            _staminaController.SetStamina(value);
         }
 
         #endregion

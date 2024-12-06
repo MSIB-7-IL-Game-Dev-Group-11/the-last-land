@@ -8,12 +8,6 @@
         float Stamina { get; }
 
         /// <summary>
-        /// Uses a specified amount of stamina.
-        /// </summary>
-        /// <param name="value">The amount of stamina to use.</param>
-        void UseStamina(float value);
-
-        /// <summary>
         /// Regenerates stamina over time.
         /// </summary>
         void RegenerateStamina();
@@ -29,5 +23,11 @@
         /// </summary>
         /// <param name="value">The value to set the stamina to.</param>
         void SetStamina(float value);
+
+        /// <summary>
+        /// Uses a specified amount of stamina.
+        /// </summary>
+        /// <param name="value">The amount of stamina to use.</param>
+        void UseStamina(float value);
     }
 }
