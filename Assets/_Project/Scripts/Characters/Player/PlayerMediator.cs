@@ -1,4 +1,5 @@
-﻿using TheLastLand._Project.Scripts.Characters.Player.Common;
+﻿using System.Collections.Generic;
+using TheLastLand._Project.Scripts.Characters.Player.Common;
 using TheLastLand._Project.Scripts.Characters.Player.Datas;
 using TheLastLand._Project.Scripts.GameSystems.Backpack;
 using TheLastLand._Project.Scripts.GameSystems.Backpack.Common;
@@ -28,6 +29,8 @@ namespace TheLastLand._Project.Scripts.Characters.Player
             _staminaController = new StaminaController(data.Stamina);
             _healthController = new HealthController(data.Health);
             _backpackController = new BackpackController();
+            
+            BackpackSize = data.Backpack.Size;
         }
 
         #region IPlayerStamina
@@ -59,7 +62,13 @@ namespace TheLastLand._Project.Scripts.Characters.Player
 
         #endregion
 
+        #region IPlayerBackpack
+        
+        public int BackpackSize { get; private set; }
+
         public void InventoryAdd(ItemData itemData, int stackSize) =>
             _backpackController.Add(itemData, stackSize);
+
+        #endregion
     }
 }

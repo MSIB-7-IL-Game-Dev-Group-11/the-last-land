@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using UnityEngine.Events;
+﻿using System;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using static PlayerInputActions;
 
@@ -8,14 +8,12 @@ namespace TheLastLand._Project.Scripts.Input
     [CreateAssetMenu(fileName = "InputReader", menuName = "TheLastLand/InputReader")]
     public class InputReader : ScriptableObject, IPlayerActions
     {
-        public event UnityAction<InputAction.CallbackContext> Move = delegate { };
-        public event UnityAction<InputAction.CallbackContext> Jump = delegate { };
-        public event UnityAction<InputAction.CallbackContext> Dash = delegate { };
-        public event UnityAction<InputAction.CallbackContext> Interact = delegate { };
+        public event Action<InputAction.CallbackContext> Move = delegate { };
+        public event Action<InputAction.CallbackContext> Jump = delegate { };
+        public event Action<InputAction.CallbackContext> Dash = delegate { };
+        public event Action<InputAction.CallbackContext> Interact = delegate { };
 
         private PlayerInputActions _playerInputActions;
-        private Vector2 _moveInput;
-        private bool _isRunning;
 
         private void OnEnable()
         {

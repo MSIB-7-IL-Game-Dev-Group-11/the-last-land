@@ -32,5 +32,8 @@ namespace TheLastLand._Project.Scripts.Characters.Player.Datas
         
         [field: SerializeField]
         public HealthData Health { get; private set; }
+        
+        [field: SerializeField]
+        public PlayerBackpackData Backpack { get; private set; }
     }
 }
