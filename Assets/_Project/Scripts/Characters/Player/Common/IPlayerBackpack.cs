@@ -1,10 +1,9 @@
-﻿using TheLastLand._Project.Scripts.GameSystems.Item;
+﻿using TheLastLand._Project.Scripts.GameSystems.Backpack.Common;
 
 namespace TheLastLand._Project.Scripts.Characters.Player.Common
 {
-    public interface IPlayerBackpack
+    public interface IPlayerBackpack : IBackpackController
     {
         int BackpackSize { get; }
-        void InventoryAdd(ItemData itemData, int stackSize);
     }
 }

@@ -17,5 +17,12 @@ namespace TheLastLand._Project.Scripts.GameSystems.Backpack.Common
         /// <param name="itemData">The data of the item to remove.</param>
         /// <param name="stackSize">The number of items to remove from the stack.</param>
         void Remove(ItemData itemData, int stackSize);
+
+        /// <summary>
+        /// Swaps the items at the specified indices in the inventory.
+        /// </summary>
+        /// <param name="fromIndex">The index of the first item to swap.</param>
+        /// <param name="toIndex">The index of the second item to swap.</param>
+        void Swap(int fromIndex, int toIndex);
     }
 }

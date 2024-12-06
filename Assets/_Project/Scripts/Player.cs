@@ -97,13 +97,13 @@ namespace TheLastLand._Project.Scripts
 
         private void OnEnable()
         {
-            Item.OnCollected += _playerBackpack.InventoryAdd;
+            Item.OnCollected += _playerBackpack.Add;
             _playerController.RegisterEvents();
         }
 
         private void OnDisable()
         {
-            Item.OnCollected -= _playerBackpack.InventoryAdd;
+            Item.OnCollected -= _playerBackpack.Add;
             _playerController.DeregisterEvents();
         }
 

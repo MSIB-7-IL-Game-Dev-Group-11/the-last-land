@@ -42,6 +42,7 @@ namespace TheLastLand._Project.Scripts
 
             // Destroy the other item
             Destroy(other.gameObject);
+            _collisionHandled = false;
         }
 
         private void UpdateStackText()

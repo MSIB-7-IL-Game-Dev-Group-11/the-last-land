@@ -28,8 +28,8 @@ namespace TheLastLand._Project.Scripts.Characters.Player
         {
             _staminaController = new StaminaController(data.Stamina);
             _healthController = new HealthController(data.Health);
-            _backpackController = new BackpackController();
-            
+            _backpackController = new BackpackController(data.Backpack);
+
             BackpackSize = data.Backpack.Size;
         }
 
@@ -63,11 +63,17 @@ namespace TheLastLand._Project.Scripts.Characters.Player
         #endregion
 
         #region IPlayerBackpack
-        
+
         public int BackpackSize { get; private set; }
 
-        public void InventoryAdd(ItemData itemData, int stackSize) =>
+        public void Swap(int fromIndex, int toIndex) =>
+            _backpackController.Swap(fromIndex, toIndex);
+
+        public void Add(ItemData itemData, int stackSize) =>
             _backpackController.Add(itemData, stackSize);
+
+        public void Remove(ItemData itemData, int stackSize) =>
+            _backpackController.Remove(itemData, stackSize);
 
         #endregion
     }

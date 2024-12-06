@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using TheLastLand._Project.Scripts.Characters.Player;
-using TheLastLand._Project.Scripts.Characters.Player.Common;
+using TheLastLand._Project.Scripts.Extensions;
 using TheLastLand._Project.Scripts.GameSystems.Backpack;
 using TheLastLand._Project.Scripts.GameSystems.Backpack.Common;
 using TheLastLand._Project.Scripts.Input;
-using TheLastLand._Project.Scripts.SeviceLocator;
 using UnityEngine;
 
 namespace TheLastLand._Project.Scripts
@@ -14,29 +13,36 @@ namespace TheLastLand._Project.Scripts
         [SerializeField] private GameObject backpackSlotPrefab;
         [SerializeField] private GameObject backpackUI;
         [SerializeField] private UiInputReader inputReader;
+        [SerializeField] private Transform backpackSlotContainer;
 
-        private Transform _backpackSlotContainer;
-
-        private IPlayerBackpack _playerBackpack;
+        private PlayerMediator _playerMediator;
         private List<BackpackSlot> _backpackSlots;
 
         private void Start()
         {
-            _playerBackpack = ServiceLocator.ForSceneOf(this).Get<PlayerMediator>();
-            _backpackSlotContainer = GameObject.Find("SlotContainer").transform;
             InitializeBackpackSlots();
         }
 
         private void OnEnable()
         {
             BackpackController.OnBackpackChanged += DrawBackpack;
+            BackpackSlot.ItemSwappedEvent += _playerMediator.Swap;
             inputReader.BackpackToggleEvent += ToggleBackpack;
         }
 
         private void OnDisable()
         {
             BackpackController.OnBackpackChanged -= DrawBackpack;
+            BackpackSlot.ItemSwappedEvent -= _playerMediator.Swap;
             inputReader.BackpackToggleEvent -= ToggleBackpack;
+        }
+
+        private void OnValidate()
+        {
+            _playerMediator = this.LoadAssetIfNull(
+                _playerMediator,
+                "Assets/_Project/ScriptableObjects/PlayerMediator.asset"
+            );
         }
 
         private void ToggleBackpack(bool isOpen)
@@ -46,10 +52,10 @@ namespace TheLastLand._Project.Scripts
 
         private void InitializeBackpackSlots()
         {
-            _backpackSlots = new List<BackpackSlot>(_playerBackpack.BackpackSize);
-            for (var i = 0; i < _playerBackpack.BackpackSize; i++)
+            _backpackSlots = new List<BackpackSlot>(_playerMediator.BackpackSize);
+            for (var i = 0; i < _playerMediator.BackpackSize; i++)
             {
-                var backpackSlot = Instantiate(backpackSlotPrefab, _backpackSlotContainer)
+                var backpackSlot = Instantiate(backpackSlotPrefab, backpackSlotContainer)
                     .GetComponent<BackpackSlot>();
                 backpackSlot.ClearSlot();
                 _backpackSlots.Add(backpackSlot);
