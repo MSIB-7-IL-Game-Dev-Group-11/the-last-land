@@ -19,12 +19,14 @@ namespace TheLastLand._Project.Scripts.GameSystems.Backpack.Common
         /// Adds an item to the inventory.
         /// </summary>
         /// <param name="itemData">The data of the item to add.</param>
-        void Add(ItemData itemData);
+        /// <param name="stackSize">The number of items to add to the stack.</param>
+        void Add(ItemData itemData, int stackSize);
 
         /// <summary>
         /// Removes an item from the inventory.
         /// </summary>
         /// <param name="itemData">The data of the item to remove.</param>
-        void Remove(ItemData itemData);
+        /// <param name="stackSize">The number of items to remove from the stack.</param>
+        void Remove(ItemData itemData, int stackSize);
     }
 }

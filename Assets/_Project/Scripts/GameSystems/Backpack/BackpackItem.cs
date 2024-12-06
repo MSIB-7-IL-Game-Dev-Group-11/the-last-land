@@ -5,31 +5,23 @@ namespace TheLastLand._Project.Scripts.GameSystems.Backpack
 {
     public class BackpackItem : IBackpackItem
     {
-        public ItemData ItemData { get; private set; }
-
-        public BackpackItem(ItemData itemData)
-        {
-            ItemData = itemData;
-            AddToStack();
-        }
-
+        public ItemData ItemData { get; }
         public int StackSize { get; private set; }
 
-        public void AddToStack()
+        public BackpackItem(ItemData itemData, int initialStackSize)
         {
-            if (ItemData.StackSize > 1)
-            {
-                StackSize += ItemData.StackSize;
-                ItemData.StackSize = 1;
-                return;
-            }
-            
-            StackSize++;
+            ItemData = itemData;
+            StackSize = initialStackSize;
         }
 
-        public void RemoveFromStack()
+        public void AddToStack(int stackSize)
         {
-            StackSize--;
+            StackSize += stackSize;
+        }
+
+        public void RemoveFromStack(int stackSize)
+        {
+            StackSize -= stackSize;
         }
     }
 }

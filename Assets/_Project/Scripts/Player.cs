@@ -5,6 +5,7 @@ using TheLastLand._Project.Scripts.Input;
 using TheLastLand._Project.Scripts.SeviceLocator;
 using Cinemachine;
 using TheLastLand._Project.Scripts.Characters.Common;
+using TheLastLand._Project.Scripts.Characters.Player.Common;
 using TheLastLand._Project.Scripts.Extensions;
 using TheLastLand._Project.Scripts.StateMachines;
 using UnityEngine;
@@ -30,6 +31,7 @@ namespace TheLastLand._Project.Scripts
 
         private ICharacterTimer _timerConfigurator;
         private ICharacterSm _smConfigurator;
+        private IPlayerBackpack _playerBackpack;
 
         private void Awake()
         {
@@ -75,6 +77,8 @@ namespace TheLastLand._Project.Scripts
                 _stateData,
                 _timerConfigurator as PlayerTimerConfigurator
             );
+
+            _playerBackpack = _playerMediator;
         }
 
         private void Update()
@@ -93,13 +97,13 @@ namespace TheLastLand._Project.Scripts
 
         private void OnEnable()
         {
-            Item.OnCollected += _playerMediator.InventoryAdd;
+            Item.OnCollected += _playerBackpack.InventoryAdd;
             _playerController.RegisterEvents();
         }
 
         private void OnDisable()
         {
-            Item.OnCollected -= _playerMediator.InventoryAdd;
+            Item.OnCollected -= _playerBackpack.InventoryAdd;
             _playerController.DeregisterEvents();
         }
 
@@ -124,7 +128,7 @@ namespace TheLastLand._Project.Scripts
                 _playerMediator,
                 "Assets/_Project/ScriptableObjects/PlayerMediator.asset"
             );
-            
+
             _data = this.LoadAssetIfNull(
                 _data,
                 "Assets/_Project/ScriptableObjects/PlayerData.asset"

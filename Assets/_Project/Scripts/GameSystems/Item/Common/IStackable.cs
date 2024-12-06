@@ -3,7 +3,7 @@
     public interface IStackable
     {
         int StackSize { get; }
-        void AddToStack();
-        void RemoveFromStack();
+        void AddToStack(int stackSize);
+        void RemoveFromStack(int stackSize);
     }
 }

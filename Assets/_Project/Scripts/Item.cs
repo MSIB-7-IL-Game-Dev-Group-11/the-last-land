@@ -9,14 +9,13 @@ namespace TheLastLand._Project.Scripts
     public class Item : MonoBehaviour, ICollectible, IStackable
     {
         [SerializeField] private ItemData itemData;
-        public static event UnityAction<ItemData> OnCollected = delegate { };
+        public static event UnityAction<ItemData, int> OnCollected = delegate { };
         private bool _collisionHandled;
 
         public void Collect()
         {
             Destroy(gameObject);
-            itemData.StackSize = StackSize;
-            OnCollected?.Invoke(itemData);
+            OnCollected?.Invoke(itemData, StackSize);
         }
 
         private void OnCollisionEnter2D(Collision2D other)
@@ -35,10 +34,7 @@ namespace TheLastLand._Project.Scripts
             if (otherStackableItem == null) return;
 
             // Transfer the stack size from the other item to this item
-            for (int i = 0; i < otherStackableItem.StackSize; i++)
-            {
-                AddToStack();
-            }
+            AddToStack(otherStackableItem.StackSize);
 
             // Mark the collision as handled
             _collisionHandled = true;
@@ -57,15 +53,15 @@ namespace TheLastLand._Project.Scripts
             }
         }
 
-        public void AddToStack()
+        public void AddToStack(int stackSize)
         {
-            StackSize++;
+            StackSize += stackSize;
             UpdateStackText();
         }
 
-        public void RemoveFromStack()
+        public void RemoveFromStack(int stackSize)
         {
-            StackSize--;
+            StackSize -= stackSize;
             UpdateStackText();
         }
 

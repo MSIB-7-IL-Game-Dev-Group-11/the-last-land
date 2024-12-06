@@ -17,7 +17,7 @@ namespace TheLastLand._Project.Scripts.Characters.Player
     {
         private IStaminaController _staminaController;
         private IHealthController _healthController;
-        private IBackpackController _iBackpackController;
+        private IBackpackController _backpackController;
 
         public event UnityAction<float> OnStaminaUsed = delegate { };
         public event UnityAction<float> OnPlayerDamaged = delegate { };
@@ -27,7 +27,7 @@ namespace TheLastLand._Project.Scripts.Characters.Player
         {
             _staminaController = new StaminaController(data.Stamina);
             _healthController = new HealthController(data.Health);
-            _iBackpackController = new BackpackController();
+            _backpackController = new BackpackController();
         }
 
         #region IPlayerStamina
@@ -59,6 +59,7 @@ namespace TheLastLand._Project.Scripts.Characters.Player
 
         #endregion
 
-        public void InventoryAdd(ItemData itemData) => _iBackpackController.Add(itemData);
+        public void InventoryAdd(ItemData itemData, int stackSize) =>
+            _backpackController.Add(itemData, stackSize);
     }
 }

@@ -4,6 +4,6 @@ namespace TheLastLand._Project.Scripts.Characters.Player.Common
 {
     public interface IPlayerBackpack
     {
-        void InventoryAdd(ItemData itemData);
+        void InventoryAdd(ItemData itemData, int stackSize);
     }
 }
