@@ -66,10 +66,10 @@ namespace TheLastLand._Project.Scripts
         public void OnDrop(PointerEventData eventData)
         {
             var draggedItem = eventData.pointerDrag.GetComponent<BackpackSlot>();
-            if (draggedItem == null) return;
+            if (draggedItem == null || draggedItem._item == null) return;
 
             var originalSlot = draggedItem.GetComponentInParent<BackpackSlot>();
-            if (originalSlot == null) return;
+            if (originalSlot == null || originalSlot._item == null) return;
 
             SwapItems(originalSlot);
         }
