@@ -277,6 +277,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HotbarSlot"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""28133073-1c9c-4924-8bdd-ee0951fee685"",
+                    ""expectedControlType"": ""Integer"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -708,6 +717,61 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Backpack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""56e64321-418a-43f9-8924-4decd1f3fe8c"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""HotbarSlot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""07929198-7525-45bd-bfdc-93366e251789"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""HotbarSlot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f3cae865-6055-46f0-b1ae-691ac81569ff"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""HotbarSlot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b566432d-420c-4c08-bf6a-3e926f5d9c01"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""HotbarSlot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""004ad998-a27e-492a-b804-6a53beb5f2ab"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""HotbarSlot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -795,6 +859,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
         m_UI_Backpack = m_UI.FindAction("Backpack", throwIfNotFound: true);
+        m_UI_HotbarSlot = m_UI.FindAction("HotbarSlot", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -945,6 +1010,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_TrackedDevicePosition;
     private readonly InputAction m_UI_TrackedDeviceOrientation;
     private readonly InputAction m_UI_Backpack;
+    private readonly InputAction m_UI_HotbarSlot;
     public struct UIActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -960,6 +1026,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @TrackedDevicePosition => m_Wrapper.m_UI_TrackedDevicePosition;
         public InputAction @TrackedDeviceOrientation => m_Wrapper.m_UI_TrackedDeviceOrientation;
         public InputAction @Backpack => m_Wrapper.m_UI_Backpack;
+        public InputAction @HotbarSlot => m_Wrapper.m_UI_HotbarSlot;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1002,6 +1069,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Backpack.started += instance.OnBackpack;
             @Backpack.performed += instance.OnBackpack;
             @Backpack.canceled += instance.OnBackpack;
+            @HotbarSlot.started += instance.OnHotbarSlot;
+            @HotbarSlot.performed += instance.OnHotbarSlot;
+            @HotbarSlot.canceled += instance.OnHotbarSlot;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -1039,6 +1109,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Backpack.started -= instance.OnBackpack;
             @Backpack.performed -= instance.OnBackpack;
             @Backpack.canceled -= instance.OnBackpack;
+            @HotbarSlot.started -= instance.OnHotbarSlot;
+            @HotbarSlot.performed -= instance.OnHotbarSlot;
+            @HotbarSlot.canceled -= instance.OnHotbarSlot;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -1122,5 +1195,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnTrackedDevicePosition(InputAction.CallbackContext context);
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
         void OnBackpack(InputAction.CallbackContext context);
+        void OnHotbarSlot(InputAction.CallbackContext context);
     }
 }

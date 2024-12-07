@@ -3,6 +3,7 @@ using TheLastLand._Project.Scripts.Characters.Player.Common;
 using TheLastLand._Project.Scripts.Characters.Player.Datas;
 using TheLastLand._Project.Scripts.GameSystems.Interactor.Common;
 using TheLastLand._Project.Scripts.Input;
+using TheLastLand._Project.Scripts.SeviceLocator;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,9 +18,9 @@ namespace TheLastLand._Project.Scripts.Characters.Player
         private InputReader PlayerInput { get; }
         private CinemachineVirtualCamera VirtualCamera { get; }
 
-        private PlayerStateData StateData { get; }
-        private IInteractable _interactable;
+        private readonly PlayerStateData _stateData;
         private readonly IPlayerStamina _playerStamina;
+        private IInteractable _interactable;
 
         // Components
         private readonly SpriteRenderer _characterSprite;
@@ -27,23 +28,20 @@ namespace TheLastLand._Project.Scripts.Characters.Player
         private readonly GroundCheck _groundCheck;
 
         // Timer
-        private readonly PlayerTimerConfigurator _timerConfigurator;
+        private readonly IPlayerTimerConfigurator _timerConfigurator;
 
-        public PlayerController(PlayerData data, IPlayerStamina playerStamina,
-            PlayerComponent components, PlayerStateData stateData,
-            PlayerTimerConfigurator timerConfigurator)
+        public PlayerController(Scripts.Player player)
         {
-            Data = data;
-            StateData = stateData;
-
-            _playerStamina = playerStamina;
+            ServiceLocator.ForSceneOf(player).Get(out Data).Get(out _stateData)
+                .Get(out PlayerComponent components).Get(out _playerStamina)
+                .Get(out _timerConfigurator);
 
             PlayerInput = components.PlayerInput;
             VirtualCamera = components.VirtualCamera;
-            _characterSprite = components.CharacterSprite;
-            _rigidbody = components.Rigidbody;
-            _groundCheck = components.GroundCheck;
-            _timerConfigurator = timerConfigurator;
+
+            _characterSprite = player.GetComponent<SpriteRenderer>();
+            _rigidbody = player.GetComponent<Rigidbody2D>();
+            _groundCheck = player.GetComponent<GroundCheck>();
 
             InitializeCamera();
         }
@@ -54,6 +52,7 @@ namespace TheLastLand._Project.Scripts.Characters.Player
             PlayerInput.Move += OnMove;
             PlayerInput.Dash += OnDash;
             PlayerInput.Interact += OnInteract;
+            Scripts.Player.OnPlayerInteract += HandleInteraction;
         }
 
         public void DeregisterEvents()
@@ -62,12 +61,13 @@ namespace TheLastLand._Project.Scripts.Characters.Player
             PlayerInput.Move -= OnMove;
             PlayerInput.Dash -= OnDash;
             PlayerInput.Interact -= OnInteract;
+            Scripts.Player.OnPlayerInteract -= HandleInteraction;
         }
 
         private void OnMove(InputAction.CallbackContext context)
         {
-            StateData.MovementDirection = context.ReadValue<Vector2>();
-            StateData.IsWalking = context.performed;
+            _stateData.MovementDirection = context.ReadValue<Vector2>();
+            _stateData.IsWalking = context.performed;
         }
 
         private void OnJump(InputAction.CallbackContext context)
@@ -127,12 +127,12 @@ namespace TheLastLand._Project.Scripts.Characters.Player
         {
             if (!_timerConfigurator.JumpTimer.IsRunning) return;
 
-            _rigidbody.AddForce(StateData.CurrentJumpVelocity * Vector2.up, ForceMode2D.Force);
+            _rigidbody.AddForce(_stateData.CurrentJumpVelocity * Vector2.up, ForceMode2D.Force);
         }
 
         public void Move(float speedModifier)
         {
-            var targetSpeed = StateData.MovementDirection.x
+            var targetSpeed = _stateData.MovementDirection.x
                               * (_timerConfigurator.DashTimer.IsRunning
                                   ? Data.Dash.Force
                                   : Data.BaseSpeed);
@@ -147,18 +147,18 @@ namespace TheLastLand._Project.Scripts.Characters.Player
                 ? ForceMode2D.Impulse
                 : ForceMode2D.Force;
 
-            StateData.CurrentMoveVelocity = Mathf.Pow(
-                                                Mathf.Abs(speedDifference) * accelerationRate,
-                                                speedModifier
-                                            )
-                                            * Mathf.Sign(speedDifference);
+            _stateData.CurrentMoveVelocity = Mathf.Pow(
+                                                 Mathf.Abs(speedDifference) * accelerationRate,
+                                                 speedModifier
+                                             )
+                                             * Mathf.Sign(speedDifference);
 
-            _rigidbody.AddForce(StateData.CurrentMoveVelocity * Vector2.right, mode);
+            _rigidbody.AddForce(_stateData.CurrentMoveVelocity * Vector2.right, mode);
         }
 
         public void FlipCharacterSprite()
         {
-            _characterSprite.flipX = StateData.MovementDirection.x switch
+            _characterSprite.flipX = _stateData.MovementDirection.x switch
             {
                 > ZeroF => false,
                 < ZeroF => true,
@@ -166,7 +166,7 @@ namespace TheLastLand._Project.Scripts.Characters.Player
             };
         }
 
-        public void HandleInteraction(Collider2D other, bool isEntering)
+        private void HandleInteraction(Collider2D other, bool isEntering)
         {
             if (!isEntering)
             {

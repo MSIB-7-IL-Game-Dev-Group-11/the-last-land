@@ -24,5 +24,12 @@ namespace TheLastLand._Project.Scripts.GameSystems.Backpack.Common
         /// <param name="fromIndex">The index of the first item to swap.</param>
         /// <param name="toIndex">The index of the second item to swap.</param>
         void Swap(int fromIndex, int toIndex);
+
+        /// <summary>
+        /// Drops a specified number of items from the inventory.
+        /// </summary>
+        /// <param name="itemData">The data of the item to drop.</param>
+        /// <param name="stackSize">The number of items to drop from the stack.</param>
+        void Drop(ItemData itemData, int stackSize);
     }
 }

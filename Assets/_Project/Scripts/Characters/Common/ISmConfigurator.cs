@@ -1,6 +1,6 @@
 ﻿namespace TheLastLand._Project.Scripts.Characters.Common
 {
-    public interface ICharacterSm
+    public interface ISmConfigurator
     {
         void Update();
         void FixedUpdate();

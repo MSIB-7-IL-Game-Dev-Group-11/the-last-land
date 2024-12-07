@@ -8,7 +8,6 @@ using TheLastLand._Project.Scripts.GameSystems.Item;
 using TheLastLand._Project.Scripts.GameSystems.Stamina;
 using TheLastLand._Project.Scripts.GameSystems.Stamina.Common;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace TheLastLand._Project.Scripts.Characters.Player
 {
@@ -18,10 +17,6 @@ namespace TheLastLand._Project.Scripts.Characters.Player
         private IStaminaController _staminaController;
         private IHealthController _healthController;
         private IBackpackController _backpackController;
-
-        public event UnityAction<float> OnStaminaUsed = delegate { };
-        public event UnityAction<float> OnPlayerDamaged = delegate { };
-        public event UnityAction OnPlayerRegenerated = delegate { };
 
         public void Initialize(PlayerData data)
         {
@@ -39,37 +34,19 @@ namespace TheLastLand._Project.Scripts.Characters.Player
         public bool HasSufficientStamina(float staminaThreshold) =>
             Stamina >= staminaThreshold;
 
-        public void UseStamina(float value)
-        {
-            _staminaController.UseStamina(value);
-            OnStaminaUsed?.Invoke(Stamina);
-        }
+        public void UseStamina(float value) => _staminaController.UseStamina(value);
 
-        public void RegenerateStamina()
-        {
-            _staminaController.RegenerateStamina();
-            OnPlayerRegenerated?.Invoke();
-        }
+        public void RegenerateStamina() => _staminaController.RegenerateStamina();
 
-        public void AddStamina(float value)
-        {
-            _staminaController.AddStamina(value);
-        }
+        public void AddStamina(float value) => _staminaController.AddStamina(value);
 
-        public void SetStamina(float value)
-        {
-            _staminaController.SetStamina(value);
-        }
+        public void SetStamina(float value) => _staminaController.SetStamina(value);
 
         #endregion
 
         #region IPlayerHealth
 
-        public void TakeDamage(float value)
-        {
-            _healthController.TakeDamage(value);
-            OnPlayerDamaged?.Invoke(_healthController.Health);
-        }
+        public void TakeDamage(float value) => _healthController.TakeDamage(value);
 
         #endregion
 
@@ -79,6 +56,9 @@ namespace TheLastLand._Project.Scripts.Characters.Player
 
         public void Swap(int fromIndex, int toIndex) =>
             _backpackController.Swap(fromIndex, toIndex);
+
+        public void Drop(ItemData itemData, int stackSize) =>
+            _backpackController.Drop(itemData, stackSize);
 
         public void Add(ItemData itemData, int stackSize) =>
             _backpackController.Add(itemData, stackSize);

@@ -1,5 +1,6 @@
 ﻿using TheLastLand._Project.Scripts.GameSystems.Backpack.Common;
 using TheLastLand._Project.Scripts.GameSystems.Item;
+using UnityEngine;
 
 namespace TheLastLand._Project.Scripts.GameSystems.Backpack
 {
@@ -22,6 +23,12 @@ namespace TheLastLand._Project.Scripts.GameSystems.Backpack
         public void RemoveFromStack(int stackSize)
         {
             StackSize -= stackSize;
+        }
+        
+        public void Use()
+        {
+            // Implement the logic for using the item here
+            Debug.Log($"Using item: {ItemData.DisplayName}");
         }
     }
 }

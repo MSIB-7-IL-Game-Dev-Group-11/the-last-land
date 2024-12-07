@@ -1,6 +1,6 @@
 ﻿namespace TheLastLand._Project.Scripts.Characters.Common
 {
-    public interface ICharacterTimer
+    public interface ITimerConfigurator
     {
         void HandleTimers(float deltaTime);
     }

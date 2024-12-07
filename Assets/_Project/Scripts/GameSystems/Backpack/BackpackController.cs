@@ -56,6 +56,20 @@ namespace TheLastLand._Project.Scripts.GameSystems.Backpack
             (Backpack[fromIndex], Backpack[to]) = (Backpack[to], Backpack[fromIndex]);
             OnBackpackChanged?.Invoke(Backpack);
         }
+        
+        public void Drop(ItemData itemData, int stackSize)
+        {
+            if (!BackpackItems.TryGetValue(itemData, out var item)) return;
+            item.RemoveFromStack(stackSize);
+
+            if (item.StackSize == 0)
+            {
+                Backpack.Remove(item);
+                BackpackItems.Remove(itemData);
+            }
+
+            OnBackpackChanged?.Invoke(Backpack);
+        }
 
         private void AddNewItem(ItemData itemData, int stackSize)
         {

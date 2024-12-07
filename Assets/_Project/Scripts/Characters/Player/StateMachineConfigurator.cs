@@ -1,38 +1,33 @@
-﻿using TheLastLand._Project.Scripts.Characters.Common;
+﻿using TheLastLand._Project.Scripts.Characters.Player.Common;
 using TheLastLand._Project.Scripts.Characters.Player.Datas;
 using TheLastLand._Project.Scripts.Characters.Player.StateMachines;
 using TheLastLand._Project.Scripts.Input;
+using TheLastLand._Project.Scripts.SeviceLocator;
 using TheLastLand._Project.Scripts.StateMachines;
 using TheLastLand._Project.Scripts.StateMachines.Common;
-using TheLastLand._Project.Scripts.Utils;
 using UnityEngine;
 
 namespace TheLastLand._Project.Scripts.Characters.Player
 {
-    public class StateMachineConfigurator : ICharacterSm
+    public class StateMachineConfigurator : IPlayerSmConfigurator
     {
         private readonly PlayerController _playerController;
+        private readonly PlayerStateData _stateData;
+
         private readonly StateMachine _stateMachine;
         private readonly Animator _animator;
         private readonly GroundCheck _groundCheck;
-        private readonly PlayerStateData _stateData;
-        private readonly CountdownTimer _jumpTimer;
-        private readonly CountdownTimer _jumpCoyoteTimer;
-        private readonly CountdownTimer _dashTimer;
 
-        public StateMachineConfigurator(PlayerController playerController,
-            StateMachine stateMachine, PlayerComponent components, PlayerStateData stateData,
-            PlayerTimerConfigurator timerConfigurator)
+        // Timer
+        private readonly IPlayerTimerConfigurator _timerConfigurator;
+
+        public StateMachineConfigurator(Scripts.Player player)
         {
-            _stateData = stateData;
-            _playerController = playerController;
-            _stateMachine = stateMachine;
-            _animator = components.Animator;
-            _groundCheck = components.GroundCheck;
+            ServiceLocator.ForSceneOf(player).Get(out _stateData)
+                .Get(out _stateMachine).Get(out _playerController).Get(out _timerConfigurator);
 
-            _jumpTimer = timerConfigurator.JumpTimer;
-            _jumpCoyoteTimer = timerConfigurator.JumpCoyoteTimer;
-            _dashTimer = timerConfigurator.DashTimer;
+            _animator = player.GetComponent<Animator>();
+            _groundCheck = player.GetComponent<GroundCheck>();
 
             Setup();
         }
@@ -46,7 +41,10 @@ namespace TheLastLand._Project.Scripts.Characters.Player
 
             Any(
                 jumpState,
-                new FuncPredicate(() => _jumpTimer.IsRunning || _jumpCoyoteTimer.IsRunning)
+                new FuncPredicate(
+                    () => _timerConfigurator.JumpTimer.IsRunning
+                          || _timerConfigurator.JumpCoyoteTimer.IsRunning
+                )
             );
 
             At(
@@ -57,7 +55,9 @@ namespace TheLastLand._Project.Scripts.Characters.Player
             At(
                 jumpState,
                 idleState,
-                new FuncPredicate(() => _groundCheck.IsTouching && !_jumpTimer.IsRunning)
+                new FuncPredicate(
+                    () => _groundCheck.IsTouching && !_timerConfigurator.JumpTimer.IsRunning
+                )
             );
 
             At(
@@ -70,11 +70,17 @@ namespace TheLastLand._Project.Scripts.Characters.Player
                 idleState,
                 new FuncPredicate(() => !_stateData.IsWalking && _groundCheck.IsTouching)
             );
-            At(walkState, dashState, new FuncPredicate(() => _dashTimer.IsRunning));
+            At(
+                walkState,
+                dashState,
+                new FuncPredicate(() => _timerConfigurator.DashTimer.IsRunning)
+            );
             At(
                 dashState,
                 walkState,
-                new FuncPredicate(() => _groundCheck.IsTouching && !_dashTimer.IsRunning)
+                new FuncPredicate(
+                    () => _groundCheck.IsTouching && !_timerConfigurator.DashTimer.IsRunning
+                )
             );
 
             _stateMachine.SetState(idleState);

@@ -1,18 +1,22 @@
 ﻿using System.Collections.Generic;
-using TheLastLand._Project.Scripts.Characters.Common;
 using TheLastLand._Project.Scripts.Characters.Player.Common;
 using TheLastLand._Project.Scripts.Characters.Player.Datas;
+using TheLastLand._Project.Scripts.Input;
+using TheLastLand._Project.Scripts.SeviceLocator;
 using TheLastLand._Project.Scripts.Utils;
 using UnityEngine;
 
 namespace TheLastLand._Project.Scripts.Characters.Player
 {
-    public class PlayerTimerConfigurator : ICharacterTimer
+    public class PlayerTimerConfigurator : IPlayerTimerConfigurator
     {
         private readonly PlayerStateData _stateData;
         private readonly PlayerComponent _components;
         private readonly PlayerData _data;
         private readonly IPlayerStamina _playerStamina;
+
+        private readonly Rigidbody2D _rigidbody;
+        private readonly GroundCheck _groundCheck;
 
         public CountdownTimer JumpTimer { get; }
         public CountdownTimer JumpCooldownTimer { get; }
@@ -23,13 +27,13 @@ namespace TheLastLand._Project.Scripts.Characters.Player
 
         private List<Timer> Timers { get; }
 
-        public PlayerTimerConfigurator(PlayerStateData stateData, PlayerComponent components,
-            PlayerData data, IPlayerStamina playerStamina)
+        public PlayerTimerConfigurator(Scripts.Player player)
         {
-            _playerStamina = playerStamina;
-            _stateData = stateData;
-            _components = components;
-            _data = data;
+            _rigidbody = player.GetComponent<Rigidbody2D>();
+            _groundCheck = player.GetComponent<GroundCheck>();
+
+            ServiceLocator.ForSceneOf(player).Get(out _playerStamina)
+                .Get(out _stateData).Get(out _components).Get(out _data);
 
             JumpTimer = new CountdownTimer(0f);
             JumpCooldownTimer = new CountdownTimer(0f);
@@ -68,7 +72,7 @@ namespace TheLastLand._Project.Scripts.Characters.Player
             JumpTimer.OnStart += () =>
             {
                 _stateData.IsJumping = true;
-                var forceDifference = _data.Jump.Force - _components.Rigidbody.velocity.y;
+                var forceDifference = _data.Jump.Force - _rigidbody.velocity.y;
                 _stateData.CurrentJumpVelocity = Mathf.Pow(
                                                      Mathf.Abs(forceDifference)
                                                      * _data.Acceleration,
@@ -88,7 +92,7 @@ namespace TheLastLand._Project.Scripts.Characters.Player
             {
                 _stateData.IsDashing = true;
                 var targetSpeed = _stateData.MovementDirection.x * _data.Dash.Force;
-                var forceDifference = targetSpeed - _components.Rigidbody.velocity.x;
+                var forceDifference = targetSpeed - _rigidbody.velocity.x;
                 _stateData.CurrentMoveVelocity = Mathf.Pow(
                                                      Mathf.Abs(forceDifference)
                                                      * _data.Acceleration,
@@ -100,7 +104,7 @@ namespace TheLastLand._Project.Scripts.Characters.Player
             DashTimer.OnStop += () =>
             {
                 _stateData.IsDashing = false;
-                _components.Rigidbody.velocity = new Vector2(0f, _components.Rigidbody.velocity.y);
+                _rigidbody.velocity = new Vector2(0f, _rigidbody.velocity.y);
 
                 DashCooldownTimer.Reset(_data.Dash.Cooldown);
                 DashCooldownTimer.Start();
@@ -112,7 +116,7 @@ namespace TheLastLand._Project.Scripts.Characters.Player
         private void CoyoteJumpChecking()
         {
             if (_stateData.WasGrounded
-                && !_components.GroundCheck.IsTouching
+                && !_groundCheck.IsTouching
                 && !JumpTimer.IsRunning
                 && !JumpCooldownTimer.IsRunning)
             {
@@ -120,7 +124,7 @@ namespace TheLastLand._Project.Scripts.Characters.Player
                 JumpCoyoteTimer.Start();
             }
 
-            _stateData.WasGrounded = _components.GroundCheck.IsTouching;
+            _stateData.WasGrounded = _groundCheck.IsTouching;
         }
     }
 }

@@ -1,19 +1,21 @@
-﻿using TheLastLand._Project.Scripts.Characters.Player;
+﻿using System;
+using TheLastLand._Project.Scripts.Characters.Player;
 using TheLastLand._Project.Scripts.Characters.Player.Datas;
 using TheLastLand._Project.Scripts.GameSystems.Item.Common;
 using TheLastLand._Project.Scripts.Input;
 using TheLastLand._Project.Scripts.SeviceLocator;
-using Cinemachine;
-using TheLastLand._Project.Scripts.Characters.Common;
 using TheLastLand._Project.Scripts.Characters.Player.Common;
 using TheLastLand._Project.Scripts.Extensions;
-using TheLastLand._Project.Scripts.StateMachines;
 using UnityEngine;
+using Cinemachine;
+using TheLastLand._Project.Scripts.Characters.Common;
+using StateMachine = TheLastLand._Project.Scripts.StateMachines.StateMachine;
 
 namespace TheLastLand._Project.Scripts
 {
     public class Player : MonoBehaviour
     {
+        public static event Action<Collider2D, bool> OnPlayerInteract = delegate { };
         private const float ZeroF = 0f;
 
         [SerializeField] private InputReader playerInput;
@@ -29,56 +31,36 @@ namespace TheLastLand._Project.Scripts
         [SerializeField]
         private bool staminaRegeneration = true;
 
-        private ICharacterTimer _timerConfigurator;
-        private ICharacterSm _smConfigurator;
+        private ITimerConfigurator _timerConfigurator;
+        private ISmConfigurator _smConfigurator;
         private IPlayerBackpack _playerBackpack;
+        private IPlayerStamina _playerStamina;
+        private IPlayerHealth _playerHealth;
 
         private void Awake()
         {
             _playerMediator.Initialize(_data);
-            ServiceLocator.ForSceneOf(this).Register(_data).Register(_playerMediator);
-
-            var animator = GetComponent<Animator>();
-            var characterSprite = GetComponent<SpriteRenderer>();
-            var rb2D = GetComponent<Rigidbody2D>();
-            var groundCheck = GetComponent<GroundCheck>();
-
-            _playerComponent = new PlayerComponent(
-                playerInput,
-                virtualCamera,
-                animator,
-                characterSprite,
-                rb2D,
-                groundCheck
-            );
 
             _stateData = new PlayerStateData();
             _stateMachine = new StateMachine();
+            _playerComponent = new PlayerComponent(playerInput, virtualCamera);
 
-            _timerConfigurator = new PlayerTimerConfigurator(
-                _stateData,
-                _playerComponent,
-                _data,
-                _playerMediator
-            );
+            ServiceLocator.ForSceneOf(this).Register(_data).Register(_stateData)
+                .Register(_stateMachine).Register(_playerComponent);
 
-            _playerController = new PlayerController(
-                _data,
-                _playerMediator,
-                _playerComponent,
-                _stateData,
-                _timerConfigurator as PlayerTimerConfigurator
-            );
+            ServiceLocator.Global.RegisterServiceIfNotExists(_playerBackpack = _playerMediator)
+                .RegisterServiceIfNotExists(_playerHealth = _playerMediator)
+                .RegisterServiceIfNotExists(_playerStamina = _playerMediator);
 
-            _smConfigurator = new StateMachineConfigurator(
-                _playerController,
-                _stateMachine,
-                _playerComponent,
-                _stateData,
-                _timerConfigurator as PlayerTimerConfigurator
-            );
+            _timerConfigurator = new PlayerTimerConfigurator(this);
+            ServiceLocator.ForSceneOf(this)
+                .Register(_timerConfigurator as IPlayerTimerConfigurator);
 
-            _playerBackpack = _playerMediator;
+            _playerController = new PlayerController(this);
+            ServiceLocator.ForSceneOf(this).Register(_playerController);
+
+            _smConfigurator = new StateMachineConfigurator(this);
+            ServiceLocator.ForSceneOf(this).Register(_smConfigurator as IPlayerSmConfigurator);
         }
 
         private void Update()
@@ -114,12 +96,12 @@ namespace TheLastLand._Project.Scripts
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            _playerController.HandleInteraction(other, true);
+            OnPlayerInteract?.Invoke(other, true);
         }
 
         private void OnTriggerExit2D(Collider2D other)
         {
-            _playerController.HandleInteraction(other, false);
+            OnPlayerInteract?.Invoke(other, false);
         }
 
         private void OnValidate()

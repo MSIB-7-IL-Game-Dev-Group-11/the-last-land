@@ -9,9 +9,11 @@ namespace TheLastLand._Project.Scripts.Input
     public class UiInputReader : ScriptableObject, IUIActions
     {
         public event Action<bool> BackpackToggleEvent = delegate { };
+        public event Action<int> HotbarSlotSelected = delegate { };
+        public event Action UseItem = delegate { };
 
         private PlayerInputActions _playerInputActions;
-        
+
         private bool _isInventoryOpen;
 
         private void OnEnable()
@@ -75,6 +77,18 @@ namespace TheLastLand._Project.Scripts.Input
             if (!context.started) return;
             _isInventoryOpen = !_isInventoryOpen;
             BackpackToggleEvent?.Invoke(_isInventoryOpen);
+        }
+
+        public void OnHotbarSlot(InputAction.CallbackContext context)
+        {
+            if (!context.started) return;
+            int slotIndex = context.ReadValue<int>();
+            HotbarSlotSelected?.Invoke(slotIndex);
+        }
+
+        public void OnUseItem(InputAction.CallbackContext context)
+        {
+            if (context.started) UseItem?.Invoke();
         }
     }
 }

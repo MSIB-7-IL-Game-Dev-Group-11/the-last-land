@@ -8,21 +8,11 @@ namespace TheLastLand._Project.Scripts.Characters.Player
     {
         public InputReader PlayerInput { get; }
         public CinemachineVirtualCamera VirtualCamera { get; }
-        public Animator Animator { get; }
-        public SpriteRenderer CharacterSprite { get; }
-        public Rigidbody2D Rigidbody { get; }
-        public GroundCheck GroundCheck { get; }
 
-        public PlayerComponent(InputReader playerInput, CinemachineVirtualCamera virtualCamera,
-            Animator animator, SpriteRenderer characterSprite, Rigidbody2D rigidbody,
-            GroundCheck groundCheck)
+        public PlayerComponent(InputReader playerInput, CinemachineVirtualCamera virtualCamera)
         {
             PlayerInput = playerInput;
             VirtualCamera = virtualCamera;
-            Animator = animator;
-            CharacterSprite = characterSprite;
-            Rigidbody = rigidbody;
-            GroundCheck = groundCheck;
         }
     }
 }

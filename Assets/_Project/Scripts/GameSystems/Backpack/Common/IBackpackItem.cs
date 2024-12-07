@@ -6,5 +6,6 @@ namespace TheLastLand._Project.Scripts.GameSystems.Backpack.Common
     public interface IBackpackItem : IStackable
     {
         ItemData ItemData { get; }
+        void Use();
     }
 }
