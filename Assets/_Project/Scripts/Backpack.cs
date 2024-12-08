@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
-using TheLastLand._Project.Scripts.Characters.Player;
+using TheLastLand._Project.Scripts.Characters.Player.Common;
 using TheLastLand._Project.Scripts.Extensions;
-using TheLastLand._Project.Scripts.GameSystems.Backpack;
-using TheLastLand._Project.Scripts.GameSystems.Backpack.Common;
+using TheLastLand._Project.Scripts.GameSystems;
+using TheLastLand._Project.Scripts.GameSystems.Item;
+using TheLastLand._Project.Scripts.GameSystems.Item.Common;
 using TheLastLand._Project.Scripts.Input;
+using TheLastLand._Project.Scripts.SeviceLocator;
 using UnityEngine;
 
 namespace TheLastLand._Project.Scripts
@@ -12,37 +14,43 @@ namespace TheLastLand._Project.Scripts
     {
         [SerializeField] private GameObject backpackSlotPrefab;
         [SerializeField] private GameObject backpackUI;
-        [SerializeField] private UiInputReader inputReader;
         [SerializeField] private Transform backpackSlotContainer;
 
-        private PlayerMediator _playerMediator;
-        private List<BackpackSlot> _backpackSlots;
+        private UiInputReader _inputReader;
+        private IPlayerBackpack _playerBackpack;
+        private List<SlotItemBase> _backpackSlots;
 
-        private void Start()
+        private void OnValidate()
         {
-            InitializeBackpackSlots();
+            _inputReader = this.LoadAssetIfNull(
+                _inputReader,
+                "Assets/_Project/ScriptableObjects/UiInputReader.asset"
+            );
         }
 
         private void OnEnable()
         {
-            BackpackController.OnBackpackChanged += DrawBackpack;
-            BackpackSlot.ItemSwappedEvent += _playerMediator.Swap;
-            inputReader.BackpackToggleEvent += ToggleBackpack;
+            SlotItemBase.ItemSwappedEvent += SwapWrapper;
+            Item.OnCollected += AddWrapper;
+            _inputReader.BackpackToggleEvent += ToggleBackpack;
+        }
+
+        private void Start()
+        {
+            ServiceLocator.Global.TryGet(out _playerBackpack);
+            InitializeBackpackSlots();
+        }
+
+        private void Update()
+        {
+            DrawBackpack(_playerBackpack.Backpack);
         }
 
         private void OnDisable()
         {
-            BackpackController.OnBackpackChanged -= DrawBackpack;
-            BackpackSlot.ItemSwappedEvent -= _playerMediator.Swap;
-            inputReader.BackpackToggleEvent -= ToggleBackpack;
-        }
-
-        private void OnValidate()
-        {
-            _playerMediator = this.LoadAssetIfNull(
-                _playerMediator,
-                "Assets/_Project/ScriptableObjects/PlayerMediator.asset"
-            );
+            SlotItemBase.ItemSwappedEvent -= SwapWrapper;
+            Item.OnCollected -= AddWrapper;
+            _inputReader.BackpackToggleEvent -= ToggleBackpack;
         }
 
         private void ToggleBackpack(bool isOpen)
@@ -52,23 +60,24 @@ namespace TheLastLand._Project.Scripts
 
         private void InitializeBackpackSlots()
         {
-            _backpackSlots = new List<BackpackSlot>(_playerMediator.BackpackSize);
-            for (var i = 0; i < _playerMediator.BackpackSize; i++)
+            _backpackSlots = new List<SlotItemBase>(_playerBackpack.BackpackSize);
+            for (var i = 0; i < _playerBackpack.BackpackSize; i++)
             {
                 var backpackSlot = Instantiate(backpackSlotPrefab, backpackSlotContainer)
                     .GetComponent<BackpackSlot>();
                 backpackSlot.ClearSlot();
+                backpackSlot.Index = i + _playerBackpack.HotbarSize;
                 _backpackSlots.Add(backpackSlot);
             }
         }
 
-        private void DrawBackpack(List<IBackpackItem> backpack)
+        private void DrawBackpack(List<IItem> backpack)
         {
             for (var i = 0; i < _backpackSlots.Count; i++)
             {
                 if (i < backpack.Count)
                 {
-                    _backpackSlots[i].DrawSlot(backpack[i]);
+                    _backpackSlots[i].DrawSlot(backpack[i + _playerBackpack.HotbarSize]);
                 }
                 else
                 {
@@ -76,5 +85,11 @@ namespace TheLastLand._Project.Scripts
                 }
             }
         }
+
+        private void SwapWrapper(int fromIndex, int toIndex) =>
+            _playerBackpack.Swap(fromIndex, toIndex);
+
+        private void AddWrapper(ItemData itemData, int stackSize) =>
+            _playerBackpack.Add(itemData, stackSize);
     }
 }

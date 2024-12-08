@@ -5,5 +5,6 @@ namespace TheLastLand._Project.Scripts.Characters.Player.Common
     public interface IPlayerBackpack : IBackpackController
     {
         int BackpackSize { get; }
+        int HotbarSize { get; }
     }
 }

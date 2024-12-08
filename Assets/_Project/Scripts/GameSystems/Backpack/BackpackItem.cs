@@ -1,10 +1,10 @@
-﻿using TheLastLand._Project.Scripts.GameSystems.Backpack.Common;
-using TheLastLand._Project.Scripts.GameSystems.Item;
+﻿using TheLastLand._Project.Scripts.GameSystems.Item;
+using TheLastLand._Project.Scripts.GameSystems.Item.Common;
 using UnityEngine;
 
 namespace TheLastLand._Project.Scripts.GameSystems.Backpack
 {
-    public class BackpackItem : IBackpackItem
+    public class BackpackItem : IItem
     {
         public ItemData ItemData { get; }
         public int StackSize { get; private set; }

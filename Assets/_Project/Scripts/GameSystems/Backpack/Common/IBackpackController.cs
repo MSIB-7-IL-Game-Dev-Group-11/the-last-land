@@ -1,9 +1,13 @@
-﻿using TheLastLand._Project.Scripts.GameSystems.Item;
+﻿using System.Collections.Generic;
+using TheLastLand._Project.Scripts.GameSystems.Item;
+using TheLastLand._Project.Scripts.GameSystems.Item.Common;
 
 namespace TheLastLand._Project.Scripts.GameSystems.Backpack.Common
 {
     public interface IBackpackController
     {
+        List<IItem> Backpack { get; }
+        
         /// <summary>
         /// Adds an item to the inventory.
         /// </summary>

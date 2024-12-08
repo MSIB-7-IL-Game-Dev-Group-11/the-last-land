@@ -1,10 +1,12 @@
-﻿using TheLastLand._Project.Scripts.Characters.Player.Common;
+﻿using System.Collections.Generic;
+using TheLastLand._Project.Scripts.Characters.Player.Common;
 using TheLastLand._Project.Scripts.Characters.Player.Datas;
 using TheLastLand._Project.Scripts.GameSystems.Backpack;
 using TheLastLand._Project.Scripts.GameSystems.Backpack.Common;
 using TheLastLand._Project.Scripts.GameSystems.Health;
 using TheLastLand._Project.Scripts.GameSystems.Health.Common;
 using TheLastLand._Project.Scripts.GameSystems.Item;
+using TheLastLand._Project.Scripts.GameSystems.Item.Common;
 using TheLastLand._Project.Scripts.GameSystems.Stamina;
 using TheLastLand._Project.Scripts.GameSystems.Stamina.Common;
 using UnityEngine;
@@ -25,6 +27,7 @@ namespace TheLastLand._Project.Scripts.Characters.Player
             _backpackController = new BackpackController(data.Backpack);
 
             BackpackSize = data.Backpack.Size;
+            HotbarSize = data.Backpack.HotbarSize;
         }
 
         #region IPlayerStamina
@@ -52,7 +55,11 @@ namespace TheLastLand._Project.Scripts.Characters.Player
 
         #region IPlayerBackpack
 
+        public List<IItem> Backpack => _backpackController.Backpack;
+
         public int BackpackSize { get; private set; }
+
+        public int HotbarSize { get; private set; }
 
         public void Swap(int fromIndex, int toIndex) =>
             _backpackController.Swap(fromIndex, toIndex);

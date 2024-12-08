@@ -3,22 +3,24 @@ using System.Collections.Generic;
 using TheLastLand._Project.Scripts.Characters.Player.Datas;
 using TheLastLand._Project.Scripts.GameSystems.Backpack.Common;
 using TheLastLand._Project.Scripts.GameSystems.Item;
+using TheLastLand._Project.Scripts.GameSystems.Item.Common;
 
 namespace TheLastLand._Project.Scripts.GameSystems.Backpack
 {
     public class BackpackController : IBackpackController
     {
-        public static event Action<List<IBackpackItem>> OnBackpackChanged;
+        public static event Action<List<IItem>> OnBackpackChanged;
+        public List<IItem> Backpack { get; }
 
         private PlayerBackpackData PlayerBackpackData { get; }
-        private List<IBackpackItem> Backpack { get; }
-        private Dictionary<ItemData, IBackpackItem> BackpackItems { get; }
+        private Dictionary<ItemData, IItem> BackpackItems { get; }
 
         public BackpackController(PlayerBackpackData playerBackpackData)
         {
             PlayerBackpackData = playerBackpackData;
-            Backpack = new List<IBackpackItem>(PlayerBackpackData.Size);
-            BackpackItems = new Dictionary<ItemData, IBackpackItem>(PlayerBackpackData.Size);
+            var totalSize = PlayerBackpackData.Size + PlayerBackpackData.HotbarSize;
+            Backpack = new List<IItem>(totalSize);
+            BackpackItems = new Dictionary<ItemData, IItem>(totalSize);
 
             for (int i = 0; i < Backpack.Capacity; i++)
             {
@@ -56,7 +58,7 @@ namespace TheLastLand._Project.Scripts.GameSystems.Backpack
             (Backpack[fromIndex], Backpack[to]) = (Backpack[to], Backpack[fromIndex]);
             OnBackpackChanged?.Invoke(Backpack);
         }
-        
+
         public void Drop(ItemData itemData, int stackSize)
         {
             if (!BackpackItems.TryGetValue(itemData, out var item)) return;
