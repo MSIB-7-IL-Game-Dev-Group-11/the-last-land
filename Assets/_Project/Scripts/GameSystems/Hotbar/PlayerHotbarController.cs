@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TheLastLand._Project.Scripts.Characters.Player.Common;
 using TheLastLand._Project.Scripts.GameSystems.Hotbar.Common;
+using TheLastLand._Project.Scripts.GameSystems.Item.Common;
 using TheLastLand._Project.Scripts.SeviceLocator;
 
 namespace TheLastLand._Project.Scripts.GameSystems.Hotbar
@@ -10,6 +11,7 @@ namespace TheLastLand._Project.Scripts.GameSystems.Hotbar
     {
         public IList<SlotItemBase> HotbarSlots { get; }
         public int SelectedSlotIndex { get; private set; }
+        private IItem _selectedItem;
 
         private readonly IPlayerBackpack _playerBackpack;
 
@@ -29,23 +31,23 @@ namespace TheLastLand._Project.Scripts.GameSystems.Hotbar
 
         public void SelectSlot(int index)
         {
-            if (index < 0 || index >= _playerBackpack.HotbarSize) return;
-            SelectedSlotIndex = index;
-            UpdateHotbarUI();
+            if (!IsValidSlotIndex(index)) return;
+
+            var lastIndex = SelectedSlotIndex;
+            UpdateSelectedSlotIndex(index);
+            UpdateSelectedItem();
+
+            if (lastIndex != SelectedSlotIndex)
+            {
+                DeselectSlot(lastIndex);
+            }
         }
 
         public void DrawHotbar()
         {
             for (var i = 0; i < HotbarSlots.Count; i++)
             {
-                if (i < _playerBackpack.Backpack.Count)
-                {
-                    HotbarSlots[i].DrawSlot(_playerBackpack.Backpack[i]);
-                }
-                else
-                {
-                    HotbarSlots[i].ClearSlot();
-                }
+                DrawSlot(i);
             }
         }
 
@@ -54,18 +56,48 @@ namespace TheLastLand._Project.Scripts.GameSystems.Hotbar
             _playerBackpack.Swap(from, to);
         }
 
-        public void UseSelectedItem()
+        private void UseSelectedItem()
         {
-            var selectedItem = HotbarSlots[SelectedSlotIndex].Item;
-            selectedItem?.Use();
+            _selectedItem = HotbarSlots[SelectedSlotIndex].Item;
+            _selectedItem?.Use();
         }
 
-        private void UpdateHotbarUI()
+        private void DrawSlot(int index)
         {
-            for (var i = 0; i < HotbarSlots.Count; i++)
+            var slot = HotbarSlots[index];
+
+            if (index < _playerBackpack.Backpack.Count)
             {
-                HotbarSlots[i].SelectSlot(i == SelectedSlotIndex);
+                slot.DrawSlot(_playerBackpack.Backpack[index]);
+
+                if (index != SelectedSlotIndex) return;
+                slot.SelectSlot(true);
             }
+            else
+            {
+                slot.ClearSlot();
+            }
+        }
+
+        private bool IsValidSlotIndex(int index)
+        {
+            return index >= 0 && index < _playerBackpack.HotbarSize;
+        }
+
+        private void UpdateSelectedSlotIndex(int index)
+        {
+            SelectedSlotIndex = index;
+            HotbarSlots[SelectedSlotIndex].SelectSlot(true);
+        }
+
+        private void UpdateSelectedItem()
+        {
+            _selectedItem = HotbarSlots[SelectedSlotIndex].Item;
+        }
+
+        private void DeselectSlot(int lastIndex)
+        {
+            HotbarSlots[lastIndex].SelectSlot(false);
         }
     }
 }

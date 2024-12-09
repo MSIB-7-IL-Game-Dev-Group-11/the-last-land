@@ -48,6 +48,34 @@ namespace TheLastLand._Project.Scripts
             base.OnDrop(eventData);
         }
 
+        public override void OnPointerEnter(PointerEventData eventData)
+        {
+            if (!_isBackpackOpen) return;
+            
+            base.OnPointerEnter(eventData);
+        }
+
+        public override void OnPointerExit(PointerEventData eventData)
+        {
+            if (!_isBackpackOpen) return;
+            
+            base.OnPointerExit(eventData);
+        }
+
+        public override void SelectSlot(bool isSelected)
+        {
+            if (_isBackpackOpen) return;
+            
+            if (Item != null && isSelected)
+            {
+                SlotUIManager.ActivateSlotComponents();
+                return;
+            }
+
+            SlotUIManager.ActivateSlotComponents(false);
+            base.SelectSlot(isSelected);
+        }
+
         private static void OnBackpackToggle(bool isOpen)
         {
             _isBackpackOpen = isOpen;

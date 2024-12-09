@@ -46,7 +46,7 @@ namespace TheLastLand._Project.Scripts.GameSystems
             }
 
             Item = item;
-            SlotUIManager.UpdateUI(item);
+            SlotUIManager?.UpdateUI(item);
         }
 
         private void OnDisable()
@@ -89,12 +89,12 @@ namespace TheLastLand._Project.Scripts.GameSystems
             SwapItems(newSLot);
         }
 
-        public void OnPointerEnter(PointerEventData eventData)
+        public virtual void OnPointerEnter(PointerEventData eventData)
         {
             SlotEventHandler.HandleSlotHover(eventData, SlotUIManager);
         }
 
-        public void OnPointerExit(PointerEventData eventData)
+        public virtual void OnPointerExit(PointerEventData eventData)
         {
             SlotUIManager.ActivateSlotComponents(false);
         }
