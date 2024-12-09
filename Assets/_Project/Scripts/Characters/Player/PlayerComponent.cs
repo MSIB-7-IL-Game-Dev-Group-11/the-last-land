@@ -1,18 +1,13 @@
-﻿using Cinemachine;
-using TheLastLand._Project.Scripts.Input;
-using UnityEngine;
+﻿using TheLastLand._Project.Scripts.Input;
 
 namespace TheLastLand._Project.Scripts.Characters.Player
 {
     public class PlayerComponent
     {
         public InputReader PlayerInput { get; }
-        public CinemachineVirtualCamera VirtualCamera { get; }
-
-        public PlayerComponent(InputReader playerInput, CinemachineVirtualCamera virtualCamera)
+        public PlayerComponent(InputReader playerInput)
         {
             PlayerInput = playerInput;
-            VirtualCamera = virtualCamera;
         }
     }
 }

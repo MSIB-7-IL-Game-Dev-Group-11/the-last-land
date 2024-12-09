@@ -11,7 +11,6 @@ namespace TheLastLand._Project.Scripts.Characters.Player
     public class PlayerTimerConfigurator : IPlayerTimerConfigurator
     {
         private readonly PlayerStateData _stateData;
-        private readonly PlayerComponent _components;
         private readonly PlayerData _data;
         private readonly IPlayerStamina _playerStamina;
 
@@ -27,13 +26,13 @@ namespace TheLastLand._Project.Scripts.Characters.Player
 
         private List<Timer> Timers { get; }
 
-        public PlayerTimerConfigurator(Scripts.Player player)
+        public PlayerTimerConfigurator()
         {
+            ServiceLocator.Global.Get(out Scripts.Player player).Get(out _playerStamina);
+            ServiceLocator.For(player).Get(out _stateData).Get(out _data);
+
             _rigidbody = player.GetComponent<Rigidbody2D>();
             _groundCheck = player.GetComponent<GroundCheck>();
-
-            ServiceLocator.ForSceneOf(player).Get(out _playerStamina)
-                .Get(out _stateData).Get(out _components).Get(out _data);
 
             JumpTimer = new CountdownTimer(0f);
             JumpCooldownTimer = new CountdownTimer(0f);

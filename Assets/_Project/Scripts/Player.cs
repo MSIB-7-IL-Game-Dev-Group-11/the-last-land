@@ -16,6 +16,7 @@ namespace TheLastLand._Project.Scripts
     public class Player : MonoBehaviour
     {
         public static event Action<Collider2D, bool> OnPlayerInteract = delegate { };
+        private static bool _isInitialized;
         private const float ZeroF = 0f;
 
         [SerializeField] private InputReader playerInput;
@@ -33,34 +34,24 @@ namespace TheLastLand._Project.Scripts
 
         private ITimerConfigurator _timerConfigurator;
         private ISmConfigurator _smConfigurator;
-        private IPlayerBackpack _playerBackpack;
-        private IPlayerStamina _playerStamina;
-        private IPlayerHealth _playerHealth;
+
+        private void OnValidate()
+        {
+            _playerMediator = this.LoadAssetIfNull(
+                _playerMediator,
+                "Assets/_Project/ScriptableObjects/PlayerMediator.asset"
+            );
+
+            _data = this.LoadAssetIfNull(
+                _data,
+                "Assets/_Project/ScriptableObjects/PlayerData.asset"
+            );
+        }
 
         private void Awake()
         {
-            _playerMediator.Initialize(_data);
-
-            _stateData = new PlayerStateData();
-            _stateMachine = new StateMachine();
-            _playerComponent = new PlayerComponent(playerInput, virtualCamera);
-
-            ServiceLocator.ForSceneOf(this).Register(_data).Register(_stateData)
-                .Register(_stateMachine).Register(_playerComponent);
-
-            ServiceLocator.Global.RegisterServiceIfNotExists(_playerBackpack = _playerMediator)
-                .RegisterServiceIfNotExists(_playerHealth = _playerMediator)
-                .RegisterServiceIfNotExists(_playerStamina = _playerMediator);
-
-            _timerConfigurator = new PlayerTimerConfigurator(this);
-            ServiceLocator.ForSceneOf(this)
-                .Register(_timerConfigurator as IPlayerTimerConfigurator);
-
-            _playerController = new PlayerController(this);
-            ServiceLocator.ForSceneOf(this).Register(_playerController);
-
-            _smConfigurator = new StateMachineConfigurator(this);
-            ServiceLocator.ForSceneOf(this).Register(_smConfigurator as IPlayerSmConfigurator);
+            Initialize();
+            RegisterServices();
         }
 
         private void Update()
@@ -79,12 +70,12 @@ namespace TheLastLand._Project.Scripts
 
         private void OnEnable()
         {
-            _playerController.RegisterEvents();
+            _playerController?.RegisterEvents();
         }
 
         private void OnDisable()
         {
-            _playerController.DeregisterEvents();
+            _playerController?.DeregisterEvents();
         }
 
         private void OnCollisionEnter2D(Collision2D other)
@@ -102,17 +93,37 @@ namespace TheLastLand._Project.Scripts
             OnPlayerInteract?.Invoke(other, false);
         }
 
-        private void OnValidate()
+        private void Initialize()
         {
-            _playerMediator = this.LoadAssetIfNull(
-                _playerMediator,
-                "Assets/_Project/ScriptableObjects/PlayerMediator.asset"
-            );
+            if (_isInitialized) return;
 
-            _data = this.LoadAssetIfNull(
-                _data,
-                "Assets/_Project/ScriptableObjects/PlayerData.asset"
-            );
+            _playerMediator.Initialize(_data);
+
+            _stateData = new PlayerStateData();
+            _stateMachine = new StateMachine();
+            _playerComponent = new PlayerComponent(playerInput);
+
+            _isInitialized = true;
+        }
+
+        private void RegisterServices()
+        {
+            ServiceLocator.For(this).Register(_data).Register(_stateData).Register(_stateMachine)
+                .Register(_playerComponent);
+
+            ServiceLocator.Global.RegisterServiceIfNotExists(this)
+                .RegisterServiceIfNotExists<IPlayerBackpack>(_playerMediator)
+                .RegisterServiceIfNotExists<IPlayerHealth>(_playerMediator)
+                .RegisterServiceIfNotExists<IPlayerStamina>(_playerMediator);
+
+            _timerConfigurator = new PlayerTimerConfigurator();
+            ServiceLocator.For(this).Register(_timerConfigurator as IPlayerTimerConfigurator);
+
+            _playerController = new PlayerController();
+            ServiceLocator.For(this).Register(_playerController);
+
+            _smConfigurator = new StateMachineConfigurator();
+            ServiceLocator.For(this).Register(_smConfigurator as IPlayerSmConfigurator);
         }
     }
 }

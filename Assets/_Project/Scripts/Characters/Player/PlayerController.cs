@@ -1,5 +1,4 @@
-﻿using Cinemachine;
-using TheLastLand._Project.Scripts.Characters.Player.Common;
+﻿using TheLastLand._Project.Scripts.Characters.Player.Common;
 using TheLastLand._Project.Scripts.Characters.Player.Datas;
 using TheLastLand._Project.Scripts.GameSystems.Interactor.Common;
 using TheLastLand._Project.Scripts.Input;
@@ -16,7 +15,6 @@ namespace TheLastLand._Project.Scripts.Characters.Player
         private const float ZeroF = 0f;
 
         private InputReader PlayerInput { get; }
-        private CinemachineVirtualCamera VirtualCamera { get; }
 
         private readonly PlayerStateData _stateData;
         private readonly IPlayerStamina _playerStamina;
@@ -30,20 +28,18 @@ namespace TheLastLand._Project.Scripts.Characters.Player
         // Timer
         private readonly IPlayerTimerConfigurator _timerConfigurator;
 
-        public PlayerController(Scripts.Player player)
+        public PlayerController()
         {
-            ServiceLocator.ForSceneOf(player).Get(out Data).Get(out _stateData)
-                .Get(out PlayerComponent components).Get(out _playerStamina)
-                .Get(out _timerConfigurator);
+            ServiceLocator.Global.Get(out Scripts.Player player).Get(out _playerStamina);
+
+            ServiceLocator.For(player).Get(out Data).Get(out _stateData)
+                .Get(out PlayerComponent components).Get(out _timerConfigurator);
 
             PlayerInput = components.PlayerInput;
-            VirtualCamera = components.VirtualCamera;
 
             _characterSprite = player.GetComponent<SpriteRenderer>();
             _rigidbody = player.GetComponent<Rigidbody2D>();
             _groundCheck = player.GetComponent<GroundCheck>();
-
-            InitializeCamera();
         }
 
         public void RegisterEvents()
@@ -115,12 +111,6 @@ namespace TheLastLand._Project.Scripts.Characters.Player
         {
             if (!context.started || _interactable == null) return;
             _interactable.Interact();
-        }
-
-        private void InitializeCamera()
-        {
-            VirtualCamera.Follow = _rigidbody.gameObject.transform;
-            VirtualCamera.LookAt = _rigidbody.gameObject.transform;
         }
 
         public void Jump()

@@ -21,10 +21,12 @@ namespace TheLastLand._Project.Scripts.Characters.Player
         // Timer
         private readonly IPlayerTimerConfigurator _timerConfigurator;
 
-        public StateMachineConfigurator(Scripts.Player player)
+        public StateMachineConfigurator()
         {
-            ServiceLocator.ForSceneOf(player).Get(out _stateData)
-                .Get(out _stateMachine).Get(out _playerController).Get(out _timerConfigurator);
+            ServiceLocator.Global.Get(out Scripts.Player player);
+
+            ServiceLocator.For(player).Get(out _stateData).Get(out _stateMachine)
+                .Get(out _playerController).Get(out _timerConfigurator);
 
             _animator = player.GetComponent<Animator>();
             _groundCheck = player.GetComponent<GroundCheck>();
