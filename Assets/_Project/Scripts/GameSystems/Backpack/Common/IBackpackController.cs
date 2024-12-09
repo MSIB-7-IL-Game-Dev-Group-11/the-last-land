@@ -4,8 +4,14 @@ using TheLastLand._Project.Scripts.GameSystems.Item.Common;
 
 namespace TheLastLand._Project.Scripts.GameSystems.Backpack.Common
 {
+    /// <summary>
+    /// Interface representing a backpack controller.
+    /// </summary>
     public interface IBackpackController
     {
+        /// <summary>
+        /// Gets the list of items in the backpack.
+        /// </summary>
         List<IItem> Backpack { get; }
         
         /// <summary>
