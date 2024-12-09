@@ -3,13 +3,12 @@ using UnityEngine;
 
 namespace TheLastLand._Project.Scripts.GameSystems.Stamina
 {
-    [System.Serializable]
-    public class StaminaController : IStaminaController
+    public class PlayerStaminaController : IStaminaController
     {
-        private StaminaData _staminaData;
+        private readonly StaminaData _staminaData;
         private float _stamina;
 
-        public StaminaController(StaminaData staminaData)
+        public PlayerStaminaController(StaminaData staminaData)
         {
             _staminaData = staminaData;
             _stamina = _staminaData.Max;

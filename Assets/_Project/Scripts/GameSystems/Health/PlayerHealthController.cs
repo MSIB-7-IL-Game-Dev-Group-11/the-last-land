@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace TheLastLand._Project.Scripts.GameSystems.Health
 {
-    public class HealthController : IHealthController
+    public class PlayerHealthController : IHealthController
     {
         private readonly HealthData _data;
         private float _health;
 
-        public HealthController(HealthData data)
+        public PlayerHealthController(HealthData data)
         {
             _data = data;
             _health = _data.Max;
