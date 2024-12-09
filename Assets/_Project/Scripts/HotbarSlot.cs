@@ -1,5 +1,6 @@
 ﻿using TheLastLand._Project.Scripts.Extensions;
 using TheLastLand._Project.Scripts.GameSystems;
+using TheLastLand._Project.Scripts.GameSystems.Item;
 using TheLastLand._Project.Scripts.Input;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -13,26 +14,24 @@ namespace TheLastLand._Project.Scripts
 
         private UiInputReader _inputReader;
 
-        protected override void Awake()
+        private void Awake()
         {
             _inputReader = this.LoadAssetIfNull(
                 _inputReader,
                 "Assets/_Project/ScriptableObjects/UiInputReader.asset"
             );
 
-            base.Awake();
+            SlotUIManager = new SlotUIManager(icon, amount, select, counter);
         }
 
-        public override void OnEnable()
+        private void OnEnable()
         {
             _inputReader.BackpackToggleEvent += OnBackpackToggle;
-            base.OnEnable();
         }
 
-        public override void OnDisable()
+        private void OnDisable()
         {
             _inputReader.BackpackToggleEvent -= OnBackpackToggle;
-            base.OnDisable();
         }
 
         public override void OnBeginDrag(PointerEventData eventData)

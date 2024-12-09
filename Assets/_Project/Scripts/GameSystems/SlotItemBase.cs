@@ -16,29 +16,25 @@ namespace TheLastLand._Project.Scripts.GameSystems
         public int Index { get; set; }
         public IItem Item { get; private set; }
 
-        [SerializeField] private Image icon;
-        [SerializeField] private TMP_Text amount;
+        [SerializeField] protected Image icon;
+        [SerializeField] protected TMP_Text amount;
 
-        [SerializeField] private GameObject itemContainer;
-        [SerializeField] private GameObject select;
-        [SerializeField] private GameObject counter;
+        [SerializeField] protected GameObject itemContainer;
+        [SerializeField] protected GameObject select;
+        [SerializeField] protected GameObject counter;
 
-        private SlotUIManager _slotUIManager;
-
-        private void Awake()
-        {
-            _slotUIManager = new SlotUIManager(icon, amount, select, counter);
-        }
+        protected SlotUIManager SlotUIManager;
+        private SlotItemBase _originalSlot;
 
         public virtual void ClearSlot()
         {
             Item = null;
-            _slotUIManager?.ClearUI();
+            SlotUIManager?.ClearUI();
         }
 
         public virtual void SelectSlot(bool isSelected)
         {
-            _slotUIManager.SetSelectionIndicator(isSelected);
+            SlotUIManager.SetSelectionIndicator(isSelected);
         }
 
         public virtual void DrawSlot(IItem item)
@@ -50,54 +46,57 @@ namespace TheLastLand._Project.Scripts.GameSystems
             }
 
             Item = item;
-            _slotUIManager.UpdateUI(item);
+            SlotUIManager.UpdateUI(item);
         }
 
-        public void OnDisable()
+        private void OnDisable()
         {
-            _slotUIManager.ActivateSlotComponents(false);
+            SlotUIManager.ActivateSlotComponents(false);
         }
 
-        public void OnBeginDrag(PointerEventData eventData)
+        public virtual void OnBeginDrag(PointerEventData eventData)
         {
+            _originalSlot = SlotEventHandler.GetOriginalSlot(eventData);
             itemContainer.transform.SetParent(transform.root);
             itemContainer.transform.SetAsLastSibling();
 
             icon.raycastTarget = false;
-            _slotUIManager.SetCounterActive(true);
         }
 
-        public void OnDrag(PointerEventData eventData)
+        public virtual void OnDrag(PointerEventData eventData)
         {
+            if (_originalSlot == null || Item == null) return;
+
             itemContainer.transform.position = eventData.position;
+            SlotUIManager.SetCounterActive(true);
         }
 
-        public void OnEndDrag(PointerEventData eventData)
+        public virtual void OnEndDrag(PointerEventData eventData)
         {
             itemContainer.transform.SetParent(transform);
             itemContainer.transform.localPosition = Vector3.zero;
 
             icon.raycastTarget = true;
-            _slotUIManager.SetCounterActive(false);
+            SlotUIManager.SetCounterActive(false);
         }
 
-        public void OnDrop(PointerEventData eventData)
+        public virtual void OnDrop(PointerEventData eventData)
         {
-            var originalSlot = SlotEventHandler.GetOriginalSlot(eventData);
-            if (originalSlot == null) return;
+            var newSLot = SlotEventHandler.GetOriginalSlot(eventData);
+            if (newSLot == null) return;
 
-            _slotUIManager.ActivateSlotComponents();
-            SwapItems(originalSlot);
+            SlotUIManager.ActivateSlotComponents();
+            SwapItems(newSLot);
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            SlotEventHandler.HandleSlotHover(eventData, _slotUIManager);
+            SlotEventHandler.HandleSlotHover(eventData, SlotUIManager);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            _slotUIManager.ActivateSlotComponents(false);
+            SlotUIManager.ActivateSlotComponents(false);
         }
 
         private void SwapItems(SlotItemBase otherSlot)
