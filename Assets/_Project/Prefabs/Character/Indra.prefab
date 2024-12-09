@@ -229,7 +229,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c56bb68567cc4b5d9cd8188d9feb2de0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 300f474ed3b8a58408da3c5b91c09be7, type: 2}
   playerInput: {fileID: 11400000, guid: 21ecfd959e7258b42934bf1c386662e1, type: 2}
   virtualCamera: {fileID: 0}
   staminaRegeneration: 1

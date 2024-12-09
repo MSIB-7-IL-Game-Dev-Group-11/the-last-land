@@ -26,7 +26,7 @@ RectTransform:
   m_GameObject: {fileID: 1422522116717380613}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1796040866464888745}
@@ -123,7 +123,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -250,7 +250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hotbarSlotPrefab: {fileID: 1204882875871713826, guid: 8eb0409b35861c1448c585c875bc6cb6, type: 3}
-  hotbarUI: {fileID: 0}
+  hotbarUI: {fileID: 1422522116717380613}
   hotbarSlotContainer: {fileID: 7410898640422394194}
 --- !u!114 &8447058062644608386
 MonoBehaviour:
@@ -268,7 +268,7 @@ MonoBehaviour:
     m_Left: 0
     m_Right: 0
     m_Top: 0
-    m_Bottom: 0
+    m_Bottom: 25
   m_ChildAlignment: 7
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
