@@ -281,6 +281,7 @@ MonoBehaviour:
   itemContainer: {fileID: 813296958242459208}
   select: {fileID: 1106268560400629824}
   counter: {fileID: 4179852262958950043}
+  backpackPrefab: {fileID: 2318176391850257135, guid: 4175ec6d52b0bf948b118d7ca2fb887b, type: 3}
 --- !u!1 &1400241042444574108
 GameObject:
   m_ObjectHideFlags: 0
