@@ -258,12 +258,12 @@
                 },
                 {
                     "name": "HotbarSlot",
-                    "type": "Value",
-                    "id": "28133073-1c9c-4924-8bdd-ee0951fee685",
-                    "expectedControlType": "Integer",
+                    "type": "Button",
+                    "id": "724629e4-ee40-4acf-aae8-ec2e0630d4a0",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -698,7 +698,7 @@
                 },
                 {
                     "name": "",
-                    "id": "56e64321-418a-43f9-8924-4decd1f3fe8c",
+                    "id": "a287dbf6-e157-49b2-b11b-aebffb8197ec",
                     "path": "<Keyboard>/1",
                     "interactions": "",
                     "processors": "",
@@ -709,44 +709,44 @@
                 },
                 {
                     "name": "",
-                    "id": "07929198-7525-45bd-bfdc-93366e251789",
+                    "id": "c9830675-9294-49ba-b7b4-b9dc39bbc4a1",
                     "path": "<Keyboard>/2",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "",
                     "action": "HotbarSlot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "f3cae865-6055-46f0-b1ae-691ac81569ff",
+                    "id": "ce7e02a6-ac01-437a-9285-e237d729437f",
                     "path": "<Keyboard>/3",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "",
                     "action": "HotbarSlot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "b566432d-420c-4c08-bf6a-3e926f5d9c01",
+                    "id": "30691b5b-6d3d-425d-bdcf-e9f4b43989d0",
                     "path": "<Keyboard>/4",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "",
                     "action": "HotbarSlot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "004ad998-a27e-492a-b804-6a53beb5f2ab",
+                    "id": "98a15019-b499-4654-ba3f-4877f9abc217",
                     "path": "<Keyboard>/5",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "",
                     "action": "HotbarSlot",
                     "isComposite": false,
                     "isPartOfComposite": false

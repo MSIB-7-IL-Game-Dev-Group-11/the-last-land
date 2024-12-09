@@ -33,7 +33,7 @@ namespace TheLastLand._Project.Scripts
 
         private void OnEnable()
         {
-            _inputReader.HotbarSlotSelected += SelectSlot;
+            _inputReader.HotbarSlotSelectedEvent += OnSlotSelected;
             _inputReader.BackpackToggleEvent += OnBackpackToggled;
             SlotItemBase.ItemSwappedEvent += SwapWrapper;
         }
@@ -51,7 +51,7 @@ namespace TheLastLand._Project.Scripts
 
         private void OnDisable()
         {
-            _inputReader.HotbarSlotSelected -= SelectSlot;
+            _inputReader.HotbarSlotSelectedEvent -= OnSlotSelected;
             _inputReader.BackpackToggleEvent -= OnBackpackToggled;
             SlotItemBase.ItemSwappedEvent -= SwapWrapper;
         }
@@ -72,7 +72,7 @@ namespace TheLastLand._Project.Scripts
             _hotbarController.HotbarSlots.Add(hotbarSlot);
         }
 
-        private void SelectSlot(int index) => _hotbarController.SelectSlot(index);
+        private void OnSlotSelected(int index) => _hotbarController.SelectSlot(index);
 
         private void SwapWrapper(int fromIndex, int toIndex) =>
             _hotbarController.SwapSlot(fromIndex, toIndex);
