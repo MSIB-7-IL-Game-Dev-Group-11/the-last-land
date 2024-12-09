@@ -15,32 +15,25 @@ namespace TheLastLand._Project.Scripts.GameSystems.Interactor
 
         public virtual void Interact()
         {
+            TeleportToPoint();
+            
             if (!string.IsNullOrEmpty(targetSceneName))
             {
                 OnSceneTeleport?.Invoke();
                 SceneManager.LoadScene(targetSceneName);
-                SceneManager.sceneLoaded += OnSceneLoaded;
             }
             else
             {
                 OnWorldTeleport?.Invoke();
-                TeleportToPoint();
             }
-        }
-
-        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-        {
-            TeleportToPoint();
-            SceneManager.sceneLoaded -= OnSceneLoaded;
         }
 
         private void TeleportToPoint()
         {
             var player = FindObjectOfType<Player>();
-            if (player != null)
-            {
-                player.transform.position = teleportPoint;
-            }
+            if (player == null) return;
+            player.transform.position = teleportPoint;
+            if (Camera.main != null) Camera.main.transform.position = teleportPoint;
         }
     }
 }
