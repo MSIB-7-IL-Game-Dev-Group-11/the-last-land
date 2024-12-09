@@ -1,4 +1,5 @@
 ﻿using System;
+using TheLastLand._Project.Scripts.GameSystems.Item;
 using TheLastLand._Project.Scripts.GameSystems.Item.Common;
 using TMPro;
 using UnityEngine;
@@ -8,34 +9,36 @@ using UnityEngine.UI;
 namespace TheLastLand._Project.Scripts.GameSystems
 {
     public abstract class SlotItemBase : MonoBehaviour, ISlotItem, IBeginDragHandler, IDragHandler,
-        IEndDragHandler, IDropHandler
+        IEndDragHandler, IDropHandler, IPointerEnterHandler, IPointerExitHandler
     {
         public static event Action<int, int> ItemSwappedEvent = delegate { };
 
         public int Index { get; set; }
         public IItem Item { get; private set; }
 
-        [SerializeField] protected Image icon;
-        [SerializeField] protected TMP_Text amount;
+        [SerializeField] private Image icon;
+        [SerializeField] private TMP_Text amount;
 
-        private Transform _itemTransform;
+        [SerializeField] private GameObject itemContainer;
+        [SerializeField] private GameObject select;
+        [SerializeField] private GameObject counter;
+
+        private SlotUIManager _slotUIManager;
+
+        private void Awake()
+        {
+            _slotUIManager = new SlotUIManager(icon, amount, select, counter);
+        }
 
         public virtual void ClearSlot()
         {
             Item = null;
-            icon.enabled = false;
-            amount.enabled = false;
+            _slotUIManager?.ClearUI();
         }
 
         public virtual void SelectSlot(bool isSelected)
         {
-            // // Update the UI to indicate the selection state
-            // // For example, change the background color or add a border
-            // var selectionIndicator = transform.Find("SelectionIndicator");
-            // if (selectionIndicator != null)
-            // {
-            //     selectionIndicator.gameObject.SetActive(isSelected);
-            // }
+            _slotUIManager.SetSelectionIndicator(isSelected);
         }
 
         public virtual void DrawSlot(IItem item)
@@ -47,43 +50,54 @@ namespace TheLastLand._Project.Scripts.GameSystems
             }
 
             Item = item;
+            _slotUIManager.UpdateUI(item);
+        }
 
-            icon.enabled = true;
-            amount.enabled = true;
-
-            icon.sprite = item.ItemData.Icon;
-            amount.SetText(item.StackSize.ToString());
+        public void OnDisable()
+        {
+            _slotUIManager.ActivateSlotComponents(false);
         }
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            _itemTransform = transform.Find("Item");
-            _itemTransform.SetParent(transform.root);
-            _itemTransform.SetAsLastSibling();
+            itemContainer.transform.SetParent(transform.root);
+            itemContainer.transform.SetAsLastSibling();
+
             icon.raycastTarget = false;
+            _slotUIManager.SetCounterActive(true);
         }
 
         public void OnDrag(PointerEventData eventData)
         {
-            _itemTransform.transform.position = eventData.position;
+            itemContainer.transform.position = eventData.position;
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            _itemTransform.SetParent(transform);
-            _itemTransform.localPosition = Vector3.zero;
+            itemContainer.transform.SetParent(transform);
+            itemContainer.transform.localPosition = Vector3.zero;
+
             icon.raycastTarget = true;
+            _slotUIManager.SetCounterActive(false);
         }
 
         public void OnDrop(PointerEventData eventData)
         {
-            var draggedItem = eventData.pointerDrag.GetComponent<SlotItemBase>();
-            if (draggedItem == null || draggedItem.Item == null) return;
+            var originalSlot = SlotEventHandler.GetOriginalSlot(eventData);
+            if (originalSlot == null) return;
 
-            var originalSlot = draggedItem.GetComponentInParent<SlotItemBase>();
-            if (originalSlot == null || originalSlot.Item == null) return;
-
+            _slotUIManager.ActivateSlotComponents();
             SwapItems(originalSlot);
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            SlotEventHandler.HandleSlotHover(eventData, _slotUIManager);
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            _slotUIManager.ActivateSlotComponents(false);
         }
 
         private void SwapItems(SlotItemBase otherSlot)
