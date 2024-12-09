@@ -280,7 +280,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""HotbarSlot"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Value"",
                     ""id"": ""28133073-1c9c-4924-8bdd-ee0951fee685"",
                     ""expectedControlType"": ""Integer"",
                     ""processors"": """",
