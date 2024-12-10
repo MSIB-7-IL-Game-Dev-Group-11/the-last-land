@@ -1,4 +1,4 @@
-﻿namespace TheLastLand._Project.Scripts.Characters.Common
+﻿namespace TheLastLand._Project.Scripts.Common
 {
     /// <summary>
     /// Interface for configuring timer-related updates.

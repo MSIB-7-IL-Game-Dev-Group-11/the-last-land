@@ -1,4 +1,4 @@
-﻿using TheLastLand._Project.Scripts.Characters.Common;
+﻿using TheLastLand._Project.Scripts.Common;
 using TheLastLand._Project.Scripts.Utils;
 
 namespace TheLastLand._Project.Scripts.Characters.Player.Common
