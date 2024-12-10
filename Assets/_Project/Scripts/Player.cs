@@ -9,6 +9,8 @@ using TheLastLand._Project.Scripts.Extensions;
 using UnityEngine;
 using Cinemachine;
 using TheLastLand._Project.Scripts.Characters.Common;
+using TheLastLand._Project.Scripts.Common;
+using TheLastLand._Project.Scripts.GameSystems.Interactor.Common;
 using StateMachine = TheLastLand._Project.Scripts.StateMachines.StateMachine;
 
 namespace TheLastLand._Project.Scripts
@@ -86,6 +88,7 @@ namespace TheLastLand._Project.Scripts
         private void OnTriggerEnter2D(Collider2D other)
         {
             OnPlayerInteract?.Invoke(other, true);
+            other.gameObject.GetComponent<IPlantable>()?.Plant();
         }
 
         private void OnTriggerExit2D(Collider2D other)

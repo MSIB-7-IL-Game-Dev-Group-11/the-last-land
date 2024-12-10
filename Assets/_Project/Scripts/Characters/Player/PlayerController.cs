@@ -140,7 +140,6 @@ namespace TheLastLand._Project.Scripts.Characters.Player
                                                  speedModifier
                                              )
                                              * Mathf.Sign(speedDifference);
-            Debug.Log(_stateData.CurrentMoveVelocity);
 
             _rigidbody.AddForce(_stateData.CurrentMoveVelocity * Vector2.right, mode);
         }
