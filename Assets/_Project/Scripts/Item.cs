@@ -8,7 +8,7 @@ namespace TheLastLand._Project.Scripts
 {
     public class Item : MonoBehaviour, ICollectible, IStackable
     {
-        [SerializeField] private ItemData itemData;
+        [SerializeField] protected ItemData itemData;
         public static event UnityAction<ItemData, int> OnCollected = delegate { };
         private bool _collisionHandled;
 

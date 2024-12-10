@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73f8c2ad541d46fd953107f56db2a76d, type: 3}
+  m_Name: Wheat
+  m_EditorClassIdentifier: 
+  <DisplayName>k__BackingField: Wheat Seed
+  <Icon>k__BackingField: {fileID: 21300146, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
+  <PlantPrefab>k__BackingField: {fileID: 4157341099063765867, guid: b1b28cdc0afb32f42b0a23d900775e37, type: 3}
+  <GrowTime>k__BackingField: 30
+  <MinimumHarvestAmount>k__BackingField: 1
+  <MaximumHarvestAmount>k__BackingField: 5
