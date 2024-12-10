@@ -63,12 +63,12 @@ namespace TheLastLand._Project.Scripts
         private void InitializeBackpackSlots()
         {
             _backpackSlots = new List<SlotItemBase>(_playerBackpack.BackpackSize);
-            for (var i = _playerHotbar.HotbarSize; i < _playerBackpack.BackpackSize; i++)
+            for (var i = 0; i < _playerBackpack.BackpackSize; i++)
             {
                 var backpackSlot = Instantiate(backpackSlotPrefab, backpackSlotContainer)
                     .GetComponent<BackpackSlot>();
                 backpackSlot.ClearSlot();
-                backpackSlot.Index = i;
+                backpackSlot.Index = i + _playerHotbar.HotbarSize;
                 _backpackSlots.Add(backpackSlot);
             }
         }
