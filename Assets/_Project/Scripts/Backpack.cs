@@ -77,9 +77,10 @@ namespace TheLastLand._Project.Scripts
         {
             for (var i = 0; i < _backpackSlots.Count; i++)
             {
-                if (i < backpack.Count)
+                var backpackIndex = i + _playerHotbar.HotbarSize;
+                if (backpackIndex < backpack.Count)
                 {
-                    _backpackSlots[i].DrawSlot(backpack[i + _playerHotbar.HotbarSize]);
+                    _backpackSlots[i].DrawSlot(backpack[backpackIndex]);
                 }
                 else
                 {
