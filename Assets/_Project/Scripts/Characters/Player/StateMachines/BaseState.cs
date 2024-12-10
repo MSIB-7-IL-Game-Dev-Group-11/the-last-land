@@ -23,7 +23,7 @@ namespace TheLastLand._Project.Scripts.Characters.Player.StateMachines
         /// Hash for the animation parameter.
         /// </summary>
         protected static readonly int MovementHash = Animator.StringToHash("Move");
-        protected static readonly int JumpHash = Animator.StringToHash("Jump");
+        protected static readonly int Jump = Animator.StringToHash("Jump");
         protected static readonly int Speed = Animator.StringToHash("Speed");
 
         /// <summary>

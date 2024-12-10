@@ -7,6 +7,7 @@
             PlayerController.Jump();
             PlayerController.Move(PlayerData.Walk.Modifier);
             PlayerController.FlipCharacterSprite();
+            Animator.SetBool(Jump, PlayerStateData.IsJumping);
         }
     }
 }
