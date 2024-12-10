@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 017d3564d0a64be49310b57b53f847c1, type: 3}
-  m_Name: GenericSeed
+  m_Name: TestItem1
   m_EditorClassIdentifier: 
-  <DisplayName>k__BackingField: Generic Seed
-  <Icon>k__BackingField: {fileID: 21300146, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
+  <DisplayName>k__BackingField: Generic Item 1
+  <Icon>k__BackingField: {fileID: 21300144, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
