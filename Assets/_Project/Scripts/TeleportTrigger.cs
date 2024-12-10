@@ -7,7 +7,7 @@ namespace TheLastLand._Project.Scripts
     {
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.CompareTag("Player"))
+            if (other.GetComponent<Player>())
             {
                 Interact();
             }

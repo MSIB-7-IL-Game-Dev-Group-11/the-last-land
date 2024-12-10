@@ -4,14 +4,13 @@ namespace TheLastLand._Project.Scripts.GameSystems
 {
     public class HelpText : MonoBehaviour
     {
-        public GameObject helpText; // Objek teks UI
+        public GameObject helpText;
 
         private void Start()
         {
-            // Cek apakah helpText null sebelum menyembunyikannya
             if (helpText != null)
             {
-                helpText.SetActive(false); // Sembunyikan teks saat awal
+                helpText.SetActive(false);
             }
             else
             {
@@ -21,17 +20,17 @@ namespace TheLastLand._Project.Scripts.GameSystems
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.CompareTag("Player") && helpText != null)
+            if (collision.GetComponent<Player>() && helpText != null)
             {
-                helpText.SetActive(true); // Tampilkan teks saat pemain masuk area
+                helpText.SetActive(true);
             }
         }
 
         private void OnTriggerExit2D(Collider2D collision)
         {
-            if (collision.CompareTag("Player") && helpText != null)
+            if (collision.GetComponent<Player>() && helpText != null)
             {
-                helpText.SetActive(false); // Sembunyikan teks saat pemain keluar area
+                helpText.SetActive(false);
             }
         }
     }
