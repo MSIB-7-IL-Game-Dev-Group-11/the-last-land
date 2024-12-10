@@ -2,7 +2,6 @@
 using TheLastLand._Project.Scripts.Characters.Player.Common;
 using TheLastLand._Project.Scripts.Extensions;
 using TheLastLand._Project.Scripts.GameSystems;
-using TheLastLand._Project.Scripts.GameSystems.Item.Common;
 using TheLastLand._Project.Scripts.Input;
 using TheLastLand._Project.Scripts.SeviceLocator;
 using UnityEngine;
@@ -82,18 +81,11 @@ namespace TheLastLand._Project.Scripts
         private void OnSlotSelected(int index)
         {
             if (!_playerHotbar.IsValidSlotIndex(index)) return;
-            
             _playerHotbar.SelectSlot(index);
-            UpdateSelectedItem();
         }
 
         private void SwapWrapper(int fromIndex, int toIndex) =>
             _playerBackpack.Swap(fromIndex, toIndex);
-
-        private void UpdateSelectedItem()
-        {
-            _selectedItem = HotbarSlots[_playerHotbar.SelectedSlotIndex].Item;
-        }
 
         private void DrawSlot(int index)
         {
