@@ -15,6 +15,10 @@ MonoBehaviour:
   <DisplayName>k__BackingField: Wheat Seed
   <Icon>k__BackingField: {fileID: 21300146, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
   <PlantPrefab>k__BackingField: {fileID: 4157341099063765867, guid: b1b28cdc0afb32f42b0a23d900775e37, type: 3}
+  <SeedPrefab>k__BackingField: {fileID: 5150579023245202301, guid: 20fd0cc30078b2945bf72ed3397f0a35, type: 3}
+  <HarvestedItemPrefab>k__BackingField: {fileID: 3284380142945954000, guid: fc9968c4dc5d5264b89413cdfe5d303e, type: 3}
   <GrowTime>k__BackingField: 30
   <MinimumHarvestAmount>k__BackingField: 1
   <MaximumHarvestAmount>k__BackingField: 5
+  <MinimumDropSeedAmount>k__BackingField: 1
+  <MaximumDropSeedAmount>k__BackingField: 4

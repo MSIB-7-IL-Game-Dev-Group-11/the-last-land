@@ -17,6 +17,7 @@ namespace TheLastLand._Project.Scripts.Characters.Player
         private readonly PlayerStateData _stateData;
         private readonly IPlayerStamina _playerStamina;
         private IInteractable _interactable;
+        private IHarvestable _harvestable;
 
         // Components
         private readonly SpriteRenderer _characterSprite;
@@ -107,8 +108,9 @@ namespace TheLastLand._Project.Scripts.Characters.Player
 
         private void OnInteract(InputAction.CallbackContext context)
         {
-            if (!context.started || _interactable == null) return;
-            _interactable.Interact();
+            if (!context.started) return;
+            _interactable?.Interact();
+            _harvestable?.Harvest();
         }
 
         public void Jump()
@@ -156,13 +158,8 @@ namespace TheLastLand._Project.Scripts.Characters.Player
 
         private void HandleInteraction(Collider2D other, bool isEntering)
         {
-            if (!isEntering)
-            {
-                _interactable = null;
-                return;
-            }
-
-            _interactable = other.GetComponent<IInteractable>();
+            _harvestable = isEntering ? other.GetComponent<IHarvestable>() : null;
+            _interactable = isEntering ? other.GetComponent<IInteractable>() : null;
         }
     }
 }
