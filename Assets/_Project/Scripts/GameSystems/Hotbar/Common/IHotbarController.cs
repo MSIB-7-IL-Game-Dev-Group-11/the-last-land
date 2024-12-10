@@ -1,4 +1,5 @@
 ﻿using System;
+using TheLastLand._Project.Scripts.GameSystems.Item.Common;
 
 namespace TheLastLand._Project.Scripts.GameSystems.Hotbar.Common
 {
@@ -13,6 +14,8 @@ namespace TheLastLand._Project.Scripts.GameSystems.Hotbar.Common
         int SelectedSlotIndex { get; }
 
         int LastSelectedSlotIndex { get; }
+        
+        IItem SelectedItem { get; set; }
 
         /// <summary>
         /// Initializes the hotbar controller with a callback function.

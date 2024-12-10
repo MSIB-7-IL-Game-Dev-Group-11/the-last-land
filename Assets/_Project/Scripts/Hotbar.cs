@@ -18,7 +18,6 @@ namespace TheLastLand._Project.Scripts
         private IList<SlotItemBase> HotbarSlots { get; set; }
         private IPlayerBackpack _playerBackpack;
         private IPlayerHotbar _playerHotbar;
-        private IItem _selectedItem;
 
         private void OnValidate()
         {
@@ -95,6 +94,8 @@ namespace TheLastLand._Project.Scripts
             {
                 slot.DrawSlot(_playerBackpack.Backpack[index]);
                 slot.SelectSlot(index == _playerHotbar.SelectedSlotIndex);
+                _playerHotbar.SelectedItem =
+                    _playerBackpack.Backpack[_playerHotbar.SelectedSlotIndex];
             }
             else
             {

@@ -118,6 +118,12 @@ namespace TheLastLand._Project.Scripts.Characters.Player
 
         public int LastSelectedSlotIndex => _hotbarController.LastSelectedSlotIndex;
 
+        public IItem SelectedItem
+        {
+            get => _hotbarController.SelectedItem;
+            set => _hotbarController.SelectedItem = value;
+        }
+
         public void Initialize(Action<int> initCallback)
         {
             _hotbarController.Initialize(initCallback);

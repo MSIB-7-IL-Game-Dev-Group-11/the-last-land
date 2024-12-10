@@ -9,6 +9,7 @@ namespace TheLastLand._Project.Scripts.GameSystems.Hotbar
         public int SelectedSlotIndex { get; private set; }
 
         public int LastSelectedSlotIndex { get; private set; }
+        public IItem SelectedItem { get; set; }
 
         private readonly PlayerBackpackData _playerBackpackData;
 
