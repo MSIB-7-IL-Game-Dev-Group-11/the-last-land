@@ -26,9 +26,9 @@ MonoBehaviour:
     <Modifier>k__BackingField: 1
     <StaminaCost>k__BackingField: 15
   <Dash>k__BackingField:
-    <Force>k__BackingField: 5
+    <Force>k__BackingField: 4.5
     <Cooldown>k__BackingField: 0.5
-    <Duration>k__BackingField: 0.2
+    <Duration>k__BackingField: 0.5
     <Modifier>k__BackingField: 1
     <StaminaCost>k__BackingField: 30
   <Stamina>k__BackingField:
@@ -43,3 +43,4 @@ MonoBehaviour:
     <RegenerationTime>k__BackingField: 0
   <Backpack>k__BackingField:
     <Size>k__BackingField: 14
+    <HotbarSize>k__BackingField: 5
