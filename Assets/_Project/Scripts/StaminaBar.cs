@@ -1,6 +1,7 @@
 ﻿using TheLastLand._Project.Scripts.Characters.Player;
 using TheLastLand._Project.Scripts.Characters.Player.Common;
 using TheLastLand._Project.Scripts.Characters.Player.Datas;
+using TheLastLand._Project.Scripts.Extensions;
 using TheLastLand._Project.Scripts.GameSystems;
 using TheLastLand._Project.Scripts.SeviceLocator;
 
@@ -10,9 +11,9 @@ namespace TheLastLand._Project.Scripts
     {
         private void Start()
         {
-            ServiceLocator.Global.TryGet(out Player player);
-            ServiceLocator.For(player).TryGet(out PlayerData playerData);
-            ServiceLocator.For(player).TryGet(out IPlayerStamina playerStamina);
+            ServiceLocator.Global.TryGetWithStatus(out Player player);
+            ServiceLocator.For(player).TryGetWithStatus(out PlayerData playerData)
+                .TryGetWithStatus(out IPlayerStamina playerStamina);
 
             Initialize(playerStamina.Stamina, playerData.Stamina.Max);
         }
