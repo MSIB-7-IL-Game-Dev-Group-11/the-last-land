@@ -1,7 +1,8 @@
-﻿using TheLastLand._Project.Scripts.Extensions;
+﻿using System.Collections.Generic;
+using TheLastLand._Project.Scripts.Characters.Player.Common;
+using TheLastLand._Project.Scripts.Extensions;
 using TheLastLand._Project.Scripts.GameSystems;
-using TheLastLand._Project.Scripts.GameSystems.Hotbar;
-using TheLastLand._Project.Scripts.GameSystems.Hotbar.Common;
+using TheLastLand._Project.Scripts.GameSystems.Item.Common;
 using TheLastLand._Project.Scripts.Input;
 using TheLastLand._Project.Scripts.SeviceLocator;
 using UnityEngine;
@@ -15,7 +16,10 @@ namespace TheLastLand._Project.Scripts
         [SerializeField] private Transform hotbarSlotContainer;
 
         private UiInputReader _inputReader;
-        private IHotbarController _hotbarController;
+        private IList<SlotItemBase> HotbarSlots { get; set; }
+        private IPlayerBackpack _playerBackpack;
+        private IPlayerHotbar _playerHotbar;
+        private IItem _selectedItem;
 
         private void OnValidate()
         {
@@ -28,7 +32,6 @@ namespace TheLastLand._Project.Scripts
         private void Awake()
         {
             ServiceLocator.Global.RegisterServiceIfNotExists(this);
-            _hotbarController = new PlayerHotbarController();
         }
 
         private void OnEnable()
@@ -40,13 +43,18 @@ namespace TheLastLand._Project.Scripts
 
         private void Start()
         {
+            ServiceLocator.Global.TryGetWithStatus(out _playerBackpack)
+                .TryGetWithStatus(out _playerHotbar);
+
+            HotbarSlots = new List<SlotItemBase>(_playerHotbar.HotbarSize);
+
             // need to refactor this
-            _hotbarController.Initialize(CreateSlotPrefab);
+            _playerHotbar.Initialize(CreateSlotPrefab);
         }
 
         private void Update()
         {
-            _hotbarController.DrawHotbar();
+            DrawHotbar();
         }
 
         private void OnDisable()
@@ -68,13 +76,46 @@ namespace TheLastLand._Project.Scripts
 
             hotbarSlot.ClearSlot();
             hotbarSlot.Index = index;
-
-            _hotbarController.HotbarSlots.Add(hotbarSlot);
+            HotbarSlots.Add(hotbarSlot);
         }
 
-        private void OnSlotSelected(int index) => _hotbarController.SelectSlot(index);
+        private void OnSlotSelected(int index)
+        {
+            if (!_playerHotbar.IsValidSlotIndex(index)) return;
+            
+            _playerHotbar.SelectSlot(index);
+            UpdateSelectedItem();
+        }
 
         private void SwapWrapper(int fromIndex, int toIndex) =>
-            _hotbarController.SwapSlot(fromIndex, toIndex);
+            _playerBackpack.Swap(fromIndex, toIndex);
+
+        private void UpdateSelectedItem()
+        {
+            _selectedItem = HotbarSlots[_playerHotbar.SelectedSlotIndex].Item;
+        }
+
+        private void DrawSlot(int index)
+        {
+            var slot = HotbarSlots[index];
+
+            if (index < _playerBackpack.Backpack.Count)
+            {
+                slot.DrawSlot(_playerBackpack.Backpack[index]);
+                slot.SelectSlot(index == _playerHotbar.SelectedSlotIndex);
+            }
+            else
+            {
+                slot.ClearSlot();
+            }
+        }
+
+        private void DrawHotbar()
+        {
+            for (var i = 0; i < HotbarSlots.Count; i++)
+            {
+                DrawSlot(i);
+            }
+        }
     }
 }

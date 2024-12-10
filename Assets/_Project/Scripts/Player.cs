@@ -113,6 +113,7 @@ namespace TheLastLand._Project.Scripts
 
             ServiceLocator.Global.RegisterServiceIfNotExists(this)
                 .RegisterServiceIfNotExists<IPlayerBackpack>(_playerMediator)
+                .RegisterServiceIfNotExists<IPlayerHotbar>(_playerMediator)
                 .RegisterServiceIfNotExists<IPlayerHealth>(_playerMediator)
                 .RegisterServiceIfNotExists<IPlayerStamina>(_playerMediator);
 

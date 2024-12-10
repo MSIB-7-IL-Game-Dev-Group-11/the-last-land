@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace TheLastLand._Project.Scripts.GameSystems.Hotbar.Common
 {
@@ -13,10 +12,7 @@ namespace TheLastLand._Project.Scripts.GameSystems.Hotbar.Common
         /// </summary>
         int SelectedSlotIndex { get; }
 
-        /// <summary>
-        /// Gets the list of hotbar slots.
-        /// </summary>
-        IList<SlotItemBase> HotbarSlots { get; }
+        int LastSelectedSlotIndex { get; }
 
         /// <summary>
         /// Initializes the hotbar controller with a callback function.
@@ -31,15 +27,9 @@ namespace TheLastLand._Project.Scripts.GameSystems.Hotbar.Common
         void SelectSlot(int slotIndex);
 
         /// <summary>
-        /// Draws the hotbar UI.
+        /// Checks if the given index is a valid slot index.
         /// </summary>
-        void DrawHotbar();
-
-        /// <summary>
-        /// Swaps two slots in the hotbar.
-        /// </summary>
-        /// <param name="from">The index of the first slot.</param>
-        /// <param name="to">The index of the second slot.</param>
-        void SwapSlot(int from, int to);
+        /// <returns>True if the index is valid, false otherwise.</returns>
+        bool IsValidSlotIndex(int index);
     }
 }

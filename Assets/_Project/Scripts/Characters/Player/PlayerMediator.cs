@@ -6,6 +6,8 @@ using TheLastLand._Project.Scripts.GameSystems.Backpack;
 using TheLastLand._Project.Scripts.GameSystems.Backpack.Common;
 using TheLastLand._Project.Scripts.GameSystems.Health;
 using TheLastLand._Project.Scripts.GameSystems.Health.Common;
+using TheLastLand._Project.Scripts.GameSystems.Hotbar;
+using TheLastLand._Project.Scripts.GameSystems.Hotbar.Common;
 using TheLastLand._Project.Scripts.GameSystems.Item;
 using TheLastLand._Project.Scripts.GameSystems.Item.Common;
 using TheLastLand._Project.Scripts.GameSystems.Stamina;
@@ -15,7 +17,8 @@ using UnityEngine;
 namespace TheLastLand._Project.Scripts.Characters.Player
 {
     [CreateAssetMenu(fileName = "PlayerMediator", menuName = "TheLastLand/PlayerMediator")]
-    public class PlayerMediator : ScriptableObject, IPlayerHealth, IPlayerStamina, IPlayerBackpack
+    public class PlayerMediator : ScriptableObject, IPlayerHealth, IPlayerStamina, IPlayerBackpack,
+        IPlayerHotbar
     {
         public static event Action<float> OnStaminaChanged = delegate { };
         public static event Action<float> OnHealthChanged = delegate { };
@@ -23,12 +26,14 @@ namespace TheLastLand._Project.Scripts.Characters.Player
         private IStaminaController _staminaController;
         private IHealthController _healthController;
         private IBackpackController _backpackController;
+        private IHotbarController _hotbarController;
 
         public void Initialize(PlayerData data)
         {
             _staminaController = new PlayerStaminaController(data.Stamina);
             _healthController = new PlayerHealthController(data.Health);
             _backpackController = new BackpackController(data.Backpack);
+            _hotbarController = new PlayerHotbarController(data.Backpack);
 
             BackpackSize = data.Backpack.Size;
             HotbarSize = data.Backpack.HotbarSize;
@@ -104,6 +109,29 @@ namespace TheLastLand._Project.Scripts.Characters.Player
 
         public void Remove(ItemData itemData, int stackSize) =>
             _backpackController.Remove(itemData, stackSize);
+
+        #endregion
+
+        #region IPlayerHotbar
+
+        public int SelectedSlotIndex => _hotbarController.SelectedSlotIndex;
+
+        public int LastSelectedSlotIndex => _hotbarController.LastSelectedSlotIndex;
+
+        public void Initialize(Action<int> initCallback)
+        {
+            _hotbarController.Initialize(initCallback);
+        }
+
+        public void SelectSlot(int slotIndex)
+        {
+            _hotbarController.SelectSlot(slotIndex);
+        }
+
+        public bool IsValidSlotIndex(int index)
+        {
+            return _hotbarController.IsValidSlotIndex(index);
+        }
 
         #endregion
     }

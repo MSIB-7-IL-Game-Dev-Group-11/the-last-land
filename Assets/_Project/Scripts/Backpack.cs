@@ -18,6 +18,7 @@ namespace TheLastLand._Project.Scripts
 
         private UiInputReader _inputReader;
         private IPlayerBackpack _playerBackpack;
+        private IPlayerHotbar _playerHotbar;
         private List<SlotItemBase> _backpackSlots;
 
         private void OnValidate()
@@ -37,7 +38,8 @@ namespace TheLastLand._Project.Scripts
 
         private void Start()
         {
-            ServiceLocator.Global.TryGet(out _playerBackpack);
+            ServiceLocator.Global.TryGetWithStatus(out _playerBackpack)
+                .TryGetWithStatus(out _playerHotbar);
             InitializeBackpackSlots();
         }
 
@@ -61,12 +63,12 @@ namespace TheLastLand._Project.Scripts
         private void InitializeBackpackSlots()
         {
             _backpackSlots = new List<SlotItemBase>(_playerBackpack.BackpackSize);
-            for (var i = 0; i < _playerBackpack.BackpackSize; i++)
+            for (var i = _playerHotbar.HotbarSize; i < _playerBackpack.BackpackSize; i++)
             {
                 var backpackSlot = Instantiate(backpackSlotPrefab, backpackSlotContainer)
                     .GetComponent<BackpackSlot>();
                 backpackSlot.ClearSlot();
-                backpackSlot.Index = i + _playerBackpack.HotbarSize;
+                backpackSlot.Index = i;
                 _backpackSlots.Add(backpackSlot);
             }
         }
@@ -77,7 +79,7 @@ namespace TheLastLand._Project.Scripts
             {
                 if (i < backpack.Count)
                 {
-                    _backpackSlots[i].DrawSlot(backpack[i + _playerBackpack.HotbarSize]);
+                    _backpackSlots[i].DrawSlot(backpack[i + _playerHotbar.HotbarSize]);
                 }
                 else
                 {
