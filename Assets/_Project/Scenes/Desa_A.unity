@@ -138,7 +138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &111157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,7 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseMenuUI: {fileID: 1027118204}
   player: {fileID: 2213355649506306879, guid: 859d0ef3bbe0f8b40ad127d378555e7f, type: 3}
-  helpText: {fileID: 0}
+  helpText: {fileID: 1576683929}
 --- !u!4 &111158
 Transform:
   m_ObjectHideFlags: 0
@@ -3773,6 +3773,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5179699182793787327, guid: 584cb8fa9f82c72469ab98f3b3dcfb02, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 5421452804643148944, guid: 584cb8fa9f82c72469ab98f3b3dcfb02, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3866,6 +3870,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 584cb8fa9f82c72469ab98f3b3dcfb02, type: 3}
+--- !u!1 &1576683929 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5977698933585283719, guid: 584cb8fa9f82c72469ab98f3b3dcfb02, type: 3}
+  m_PrefabInstance: {fileID: 1576683928}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1591305477
 PrefabInstance:
   m_ObjectHideFlags: 0
