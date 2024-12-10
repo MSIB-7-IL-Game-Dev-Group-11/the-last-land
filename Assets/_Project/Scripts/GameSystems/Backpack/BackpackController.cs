@@ -24,6 +24,8 @@ namespace TheLastLand._Project.Scripts.GameSystems.Backpack
             {
                 Backpack.Add(null);
             }
+            
+            BackpackItem.OnStackSizeZero += HandleStackSizeZero;
         }
 
         public void Add(ItemData itemData, int stackSize)
@@ -42,10 +44,6 @@ namespace TheLastLand._Project.Scripts.GameSystems.Backpack
         {
             if (!BackpackItems.TryGetValue(itemData, out var item)) return;
             item.RemoveFromStack(stackSize);
-
-            if (item.StackSize != 0) return;
-            Backpack.Remove(item);
-            BackpackItems.Remove(itemData);
         }
 
         public void Swap(int fromIndex, int to)
@@ -57,10 +55,6 @@ namespace TheLastLand._Project.Scripts.GameSystems.Backpack
         {
             if (!BackpackItems.TryGetValue(itemData, out var item)) return;
             item.RemoveFromStack(stackSize);
-
-            if (item.StackSize != 0) return;
-            Backpack.Remove(item);
-            BackpackItems.Remove(itemData);
         }
 
         private void AddNewItem(ItemData itemData, int stackSize)
@@ -73,6 +67,12 @@ namespace TheLastLand._Project.Scripts.GameSystems.Backpack
                 BackpackItems.Add(newItem.ItemData, newItem);
                 break;
             }
+        }
+
+        private void HandleStackSizeZero(IItem item)
+        {
+            Backpack.Remove(item);
+            BackpackItems.Remove(item.ItemData);
         }
     }
 }
