@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TheLastLand._Project.Scripts.Characters.Player.Datas;
 using TheLastLand._Project.Scripts.GameSystems.Backpack.Common;
 using TheLastLand._Project.Scripts.GameSystems.Item;
@@ -9,7 +8,6 @@ namespace TheLastLand._Project.Scripts.GameSystems.Backpack
 {
     public class BackpackController : IBackpackController
     {
-        public static event Action<List<IItem>> OnBackpackChanged;
         public List<IItem> Backpack { get; }
 
         private PlayerBackpackData PlayerBackpackData { get; }
@@ -38,8 +36,6 @@ namespace TheLastLand._Project.Scripts.GameSystems.Backpack
             {
                 AddNewItem(itemData, stackSize);
             }
-
-            OnBackpackChanged?.Invoke(Backpack);
         }
 
         public void Remove(ItemData itemData, int stackSize)
@@ -50,13 +46,11 @@ namespace TheLastLand._Project.Scripts.GameSystems.Backpack
             if (item.StackSize != 0) return;
             Backpack.Remove(item);
             BackpackItems.Remove(itemData);
-            OnBackpackChanged?.Invoke(Backpack);
         }
 
         public void Swap(int fromIndex, int to)
         {
             (Backpack[fromIndex], Backpack[to]) = (Backpack[to], Backpack[fromIndex]);
-            OnBackpackChanged?.Invoke(Backpack);
         }
 
         public void Drop(ItemData itemData, int stackSize)
@@ -64,13 +58,9 @@ namespace TheLastLand._Project.Scripts.GameSystems.Backpack
             if (!BackpackItems.TryGetValue(itemData, out var item)) return;
             item.RemoveFromStack(stackSize);
 
-            if (item.StackSize == 0)
-            {
-                Backpack.Remove(item);
-                BackpackItems.Remove(itemData);
-            }
-
-            OnBackpackChanged?.Invoke(Backpack);
+            if (item.StackSize != 0) return;
+            Backpack.Remove(item);
+            BackpackItems.Remove(itemData);
         }
 
         private void AddNewItem(ItemData itemData, int stackSize)
