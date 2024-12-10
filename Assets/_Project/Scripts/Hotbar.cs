@@ -14,18 +14,18 @@ namespace TheLastLand._Project.Scripts
         [SerializeField] private GameObject hotbarUI;
         [SerializeField] private Transform hotbarSlotContainer;
 
-        private UiInputReader _inputReader;
+        [SerializeField] private UiInputReader _inputReader;
         private IList<SlotItemBase> HotbarSlots { get; set; }
         private IPlayerBackpack _playerBackpack;
         private IPlayerHotbar _playerHotbar;
 
-        private void OnValidate()
-        {
-            _inputReader = this.LoadAssetIfNull(
-                _inputReader,
-                "Assets/_Project/ScriptableObjects/UiInputReader.asset"
-            );
-        }
+        // private void OnValidate()
+        // {
+        //     _inputReader = this.LoadAssetIfNull(
+        //         _inputReader,
+        //         "Assets/_Project/ScriptableObjects/UiInputReader.asset"
+        //     );
+        // }
 
         private void Awake()
         {

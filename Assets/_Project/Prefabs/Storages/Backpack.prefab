@@ -52,6 +52,7 @@ MonoBehaviour:
   backpackSlotPrefab: {fileID: 1204882875871713826, guid: 0847d6b2ca571eb4a848744255742d40, type: 3}
   backpackUI: {fileID: 9050011718469059911}
   backpackSlotContainer: {fileID: 6066903391222383850}
+  _inputReader: {fileID: 11400000, guid: d4b94db14dcb161418e6426665d56748, type: 2}
 --- !u!1 &4079435886470377067
 GameObject:
   m_ObjectHideFlags: 0

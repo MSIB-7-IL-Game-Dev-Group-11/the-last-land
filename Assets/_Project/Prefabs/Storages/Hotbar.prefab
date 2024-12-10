@@ -252,6 +252,7 @@ MonoBehaviour:
   hotbarSlotPrefab: {fileID: 1204882875871713826, guid: 8eb0409b35861c1448c585c875bc6cb6, type: 3}
   hotbarUI: {fileID: 1422522116717380613}
   hotbarSlotContainer: {fileID: 7410898640422394194}
+  _inputReader: {fileID: 11400000, guid: d4b94db14dcb161418e6426665d56748, type: 2}
 --- !u!114 &8447058062644608386
 MonoBehaviour:
   m_ObjectHideFlags: 0

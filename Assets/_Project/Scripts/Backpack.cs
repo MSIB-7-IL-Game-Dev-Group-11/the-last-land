@@ -16,18 +16,18 @@ namespace TheLastLand._Project.Scripts
         [SerializeField] private GameObject backpackUI;
         [SerializeField] private Transform backpackSlotContainer;
 
-        private UiInputReader _inputReader;
+        [SerializeField] private UiInputReader _inputReader;
         private IPlayerBackpack _playerBackpack;
         private IPlayerHotbar _playerHotbar;
         private List<SlotItemBase> _backpackSlots;
 
-        private void OnValidate()
-        {
-            _inputReader = this.LoadAssetIfNull(
-                _inputReader,
-                "Assets/_Project/ScriptableObjects/UiInputReader.asset"
-            );
-        }
+        // private void OnValidate()
+        // {
+        //     _inputReader = this.LoadAssetIfNull(
+        //         _inputReader,
+        //         "Assets/_Project/ScriptableObjects/UiInputReader.asset"
+        //     );
+        // }
 
         private void OnEnable()
         {

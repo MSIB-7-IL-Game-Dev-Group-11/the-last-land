@@ -26,8 +26,8 @@ namespace TheLastLand._Project.Scripts
 
         private PlayerComponent _playerComponent;
         private PlayerStateData _stateData;
-        private PlayerData _data;
-        private PlayerMediator _playerMediator;
+        [SerializeField] private PlayerData _data;
+        [SerializeField] private PlayerMediator _playerMediator;
         private PlayerController _playerController;
         private StateMachine _stateMachine;
 
@@ -37,18 +37,18 @@ namespace TheLastLand._Project.Scripts
         private ITimerConfigurator _timerConfigurator;
         private ISmConfigurator _smConfigurator;
 
-        private void OnValidate()
-        {
-            _playerMediator = this.LoadAssetIfNull(
-                _playerMediator,
-                "Assets/_Project/ScriptableObjects/PlayerMediator.asset"
-            );
-
-            _data = this.LoadAssetIfNull(
-                _data,
-                "Assets/_Project/ScriptableObjects/PlayerData.asset"
-            );
-        }
+        // private void OnValidate()
+        // {
+        //     _playerMediator = this.LoadAssetIfNull(
+        //         _playerMediator,
+        //         "Assets/_Project/ScriptableObjects/PlayerMediator.asset"
+        //     );
+        //
+        //     _data = this.LoadAssetIfNull(
+        //         _data,
+        //         "Assets/_Project/ScriptableObjects/PlayerData.asset"
+        //     );
+        // }
 
         private void Awake()
         {

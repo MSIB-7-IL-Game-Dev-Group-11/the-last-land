@@ -1,5 +1,8 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace TheLastLand._Project.Scripts.Extensions
 {
@@ -32,6 +35,7 @@ namespace TheLastLand._Project.Scripts.Extensions
         /// If the asset is null, it attempts to load it from the given path using the AssetDatabase.
         /// If the asset cannot be loaded, an error message is logged.
         /// </remarks>
+#if UNITY_EDITOR
         public static T LoadAssetIfNull<T>(this Object obj, T asset, string path)
             where T : ScriptableObject
         {
@@ -45,5 +49,6 @@ namespace TheLastLand._Project.Scripts.Extensions
 
             return asset;
         }
+#endif
     }
 }

@@ -12,14 +12,14 @@ namespace TheLastLand._Project.Scripts
         [SerializeField] private GameObject backpackPrefab;
         private static bool _isBackpackOpen;
 
-        private UiInputReader _inputReader;
+        [SerializeField] private UiInputReader _inputReader;
 
         private void Awake()
         {
-            _inputReader = this.LoadAssetIfNull(
-                _inputReader,
-                "Assets/_Project/ScriptableObjects/UiInputReader.asset"
-            );
+            // _inputReader = this.LoadAssetIfNull(
+            //     _inputReader,
+            //     "Assets/_Project/ScriptableObjects/UiInputReader.asset"
+            // );
 
             SlotUIManager = new SlotUIManager(icon, amount, select, counter);
         }

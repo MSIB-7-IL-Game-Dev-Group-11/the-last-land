@@ -1,28 +1,42 @@
-using System.IO;
+#if UNITY_EDITOR
 using UnityEditor;
-using UnityEngine;
+using static UnityEditor.AssetDatabase;
+#endif
+using static System.IO.Directory;
+using static System.IO.Path;
+using static UnityEngine.Application;
 
 namespace TheLastLand.Tools
 {
     public static class Setup
     {
+#if UNITY_EDITOR
         [MenuItem("Tools/Setup/Create Default Folders")]
         public static void CreateDefaultFolders()
         {
-            Folders.CreateDefault("_Project", "Animations", "Art", "Materials", "Prefabs",
-                "ScriptableObjects", "Scripts", "Settings");
-            AssetDatabase.Refresh();
+            Folders.CreateDefault(
+                "_Project",
+                "Animations",
+                "Art",
+                "Materials",
+                "Prefabs",
+                "ScriptableObjects",
+                "Scripts",
+                "Settings"
+            );
+            Refresh();
         }
+#endif
 
         private static class Folders
         {
             public static void CreateDefault(string root, params string[] folders)
             {
-                var fullpath = Path.Combine(Application.dataPath, root);
+                var fullpath = Combine(dataPath, root);
                 foreach (var folder in folders)
                 {
-                    var folderPath = Path.Combine(fullpath, folder);
-                    if (!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);
+                    var folderPath = Combine(fullpath, folder);
+                    if (!Exists(folderPath)) CreateDirectory(folderPath);
                 }
             }
         }
