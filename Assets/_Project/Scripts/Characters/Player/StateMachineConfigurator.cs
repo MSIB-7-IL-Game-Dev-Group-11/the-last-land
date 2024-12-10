@@ -5,17 +5,13 @@ using TheLastLand._Project.Scripts.Input;
 using TheLastLand._Project.Scripts.SeviceLocator;
 using TheLastLand._Project.Scripts.StateMachines;
 using TheLastLand._Project.Scripts.StateMachines.Common;
-using UnityEngine;
 
 namespace TheLastLand._Project.Scripts.Characters.Player
 {
     public class StateMachineConfigurator : IPlayerSmConfigurator
     {
-        private readonly PlayerController _playerController;
         private readonly PlayerStateData _stateData;
-
         private readonly StateMachine _stateMachine;
-        private readonly Animator _animator;
         private readonly GroundCheck _groundCheck;
 
         // Timer
@@ -26,9 +22,8 @@ namespace TheLastLand._Project.Scripts.Characters.Player
             ServiceLocator.Global.Get(out Scripts.Player player);
 
             ServiceLocator.For(player).Get(out _stateData).Get(out _stateMachine)
-                .Get(out _playerController).Get(out _timerConfigurator);
+                .Get(out _timerConfigurator);
 
-            _animator = player.GetComponent<Animator>();
             _groundCheck = player.GetComponent<GroundCheck>();
 
             Setup();
@@ -36,10 +31,10 @@ namespace TheLastLand._Project.Scripts.Characters.Player
 
         private void Setup()
         {
-            var walkState = new PlayerWalkState(_playerController, _animator);
-            var jumpState = new PlayerJumpState(_playerController, _animator);
-            var idleState = new PlayerIdleState(_playerController, _animator);
-            var dashState = new PlayerDashState(_playerController, _animator);
+            var walkState = new PlayerWalkState();
+            var jumpState = new PlayerJumpState();
+            var idleState = new PlayerIdleState();
+            var dashState = new PlayerDashState();
 
             Any(
                 jumpState,

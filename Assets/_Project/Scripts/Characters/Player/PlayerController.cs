@@ -10,10 +10,8 @@ namespace TheLastLand._Project.Scripts.Characters.Player
 {
     public class PlayerController
     {
-        public readonly PlayerData Data;
-
+        private readonly PlayerData _data;
         private const float ZeroF = 0f;
-
         private InputReader PlayerInput { get; }
 
         private readonly PlayerStateData _stateData;
@@ -32,7 +30,7 @@ namespace TheLastLand._Project.Scripts.Characters.Player
         {
             ServiceLocator.Global.Get(out Scripts.Player player).Get(out _playerStamina);
 
-            ServiceLocator.For(player).Get(out Data).Get(out _stateData)
+            ServiceLocator.For(player).Get(out _data).Get(out _stateData)
                 .Get(out PlayerComponent components).Get(out _timerConfigurator);
 
             PlayerInput = components.PlayerInput;
@@ -76,12 +74,12 @@ namespace TheLastLand._Project.Scripts.Characters.Player
                                                        .IsRunning
                                                    || _timerConfigurator.JumpCoyoteTimer.IsRunning:
                 {
-                    if (!_playerStamina.HasSufficientStamina(Data.Jump.StaminaCost)) return;
+                    if (!_playerStamina.HasSufficientStamina(_data.Jump.StaminaCost)) return;
 
-                    _playerStamina.UseStamina(Data.Jump.StaminaCost);
+                    _playerStamina.UseStamina(_data.Jump.StaminaCost);
                     _timerConfigurator.JumpCoyoteTimer.Stop();
 
-                    _timerConfigurator.JumpTimer.Reset(Data.Jump.Duration);
+                    _timerConfigurator.JumpTimer.Reset(_data.Jump.Duration);
                     _timerConfigurator.JumpTimer.Start();
 
                     break;
@@ -99,11 +97,11 @@ namespace TheLastLand._Project.Scripts.Characters.Player
             if (!context.started
                 || _timerConfigurator.DashTimer.IsRunning
                 || _timerConfigurator.DashCooldownTimer.IsRunning) return;
-            if (!_playerStamina.HasSufficientStamina(Data.Dash.StaminaCost)) return;
+            if (!_playerStamina.HasSufficientStamina(_data.Dash.StaminaCost)) return;
 
-            _playerStamina.UseStamina(Data.Dash.StaminaCost);
+            _playerStamina.UseStamina(_data.Dash.StaminaCost);
 
-            _timerConfigurator.DashTimer.Reset(Data.Dash.Duration);
+            _timerConfigurator.DashTimer.Reset(_data.Dash.Duration);
             _timerConfigurator.DashTimer.Start();
         }
 
@@ -124,14 +122,14 @@ namespace TheLastLand._Project.Scripts.Characters.Player
         {
             var targetSpeed = _stateData.MovementDirection.x
                               * (_timerConfigurator.DashTimer.IsRunning
-                                  ? Data.Dash.Force
-                                  : Data.BaseSpeed);
+                                  ? _data.Dash.Force
+                                  : _data.BaseSpeed);
 
             var speedDifference = targetSpeed - _rigidbody.velocity.x;
 
             var accelerationRate = Mathf.Abs(targetSpeed) > 0.01f
-                ? Data.Acceleration
-                : Data.Deceleration;
+                ? _data.Acceleration
+                : _data.Deceleration;
 
             var mode = _timerConfigurator.DashTimer.IsRunning
                 ? ForceMode2D.Impulse
@@ -142,6 +140,7 @@ namespace TheLastLand._Project.Scripts.Characters.Player
                                                  speedModifier
                                              )
                                              * Mathf.Sign(speedDifference);
+            Debug.Log(_stateData.CurrentMoveVelocity);
 
             _rigidbody.AddForce(_stateData.CurrentMoveVelocity * Vector2.right, mode);
         }

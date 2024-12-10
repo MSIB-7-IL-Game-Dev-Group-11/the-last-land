@@ -1,4 +1,6 @@
 ﻿using TheLastLand._Project.Scripts.Characters.Player.Datas;
+using TheLastLand._Project.Scripts.Extensions;
+using TheLastLand._Project.Scripts.SeviceLocator;
 using TheLastLand._Project.Scripts.StateMachines.Common;
 using UnityEngine;
 
@@ -10,50 +12,35 @@ namespace TheLastLand._Project.Scripts.Characters.Player.StateMachines
     public abstract class BaseState : IState
     {
         /// <summary>
-        /// Reference to the player controller.
-        /// </summary>
-        protected readonly PlayerController PlayerController;
-
-        /// <summary>
-        /// Reference to the player data.
+        /// Reference to the player component and module.
         /// </summary>
         protected readonly PlayerData PlayerData;
-
-        /// <summary>
-        /// Reference to the animator.
-        /// </summary>
+        protected readonly PlayerStateData PlayerStateData;
+        protected readonly PlayerController PlayerController;
         protected readonly Animator Animator;
 
         /// <summary>
-        /// Constant representing zero float value.
+        /// Hash for the animation parameter.
         /// </summary>
-        public const float ZeroF = 0f;
-        
-        /// <summary>
-        /// Hash for the movement animation parameter.
-        /// </summary>
-        protected static readonly int MovementHash = Animator.StringToHash("Movement");
+        protected static readonly int MovementHash = Animator.StringToHash("Move");
+        protected static readonly int JumpHash = Animator.StringToHash("Jump");
+        protected static readonly int Speed = Animator.StringToHash("Speed");
 
-        /// <summary>
-        /// Hash for the jumping animation parameter.
-        /// </summary>
-        protected static readonly int JumpingHash = Animator.StringToHash("Jumping");
-        
         /// <summary>
         /// Duration for cross-fade transitions.
         /// </summary>
-        protected const float CROSS_FADE_DURATION = 0.1f;
+        protected const float CrossFadeDuration = 0.2f;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseState"/> class.
         /// </summary>
-        /// <param name="playerController">The player controller.</param>
-        /// <param name="animator">The animator.</param>
-        protected BaseState(PlayerController playerController, Animator animator)
+        protected BaseState()
         {
-            PlayerController = playerController;
-            Animator = animator;
-            PlayerData = PlayerController.Data;
+            ServiceLocator.Global.Get(out Scripts.Player player);
+            ServiceLocator.For(player).TryGetWithStatus(out PlayerStateData)
+                .TryGetWithStatus(out PlayerController).TryGetWithStatus(out PlayerData);
+
+            Animator = player.GetComponent<Animator>();
         }
 
         /// <summary>
@@ -61,7 +48,6 @@ namespace TheLastLand._Project.Scripts.Characters.Player.StateMachines
         /// </summary>
         public virtual void OnEnter()
         {
-            
         }
 
         /// <summary>
@@ -69,7 +55,6 @@ namespace TheLastLand._Project.Scripts.Characters.Player.StateMachines
         /// </summary>
         public virtual void Update()
         {
-            
         }
 
         /// <summary>
@@ -77,7 +62,6 @@ namespace TheLastLand._Project.Scripts.Characters.Player.StateMachines
         /// </summary>
         public virtual void FixedUpdate()
         {
-            
         }
 
         /// <summary>
@@ -85,7 +69,6 @@ namespace TheLastLand._Project.Scripts.Characters.Player.StateMachines
         /// </summary>
         public virtual void OnExit()
         {
-            
         }
     }
 }
